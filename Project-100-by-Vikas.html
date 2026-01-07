@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PROJECT 100: VIKAS RAWAT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* --- THEME: BLUE & WHITE (Modern) --- */
+            --bg-body: #F4F7FE;
+            --bg-card: #FFFFFF;
+            
+            --primary-gradient: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+            --primary-solid: #4F46E5;
+            
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            
+            /* Badges */
+            --badge-bg: #EEF2FF;
+            --badge-text: #4338CA;
+            
+            --radius: 20px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0F172A;
+            --bg-card: #1E293B;
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --badge-bg: rgba(67, 56, 202, 0.2);
+            --badge-text: #A5B4FC;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* --- LOGO DESIGN (UPDATED) --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0 5px;
+        }
+        
+        .logo-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand-logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900; /* Extra Bold */
+            font-size: 2.4rem;
+            line-height: 0.9;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .logo-p { color: #4338CA; } /* Deep Blue */
+        .logo-100 { color: #6366F1; margin-left: 2px; } /* Bright Purple-Blue */
+        
+        .brand-sub {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 5px;
+            margin-left: 2px;
+        }
+
+        /* --- HERO DASHBOARD --- */
+        .hero-card {
+            background: var(--primary-gradient);
+            border-radius: var(--radius);
+            padding: 25px 30px;
+            color: white;
+            box-shadow: 0 20px 40px -10px rgba(67, 56, 202, 0.4);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-top { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; opacity: 0.9; margin-bottom: 15px; }
+        .hero-stats { display: flex; justify-content: space-between; align-items: center; text-align: center; margin-bottom: 20px; }
+        .stat-val { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+        .stat-lbl { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-top: 5px; font-weight: 600; }
+        .target-text { color: #4ade80; } 
+        .days-text { color: #60a5fa; }
+        .progress-track { background: rgba(255, 255, 255, 0.2); height: 8px; border-radius: 10px; overflow: hidden; }
+        .progress-fill { background: #ffffff; height: 100%; width: 0%; border-radius: 10px; transition: width 1s ease; box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* --- ACCORDION STYLES --- */
+        .accordion-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .accordion-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+        .accordion-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        
+        .icon-box {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            background: #F1F5F9;
+        }
+
+        .header-title h3 { font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--text-main); font-family: 'Outfit', sans-serif; }
+        .header-title span { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+        .chevron { font-size: 1.2rem; color: var(--text-muted); transition: transform 0.3s ease; }
+        .accordion-item.active .chevron { transform: rotate(180deg); color: var(--primary-solid); }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid #F1F5F9;
+        }
+
+        .content-inner { padding: 25px 20px; }
+
+        /* --- CONTENT ELEMENTS --- */
+        h4 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin: 25px 0 12px; border-left: 3px solid var(--primary-solid); padding-left: 10px; }
+        h4:first-child { margin-top: 0; }
+
+        /* Tags */
+        .tag { display: inline-flex; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-right: 5px; margin-bottom: 5px; }
+        .tag-red { background: #FEF2F2; color: #EF4444; }
+        .tag-green { background: #ECFDF5; color: #10B981; }
+        .tag-orange { background: #FFF7ED; color: #F97316; }
+        .tag-blue { background: #EFF6FF; color: #3B82F6; }
+
+        /* Timeline */
+        .timeline-row { display: flex; gap: 15px; margin-bottom: 20px; position: relative; }
+        .timeline-row::before { content: ''; position: absolute; left: 6px; top: 25px; bottom: -20px; width: 2px; background: #E2E8F0; }
+        .timeline-row:last-child::before { display: none; }
+        .t-dot { width: 14px; height: 14px; background: var(--primary-solid); border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; z-index: 1; margin-top: 5px; flex-shrink: 0; }
+        .t-content { flex: 1; }
+        .t-time { font-size: 0.8rem; font-weight: 700; color: var(--primary-solid); margin-bottom: 2px; display: block; }
+        .t-title { font-weight: 700; font-size: 1rem; color: var(--text-main); }
+        .t-desc { font-size: 0.9rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* Meal Cards */
+        .meal-card { display: flex; align-items: flex-start; gap: 15px; background: #F8FAFC; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #F1F5F9; }
+        .meal-icon { font-size: 1.5rem; background: #fff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .meal-info strong { display: block; font-size: 0.95rem; color: var(--text-main); margin-bottom: 2px; }
+        .meal-info span { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Exercise List (Modern Badges) */
+        .ex-list { list-style: none; }
+        .ex-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #E2E8F0; font-size: 0.9rem; align-items: center; }
+        .ex-item:last-child { border: none; }
+        .ex-name { font-weight: 500; color: var(--text-main); }
+        
+        /* The Reps/Sec Badge */
+        .ex-val { 
+            font-weight: 700; 
+            color: var(--badge-text); 
+            background: var(--badge-bg);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* Toggle */
+        .theme-toggle-btn { position: absolute; top: 20px; right: 20px; background: white; padding: 8px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; border: none; font-size: 1.2rem; }
+
+        /* Footer */
+        footer { margin-top: 40px; text-align: center; font-size: 0.8rem; color: var(--text-muted); opacity: 0.7; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            .hero-stats { gap: 10px; }
+            .stat-val { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <header>
+            <div class="logo-box">
+                <div class="brand-logo">
+                    <span class="logo-p">PROJECT</span>
+                    <span class="logo-100">100</span>
+                </div>
+                <div class="brand-sub">MISSION: 12KG DESTRUCTION</div>
+            </div>
+            
+            <button class="theme-toggle-btn" onclick="toggleTheme()">🌗</button>
+        </header>
+
+        <!-- DASHBOARD HERO -->
+        <div class="hero-card">
+            <div class="hero-top">
+                <span>Start: 12 JAN</span>
+                <span id="status-text">Loading...</span>
+                <span>End: 21 APR</span>
+            </div>
+
+            <div class="hero-stats">
+                <div>
+                    <div class="stat-val">78.0</div>
+                    <div class="stat-lbl">CURRENT</div>
+                </div>
+                <div>
+                    <div class="stat-val target-text">66.0</div>
+                    <div class="stat-lbl">TARGET</div>
+                </div>
+                <div>
+                    <div class="stat-val days-text" id="days-count">0</div>
+                    <div class="stat-lbl">DAYS LEFT</div>
+                </div>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- 1. MISSION IDENTITY -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <div class="icon-box">📜</div>
+                    <div class="header-title">
+                        <h3>Mission Identity</h3>
+                        <span>Goals & Rules</span>
+                    </div>
+                </div>
+                <div class="chevron">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div style="font-style: italic; color: var(--text-muted); border-left: 4px solid var(--primary-solid); padding-left: 15px; margin-bottom: 20px;">
+                        "Main, Vikas Rawat, aaj se Project 100 ke liye apni poori commitment dedicate karta hoon. Meri body project ka scope hai, aur dimaag manager."
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <span class="tag tag-red">Waist 37.8" (Danger)</span>
+                        <span class="tag tag-orange">Visceral Fat 10</span>
+                        <span class="tag tag-green">Target 66kg</span>
+                    </div>
+
+                    <h4>Non-Negotiable Rules</h4>
+                    <ul class="ex-list">
+                        <li class="ex-item"><span class="ex-name">💰 Zero Junk Spend</span><span class="ex-val">₹0/Month</span></li>
+                        <li class="ex-item"><span class="ex-name">📱 No Zomato App</span><span class="ex-val">DELETE</span></li>
+                        <li class="ex-item"><span class="ex-name">🥗 Dinner Carbs</span><span class="ex-val">NONE</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. DAILY BLUEPRINT -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <div class="icon-box">⏰</div>
+                    <div class="header-title">
+                        <h3>Daily Blueprint</h3>
+                        <span>Morning to Night</span>
+                    </div>
+                </div>
+                <div class="chevron">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    
+                    <h4>Morning (The Start)</h4>
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">05:30 AM</span>
+                            <div class="t-title">Wake Up (No Snooze)</div>
+                            <div class="t-desc">Bed se 10 sec mein bahar. Drink Warm Water + Lemon + Salt.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">06:15 AM</span>
+                            <div class="t-title">Hybrid Storm Workout</div>
+                            <div class="t-desc"><span class="tag tag-blue">FITIFY</span> 3 Rounds (35 Mins). Paseena nikalna chahiye.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">08:45 AM</span>
+                            <div class="t-title">Jhadu Pocha (NEAT)</div>
+                            <div class="t-desc">Non-negotiable home movement.</div>
+                        </div>
+                    </div>
+
+                    <h4>Office (The Grind)</h4>
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">10:30 AM</span>
+                            <div class="t-title">Office Tea Break</div>
+                            <div class="t-desc">10 mins Walk. <strong>NO CHAI.</strong> Black Coffee allowed.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">01:00 PM</span>
+                            <div class="t-title">Lunch (Carb Refuel)</div>
+                            <div class="t-desc">2 Roti + Dal + <strong>HUGE SALAD</strong>. No Phone.</div>
+                        </div>
+                    </div>
+
+                    <h4>Evening (The Focus)</h4>
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">06:15 PM</span>
+                            <div class="t-title">Iron War Strength</div>
+                            <div class="t-desc"><span class="tag tag-green">MUSCLE</span> 4 Rounds (50 Mins). Heavy Weights.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-time">08:00 PM</span>
+                            <div class="t-title">Dinner (Fat Burn)</div>
+                            <div class="t-desc">200g Paneer/Soya + Veggies. <span class="tag tag-red">NO CARB</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. FITIFY PROTOCOLS (UPDATED) -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <div class="icon-box">🔥</div>
+                    <div class="header-title">
+                        <h3>Fitify Protocols</h3>
+                        <span>Detailed Exercises</span>
+                    </div>
+                </div>
+                <div class="chevron">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    
+                    <h4>☀️ Morning: Hybrid Storm</h4>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:10px;">Target: Fat Burn • <strong>3 Rounds</strong> • 20s Rest</p>
+                    <ul class="ex-list">
+                        <li class="ex-item"><span class="ex-name">Jumping Jacks</span><span class="ex-val">1 Min</span></li>
+                        <li class="ex-item"><span class="ex-name">Squats</span><span class="ex-val">45 Sec</span></li>
+                        <li class="ex-item"><span class="ex-name">Push-ups</span><span class="ex-val">45 Sec</span></li>
+                        <li class="ex-item"><span class="ex-name">Mountain Climbers</span><span class="ex-val">45 Sec</span></li>
+                        <li class="ex-item"><span class="ex-name">High Knees</span><span class="ex-val">45 Sec</span></li>
+                        <li class="ex-item"><span class="ex-name">Plank</span><span class="ex-val">45 Sec</span></li>
+                        <li class="ex-item"><span class="ex-name">Donkey Kicks</span><span class="ex-val">45 Sec</span></li>
+                        <li class="ex-item"><span class="ex-name">Skipping</span><span class="ex-val">1 Min</span></li>
+                    </ul>
+
+                    <h4>💪 Evening: Iron War (Strength)</h4>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:10px;">Target: Muscle • <strong>4 Rounds</strong> • 60s Rest</p>
+                    
+                    <div style="margin-bottom:15px;">
+                        <strong style="font-size:0.9rem; color:var(--primary-solid); display:block; margin-bottom:5px;">MON / THU (PUSH)</strong>
+                        <ul class="ex-list">
+                            <li class="ex-item"><span class="ex-name">Chest Press</span><span class="ex-val">12 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Shoulder Press</span><span class="ex-val">15 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Tricep Ext</span><span class="ex-val">15 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Lateral Raises</span><span class="ex-val">15 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Push-ups (Failure)</span><span class="ex-val">Max</span></li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <strong style="font-size:0.9rem; color:var(--primary-solid); display:block; margin-bottom:5px;">TUE / FRI (PULL)</strong>
+                        <ul class="ex-list">
+                            <li class="ex-item"><span class="ex-name">Bent Over Rows</span><span class="ex-val">15 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Bicep Curls</span><span class="ex-val">12 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Face Pulls</span><span class="ex-val">20 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Hammer Curls</span><span class="ex-val">12 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Superman Hold</span><span class="ex-val">45 Sec</span></li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <strong style="font-size:0.9rem; color:var(--primary-solid); display:block; margin-bottom:5px;">WED (LEGS + CORE)</strong>
+                        <ul class="ex-list">
+                            <li class="ex-item"><span class="ex-name">Goblet Squats</span><span class="ex-val">15 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Walking Lunges</span><span class="ex-val">20 Steps</span></li>
+                            <li class="ex-item"><span class="ex-name">Glute Bridges</span><span class="ex-val">20 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Russian Twists</span><span class="ex-val">30 Reps</span></li>
+                            <li class="ex-item"><span class="ex-name">Leg Raises</span><span class="ex-val">15 Reps</span></li>
+                        </ul>
+                    </div>
+
+                     <div>
+                        <strong style="font-size:0.9rem; color:var(--primary-solid); display:block; margin-bottom:5px;">SAT (MOBILITY + STRETCH)</strong>
+                        <ul class="ex-list">
+                            <li class="ex-item"><span class="ex-name">Cat-Cow Stretch</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Forward Arm Circles</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Squat & Reach</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Upper Back Row</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Hip Flexor Stretch</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Supine Hamstring</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Child Pose</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Side Bends</span><span class="ex-val">40 Sec</span></li>
+                            <li class="ex-item"><span class="ex-name">Foam Rolling</span><span class="ex-val">5 Mins</span></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. FUEL PROTOCOL -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <div class="icon-box">🥗</div>
+                    <div class="header-title">
+                        <h3>Fuel Protocol</h3>
+                        <span>1650 Kcal Plan</span>
+                    </div>
+                </div>
+                <div class="chevron">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <div class="tag-row" style="margin-bottom:20px; display:flex; flex-wrap:wrap; gap:5px;">
+                        <span class="tag tag-red">NO RUSK</span>
+                        <span class="tag tag-red">NO BISCUIT</span>
+                        <span class="tag tag-red">NO SAMOSA</span>
+                        <span class="tag tag-red">NO STING</span>
+                    </div>
+
+                    <div class="meal-card">
+                        <div class="meal-icon">🥤</div>
+                        <div class="meal-info">
+                            <strong>07:15 AM - Post Workout</strong>
+                            <span>1 Scoop Whey Protein OR 5 Egg Whites.</span>
+                        </div>
+                    </div>
+
+                    <div class="meal-card">
+                        <div class="meal-icon">🍳</div>
+                        <div class="meal-info">
+                            <strong>08:30 AM - Breakfast</strong>
+                            <span>7 Egg Whites Bhurji + Veggies.</span>
+                        </div>
+                    </div>
+
+                    <div class="meal-card">
+                        <div class="meal-icon">🍛</div>
+                        <div class="meal-info">
+                            <strong>01:00 PM - Lunch</strong>
+                            <span>2 Roti + Dal + <strong>HUGE SALAD</strong>.</span>
+                        </div>
+                    </div>
+
+                    <div class="meal-card">
+                        <div class="meal-icon">🥜</div>
+                        <div class="meal-info">
+                            <strong>04:00 PM - Snack</strong>
+                            <span>Roasted Chana + Black Coffee.</span>
+                        </div>
+                    </div>
+
+                    <div class="meal-card" style="border-left: 4px solid var(--danger);">
+                        <div class="meal-icon">🥩</div>
+                        <div class="meal-info">
+                            <strong style="color:var(--danger)">08:30 PM - Dinner</strong>
+                            <span>200g Paneer + Veggies. <strong>NO ROTI.</strong></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. TECH & FINANCE -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <div class="icon-box">💰</div>
+                    <div class="header-title">
+                        <h3>Tech & Finance</h3>
+                        <span>Tracking Rules</span>
+                    </div>
+                </div>
+                <div class="chevron">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <h4>Financial Discipline</h4>
+                    <div style="font-size:0.9rem; color:var(--text-muted); margin-bottom:10px;">Alert: Daily ₹50-100 waste on "Chota Junk".</div>
+                    <ul class="ex-list">
+                        <li class="ex-item"><span class="ex-name">🚫 Zero Junk Spend</span><span class="ex-val">Target ₹0</span></li>
+                        <li class="ex-item"><span class="ex-name">📱 Money Manager</span><span class="ex-val">Log "Fat Tax"</span></li>
+                    </ul>
+
+                    <h4>Amazfit Bip 6</h4>
+                    <ul class="ex-list">
+                        <li class="ex-item"><span class="ex-name">👣 Steps</span><span class="ex-val">8k - 10k</span></li>
+                        <li class="ex-item"><span class="ex-name">💓 HR Zone</span><span class="ex-val">120-165</span></li>
+                        <li class="ex-item"><span class="ex-name">🔵 PAI Score</span><span class="ex-val">100+</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. EMERGENCY -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <div class="icon-box">🆘</div>
+                    <div class="header-title">
+                        <h3>Emergency Rescue</h3>
+                        <span>Failure Protocols</span>
+                    </div>
+                </div>
+                <div class="chevron">▼</div>
+            </div>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <ul class="ex-list">
+                        <li class="ex-item">
+                            <div>
+                                <span class="ex-name">Mood nahi hai?</span>
+                                <span style="font-size:0.8rem; color:var(--text-muted)">5-Min Rule. Wear shoes & start.</span>
+                            </div>
+                        </li>
+                        <li class="ex-item">
+                            <div>
+                                <span class="ex-name">Cheat Meal Ate?</span>
+                                <span style="font-size:0.8rem; color:var(--text-muted)">Next meal Zero Carb + 20m Walk.</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="margin-top:15px; background:#FEF2F2; color:#EF4444; padding:15px; border-radius:12px; font-size:0.9rem;">
+                        <strong>🔴 CODE RED:</strong> 3 Missed Days = HARD RESET PENALTY (Boiled Food + Double Workout).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p style="margin-bottom:5px; font-weight:700;">DEADLINE: 21 APRIL 2026</p>
+        <p>NO EXCUSES. ONLY RESULTS.</p>
+    </footer>
+
+    <script>
+        // --- ACCORDION LOGIC ---
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const content = header.nextElementSibling;
+            
+            // Close other accordions
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                if (el !== content) el.style.maxHeight = null;
+            });
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                if (el !== item) el.classList.remove('active');
+            });
+
+            // Toggle Current
+            item.classList.toggle('active');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+
+        // --- COUNTDOWN LOGIC ---
+        function updateStatus() {
+            const startDate = new Date('2026-01-12T05:30:00');
+            const endDate = new Date('2026-04-21T23:59:59');
+            const now = new Date();
+            
+            const daysEl = document.getElementById('days-count');
+            const progressEl = document.getElementById('progress-bar');
+            const statusText = document.getElementById('status-text');
+
+            if (now < startDate) {
+                const diff = startDate - now;
+                const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                daysEl.innerText = days;
+                progressEl.style.width = '0%';
+                statusText.innerText = "Starts in " + days + " Days";
+            } else if (now > endDate) {
+                daysEl.innerText = "0";
+                progressEl.style.width = '100%';
+                statusText.innerText = "MISSION COMPLETE";
+            } else {
+                const total = endDate - startDate;
+                const elapsed = now - startDate;
+                const percent = Math.min((elapsed / total) * 100, 100).toFixed(1);
+                
+                const diffTime = endDate - now;
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                daysEl.innerText = daysLeft;
+                progressEl.style.width = percent + '%';
+                statusText.innerText = percent + "% Complete";
+            }
+        }
+
+        // --- THEME TOGGLE ---
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+
+        // Init
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        setInterval(updateStatus, 60000);
+        updateStatus();
+        
+        // Open first accordion by default
+        setTimeout(() => {
+             document.querySelector('.accordion-header').click();
+        }, 500);
+    </script>
+
+</body>
+</html>
