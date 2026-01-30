@@ -322,7 +322,191 @@
 .ios-checkbox.purple { --checkbox-color: #8b5cf6; --checkbox-shadow: rgba(139, 92, 246, 0.4); }
 
 @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        
+
+/* --- HERO CARD UPGRADES --- */
+
+/* 1. Liquid Gradient Bar */
+.liquid-gradient {
+    background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* GHOST TEXT CENTER ALIGNMENT */
+.progress-text-overlay {
+    position: absolute;
+    inset: 0; /* Top, Bottom, Left, Right = 0 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    z-index: 0; /* Bar ke peeche rahega */
+    pointer-events: none;
+}
+
+
+/* Jo text White Bar ke upar aayega, wo Dark ho jayega automatically */
+.progress-fill-text {
+    background: white;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: invert(1) grayscale(1) contrast(9); 
+    mix-blend-mode: difference; 
+}
+
+/* 3. The Percentage Bubble */
+.progress-bubble {
+    position: absolute;
+    right: -12px; /* Center bubble on tip */
+    top: -32px;
+    background: white;
+    color: #e11d48; /* War Color Default */
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(10px) scale(0.8);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 20;
+}
+/* Bubble ka neeche wala teer (Arrow) */
+.progress-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+/* Show Bubble Class */
+.bubble-visible {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* 4. Pulsing Tip (Heartbeat) */
+.pulse-tip {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    animation: tip-pulse 2s infinite;
+}
+@keyframes tip-pulse {
+    0% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+    70% { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    100% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* --- WORKOUT TAB 2.0 STYLES --- */
+
+/* 1. Workout Cards */
+.workout-card {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+.dark .workout-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+.workout-card:active { transform: scale(0.98); }
+
+/* 2. Exercise List Item (Inside Modal) */
+.exercise-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid transparent;
+}
+.dark .exercise-item { background: #0f172a; }
+
+/* 3. Toggle Switch (Fitify Style) */
+.toggle-checkbox:checked {
+    right: 0;
+    border-color: #10b981;
+}
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #10b981;
+}
+
+/* --- WAR ROOM STYLES --- */
+.war-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.war-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.1), transparent 60%);
+    z-index: 1;
+}
+
+/* Weekly Streak Grid */
+.streak-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    background: #f1f5f9;
+    color: #94a3b8;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+.dark .streak-dot { background: #1e293b; color: #475569; }
+
+/* Status Colors */
+.streak-dot.done { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transform: scale(1.1); }
+.streak-dot.missed { background: #e11d48; color: white; opacity: 0.5; }
+.streak-dot.today { border: 2px solid #6366f1; color: #6366f1; background: transparent; }
+.dark .streak-dot.today { border-color: #818cf8; color: #818cf8; }
+
+/* Input Fields */
+.war-input {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    outline: none;
+    transition: all 0.2s;
+}
+.dark .war-input { background: #0f172a; border-color: #1e293b; color: white; }
+.war-input:focus { border-color: #6366f1; background: white; }
+.dark .war-input:focus { background: #1e293b; }
+
     </style>
 </head>
 
@@ -373,7 +557,7 @@
                 - VICTORY = Green/Teal
                 - NEUTRAL = Blue/Indigo
             -->
-            <div id="hero-card" class="bg-gradient-to-br from-rose-600 to-orange-600 rounded-[2rem] p-6 text-white shadow-xl shadow-rose-500/20 relative overflow-hidden group transition-all duration-700">
+                        <div id="hero-card" class="bg-gradient-to-br from-rose-600 to-orange-600 rounded-[2rem] p-6 text-white shadow-xl shadow-rose-500/20 relative overflow-hidden group transition-all duration-700">
                 <div class="absolute -right-10 -top-10 text-[10rem] text-white opacity-10 transform rotate-12 group-hover:rotate-0 transition-transform duration-700"><i class="fas fa-bullseye"></i></div>
                 
                 <div class="relative z-10">
@@ -383,24 +567,39 @@
                             <h2 class="text-3xl font-heading font-black mt-1 tracking-tight" id="days-counter">Loading...</h2>
                             <p class="text-xs font-medium opacity-90 text-orange-100 mt-0.5">Start: 02 Feb • End: 12 May</p>
                         </div>
+                        
                         <div class="text-right">
-                            <span class="inline-block px-2 py-1 rounded-lg bg-white/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-1">Target Drop</span>
-                            <h2 class="text-3xl font-heading font-black mt-1 text-white">-13.0</h2>
-                            <p class="text-xs font-medium opacity-90 text-orange-100 mt-0.5">KG (Critical)</p>
+                            <div class="flex items-center justify-end gap-1.5 mb-1">
+                                <i class="fas fa-fire text-orange-300 animate-pulse"></i>
+                                <span class="text-2xl font-heading font-black" id="streak-counter">0</span>
+                            </div>
+                            <p class="text-[9px] font-bold opacity-80 uppercase tracking-widest">Day Streak</p>
                         </div>
                     </div>
 
-                    <div class="bg-black/20 rounded-2xl p-4 backdrop-blur-sm border border-white/10">
-                        <div class="flex justify-between text-xs font-bold mb-2">
-                            <span class="opacity-80">Current: <span id="current-weight-display">--</span> KG</span>
+                    <div class="bg-black/20 rounded-2xl p-5 backdrop-blur-sm border border-white/10 shadow-inner">
+                        <div class="flex justify-between text-xs font-bold mb-3">
+                            <span class="opacity-80">Current: <span id="current-weight-display" class="text-white text-sm">--</span> KG</span>
                             <span class="text-white">Goal: 65.5 KG</span>
                         </div>
-                        <div class="w-full h-3 bg-black/30 rounded-full overflow-hidden">
-                            <div id="main-progress" class="h-full bg-white rounded-full transition-all duration-1000 w-0 shadow-[0_0_15px_rgba(255,255,255,0.8)] relative">
-                                <div class="absolute right-0 top-0 bottom-0 w-1 bg-white animate-pulse"></div>
+                        
+                        <div class="relative h-5 w-full bg-black/30 rounded-full mb-1"> <div class="progress-text-overlay z-0" id="progress-text-main">
+                                LOADING DATA...
+                            </div>
+
+                            <div id="main-progress" class="h-full liquid-gradient rounded-full transition-all duration-1000 ease-out w-0 relative z-10">
+                              
+
+                                <div class="pulse-tip"></div>
                             </div>
                         </div>
-                        <p id="hero-quote" class="text-[10px] text-center mt-3 font-medium opacity-80 italic">"Fetching latest intelligence..."</p>
+
+                        <div class="mt-4 flex items-start gap-2 opacity-90">
+                            <i class="fas fa-microchip text-xs mt-0.5 animate-pulse text-cyan-300"></i>
+                            <p id="hero-quote" class="text-[10px] font-medium leading-relaxed italic">
+                                "Initializing Prophet Engine..."
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -618,63 +817,126 @@
             </div>
         </div>
 
-        <!-- ================= TAB 3: WORKOUT ================= -->
-        <div id="tab-workout" class="tab-content space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white">War Protocol</h2>
-                <div class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs font-bold shadow-sm">2 Sessions</div>
-            </div>
+        <div id="tab-workout" class="tab-content space-y-6 pb-24">
             
-            <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-[2rem] p-6 text-white shadow-xl shadow-cyan-500/30 relative overflow-hidden group transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
-                <div class="absolute -right-6 -top-6 text-[8rem] text-white opacity-10 transform rotate-12 group-hover:rotate-0 transition-transform duration-700"><i class="fas fa-bolt"></i></div>
+            <div id="workout-hero" class="bg-slate-900 dark:bg-white rounded-[2rem] p-6 text-white dark:text-slate-900 shadow-xl relative overflow-hidden group cursor-pointer" onclick="startTodaysWorkout()">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full blur-3xl opacity-50"></div>
+                <div class="absolute -right-5 -bottom-5 text-8xl opacity-10 rotate-12"><i class="fas fa-dumbbell"></i></div>
+                
                 <div class="relative z-10">
-                    <div class="flex justify-between items-start mb-6">
-                        <div><div class="flex items-center gap-2 mb-1"><span class="text-xl">🌞</span><h3 class="font-heading font-black text-2xl tracking-tight">Hybrid Storm</h3></div><p class="text-xs font-medium text-cyan-100 opacity-90 pl-1">Fat Melting Protocol 🔥</p></div>
-                        <div class="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-xl text-xs font-bold shadow-sm">06:15 AM</div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-2 py-1 rounded-lg bg-white/10 dark:bg-black/10 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md border border-white/10">Today's Mission</span>
+                        <div class="text-right">
+                            <p class="text-2xl font-heading font-black leading-none" id="hero-calories">--</p>
+                            <p class="text-[9px] opacity-70 uppercase font-bold">Est. Calories</p>
+                        </div>
                     </div>
-                    <div class="bg-black/20 rounded-2xl p-5 backdrop-blur-sm border border-white/10 space-y-3 shadow-inner">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 border-dashed"><span class="text-sm font-bold opacity-90">Jumping Jacks</span><span class="text-xs font-black bg-white/20 px-2 py-1 rounded text-white">45 Sec</span></div>
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 border-dashed"><span class="text-sm font-bold opacity-90">High Knees</span><span class="text-xs font-black bg-white/20 px-2 py-1 rounded text-white">45 Sec</span></div>
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 border-dashed"><span class="text-sm font-bold opacity-90">Mountain Climbers</span><span class="text-xs font-black bg-white/20 px-2 py-1 rounded text-white">45 Sec</span></div>
-                        <div class="flex justify-between items-center"><span class="text-sm font-black text-yellow-300">Plank Hold</span><span class="text-xs font-black bg-yellow-400 text-yellow-900 px-2 py-1 rounded">Failure</span></div>
-                    </div>
+                    
+                    <h2 class="text-3xl font-heading font-black mb-1" id="hero-workout-title">LOADING...</h2>
+                    <p class="text-xs font-medium opacity-80 mb-6 flex items-center gap-2">
+                        <i class="fas fa-clock"></i> <span id="hero-duration">-- Mins</span> • <span id="hero-exercises">-- Exercises</span>
+                    </p>
+
+                    <button class="w-full py-3.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
+                        <i class="fas fa-play"></i> START SESSION
+                    </button>
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <details class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden" onclick="vibrate()">
-                    <summary class="flex justify-between items-center p-4 font-bold text-sm text-slate-700 dark:text-slate-200 cursor-pointer select-none bg-slate-50 dark:bg-slate-800/50 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-colors">
-                        <span>MON / THU: <span class="text-indigo-600 font-black tracking-wide">PUSH</span></span><i class="fas fa-chevron-down text-slate-400 text-xs chevron"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-2 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900">
-                        <div class="space-y-3 mt-2">
-                            <div class="flex justify-between text-xs border-b border-dashed border-slate-100 dark:border-slate-800 pb-2"><span class="font-medium text-slate-600 dark:text-slate-400">Standard Pushups</span><span class="font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">2 Sets (Warmup)</span></div>
-                            <div class="flex justify-between text-xs border-b border-dashed border-slate-100 dark:border-slate-800 pb-2"><span class="font-medium text-slate-600 dark:text-slate-400">Chest Press</span><span class="font-bold text-indigo-600 dark:text-indigo-400">3 Sets x 12</span></div>
-                            <div class="flex justify-between text-xs"><span class="font-medium text-slate-600 dark:text-slate-400">Shoulder Press</span><span class="font-bold text-indigo-600 dark:text-indigo-400">3 Sets x 12</span></div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="openWorkoutModal('warmup')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group">
+                    <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center text-lg group-hover:scale-110 transition"><i class="fas fa-fire"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-white">Warm-Up</h4>
+                        <p class="text-[10px] text-slate-400 font-bold">6 Mins • Essential</p>
+                    </div>
+                </button>
+                <button onclick="openWorkoutModal('stretch')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center text-lg group-hover:scale-110 transition"><i class="fas fa-child-reaching"></i></div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-white">Stretch</h4>
+                        <p class="text-[10px] text-slate-400 font-bold">6 Mins • Recovery</p>
+                    </div>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between px-1">
+                    <h3 class="font-heading font-bold text-slate-900 dark:text-white text-lg">The Armory</h3>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Select Protocol</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <div onclick="openWorkoutModal('push')" class="workout-card flex items-center justify-between cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 text-xl"><i class="fas fa-hand-fist"></i></div>
+                            <div>
+                                <h4 class="font-black text-slate-800 dark:text-white text-base">PUSH DAY</h4>
+                                <p class="text-xs text-slate-500 font-bold">Chest • Shoulders • Triceps</p>
+                            </div>
                         </div>
+                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
-                </details>
-                <details class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden" onclick="vibrate()">
-                    <summary class="flex justify-between items-center p-4 font-bold text-sm text-slate-700 dark:text-slate-200 cursor-pointer select-none bg-slate-50 dark:bg-slate-800/50 hover:bg-cyan-50 dark:hover:bg-slate-700 transition-colors">
-                        <span>TUE / FRI: <span class="text-cyan-600 font-black tracking-wide">PULL</span></span><i class="fas fa-chevron-down text-slate-400 text-xs chevron"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-2 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900">
-                        <div class="space-y-3 mt-2">
-                            <div class="flex justify-between text-xs border-b border-dashed border-slate-100 dark:border-slate-800 pb-2"><span class="font-medium text-slate-600 dark:text-slate-400">Lat Pulldown</span><span class="font-bold text-cyan-600 dark:text-cyan-400">3 Sets x Fail</span></div>
-                            <div class="flex justify-between text-xs"><span class="font-medium text-slate-600 dark:text-slate-400">Dumbbell Rows</span><span class="font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">3 Sets x 12</span></div>
+
+                    <div onclick="openWorkoutModal('pull')" class="workout-card flex items-center justify-between cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-900/20 flex items-center justify-center text-cyan-600 text-xl"><i class="fas fa-magnet"></i></div>
+                            <div>
+                                <h4 class="font-black text-slate-800 dark:text-white text-base">PULL DAY</h4>
+                                <p class="text-xs text-slate-500 font-bold">Back • Biceps • Traps</p>
+                            </div>
                         </div>
+                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
-                </details>
-                <details class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden" onclick="vibrate()">
-                    <summary class="flex justify-between items-center p-4 font-bold text-sm text-slate-700 dark:text-slate-200 cursor-pointer select-none bg-emerald-50 dark:bg-emerald-900/10 hover:bg-emerald-100 dark:hover:bg-emerald-900/20 transition-colors">
-                        <span>SAT: <span class="text-emerald-600 font-black tracking-wide">ACTIVE RECOVERY</span></span><i class="fas fa-chevron-down text-emerald-400 text-xs chevron"></i>
-                    </summary>
-                    <div class="px-5 pb-5 pt-2 border-t border-emerald-100 dark:border-slate-700 bg-white dark:bg-slate-900">
-                        <div class="mt-2 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 text-lg"><i class="fas fa-tree"></i></div><div><p class="text-xs font-bold text-slate-700 dark:text-white">Nature Walk / Light Cardio</p><p class="text-[10px] text-slate-500">Target: 5KM Walk (Non-negotiable)</p></div></div>
+
+                    <div onclick="openWorkoutModal('legs')" class="workout-card flex items-center justify-between cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-600 text-xl"><i class="fas fa-person-running"></i></div>
+                            <div>
+                                <h4 class="font-black text-slate-800 dark:text-white text-base">LEG + CORE</h4>
+                                <p class="text-xs text-slate-500 font-bold">Squats • Lunges • Abs</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
-                </details>
+
+                    <div onclick="openWorkoutModal('hybrid')" class="workout-card flex items-center justify-between cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600 text-xl"><i class="fas fa-bolt"></i></div>
+                            <div>
+                                <h4 class="font-black text-slate-800 dark:text-white text-base">HYBRID STORM</h4>
+                                <p class="text-xs text-slate-500 font-bold">HIIT • Cardio • Sweat</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+                    </div>
+                </div>
             </div>
         </div>
+
+    <div id="workout-modal" class="fixed inset-0 bg-slate-50 dark:bg-slate-900 z-[200] hidden flex flex-col transition-transform duration-300 translate-y-full">
+        <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-10">
+            <button onclick="closeWorkoutModal()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200"><i class="fas fa-arrow-left"></i></button>
+            <div class="text-center">
+                <h3 class="font-heading font-black text-lg text-slate-900 dark:text-white" id="modal-title">WORKOUT</h3>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" id="modal-subtitle">00 Mins • 000 Kcal</p>
+            </div>
+            <button class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-900/20 px-5 py-3 flex items-center gap-3 border-b border-indigo-100 dark:border-indigo-900/30">
+            <i class="fas fa-watch text-indigo-500 text-xl"></i>
+            <div>
+                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Amazfit Bip 6</p>
+                <p class="text-xs font-bold text-indigo-700 dark:text-indigo-300" id="watch-mode-text">Set mode to: Strength Training</p>
+            </div>
+        </div>
+
+               <div class="flex-1 overflow-y-auto p-5 no-scrollbar" id="modal-list">
+            </div>
+        </div>
+
+
 
         <!-- ================= TAB 4: OATH ================= -->
         <div id="tab-oath" class="tab-content space-y-6">
@@ -802,22 +1064,128 @@
             setTimeout(() => m.classList.add('hidden'), 300); 
         }
 
-        async function fetchWeightHistory() {
+                                              async function fetchWeightHistory() {
             try {
+                // UI Loading State
                 const btn = document.querySelector('button[onclick="openWeightModal()"]');
-                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SYNCING';
+                if(btn) btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SYNCING';
+                
+                // Fetch Data
                 const response = await fetch(`${API_URL}?action=get_history`, { method: "POST", body: JSON.stringify({ action: "get_history" }) });
                 const data = await response.json();
+                
                 if (data.status === 'success' && data.history.length > 0) {
-                    const dates = data.history.map(h => { const d = new Date(h.date); return `${d.getDate()}/${d.getMonth()+1}`; });
+                    
+                    // 1. Date Formatting
+                    const dates = data.history.map(h => { 
+                        const cleanDate = h.date.replace(/(\d+)(st|nd|rd|th)/, '$1');
+                        const d = new Date(cleanDate);
+                        if (isNaN(d.getTime())) return "N/A";
+                        return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    });
+
+                    // 2. Weight Parsing
                     const weights = data.history.map(h => parseFloat(h.weight));
-                    lastRecordedWeight = weights[weights.length - 1];
+                    lastRecordedWeight = weights[weights.length - 1]; 
+                    
+                    // 3. UI Updates
                     document.getElementById('current-weight-display').innerText = lastRecordedWeight;
                     updateTheme(data.history[data.history.length - 1].mood);
                     renderChart(dates, weights);
-                } else { renderChart([], []); }
-            } catch (error) { showToast("Sync Failed!"); } finally { document.querySelector('button[onclick="openWeightModal()"]').innerHTML = '<i class="fas fa-plus"></i> LOG TODAY'; }
+
+                    // ============================================================
+                    // 🔥 INTELLIGENCE ENGINE v4.1 (GHOST TEXT FIX) 🔥
+                    // ============================================================
+                    
+                    const startWeight = 78.5; 
+                    const goalWeight = 65.5;  
+                    const totalToLose = startWeight - goalWeight; 
+                    const currentLost = startWeight - lastRecordedWeight; 
+                    
+                    // A. Percentage Calc
+                    let percentage = (currentLost / totalToLose) * 100;
+                    if (percentage < 0) percentage = 0;
+                    if (percentage > 100) percentage = 100;
+
+                    // B. Animate Bar & Ghost Text
+                    const bar = document.getElementById('main-progress');
+                    const centerText = document.getElementById('progress-text-main');
+
+                    // Reset width (Animation Reset)
+                    if(bar) bar.style.width = "0%";
+                    
+                    setTimeout(() => {
+                        if(bar) bar.style.width = percentage + "%";
+                        
+                        // 🔥 TEXT LOGIC: "% DONE • KG DOWN" 🔥
+                        let mainMessage = "";
+                        
+                        if (currentLost > 0) {
+                            mainMessage = `${percentage.toFixed(0)}% DONE • ${currentLost.toFixed(1)} KG DOWN`;
+                        } else if (currentLost < 0) {
+                            mainMessage = `WAR MODE • ${Math.abs(currentLost).toFixed(1)} KG GAINED`;
+                        } else {
+                            mainMessage = "JOURNEY STARTS NOW";
+                        }
+
+                        if (lastRecordedWeight <= goalWeight) {
+                            mainMessage = "🏆 MISSION ACCOMPLISHED";
+                        }
+
+                        // Safety Check before updating text
+                        if(centerText) centerText.innerText = mainMessage;
+
+                    }, 100);
+
+                    // C. PROPHET ENGINE (Predicts End Date)
+                    const diffTime = Math.abs(new Date() - new Date('2026-02-02'));
+                    const daysPassed = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                    const rate = currentLost / (daysPassed || 1); 
+                    
+                    let predictionMsg = "";
+                    const quotes = [
+                        "Sweat is just fat crying.",
+                        "They don't know you son! Stay Hard.",
+                        "Pain is temporary. Glory is forever.",
+                        "Stop when you're done, not tired.",
+                        "You are your only competition."
+                    ];
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+                    if (currentLost > 0.5 && rate > 0) {
+                        const remainingKg = lastRecordedWeight - goalWeight;
+                        const daysNeeded = remainingKg / rate;
+                        const etaDate = new Date();
+                        etaDate.setDate(etaDate.getDate() + daysNeeded);
+                        const options = { day: 'numeric', month: 'short' };
+                        predictionMsg = `🚀 Pace: ${rate.toFixed(2)}kg/day. Target: <strong class="text-white">${etaDate.toLocaleDateString('en-US', options)}</strong>.`;
+                    } else {
+                        predictionMsg = `⚠️ Insufficient data for prediction. "${randomQuote}"`;
+                    }
+                    
+                    const quoteEl = document.getElementById('hero-quote');
+                    if(quoteEl) quoteEl.innerHTML = predictionMsg;
+
+                    // D. Update Streak
+                    const streakEl = document.getElementById('streak-counter');
+                    if(streakEl) streakEl.innerText = data.history.length;
+
+                } else { 
+                    renderChart([], []); 
+                }
+            } catch (error) { 
+                showToast("Sync Failed!"); 
+                console.error(error);
+            } finally { 
+                const btn = document.querySelector('button[onclick="openWeightModal()"]');
+                if(btn) btn.innerHTML = '<i class="fas fa-plus"></i> LOG TODAY'; 
+            }
         }
+
+
+
+
+
 
         // --- SAVE WEIGHT WITH LOADING STATE ---
         async function saveWeight() {
@@ -950,6 +1318,31 @@
             let gradient = ctx.createLinearGradient(0, 0, 0, 400); gradient.addColorStop(0, 'rgba(79, 70, 229, 0.5)'); gradient.addColorStop(1, 'rgba(79, 70, 229, 0.0)');
             weightChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: 'Weight', data, borderColor: '#4f46e5', backgroundColor: gradient, borderWidth: 3, pointRadius: 4, fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { display: false } } } });
         }
+        
+                    // ... (renderChart line ke baad)
+
+                    // 🔥 NEW: PROGRESS BAR LOGIC ADDED 🔥
+                    const startWeight = 78.5; // Jahan se shuru kiya
+                    const goalWeight = 65.5;  // Target
+                    const totalToLose = startWeight - goalWeight; // Total 13 KG
+                    const currentLost = startWeight - lastRecordedWeight; // Abhi kitna gaya?
+                    
+                    // Percentage Calculate karo
+                    let percentage = (currentLost / totalToLose) * 100;
+                    
+                    // Logic: 0% se kam nahi, 100% se zyada nahi
+                    if (percentage < 0) percentage = 0;
+                    if (percentage > 100) percentage = 100;
+
+                    // Bar ki width update karo
+                    const bar = document.getElementById('main-progress');
+                    bar.style.width = percentage + "%";
+                    
+                    // Color Logic: Agar 0% hai toh grey, warna White
+                    if(percentage > 0) {
+                        bar.classList.remove('w-0');
+                    }
+
 
         // --- UTILS ---
         function showToast(msg) { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.classList.remove('opacity-0', 'translate-y-[-20px]'); setTimeout(() => t.classList.add('opacity-0', 'translate-y-[-20px]'), 3000); }
@@ -958,6 +1351,121 @@
         function switchTab(id, btn) { document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active')); document.getElementById('tab-' + id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(e => { e.classList.remove('active'); e.style.color = ''; e.classList.add('text-slate-400'); }); if(btn) { btn.classList.add('active'); btn.classList.remove('text-slate-400'); } window.scrollTo({ top: 0, behavior: 'smooth' }); updateTheme(lastRecordedWeight < 78.5 ? 'VICTORY' : 'WAR'); }
         function updateMissionStatus() { const now = new Date(); const diff = START_DATE - now; if(diff > 0) document.getElementById('days-counter').innerText = `Starts in ${Math.ceil(diff/(1000*60*60*24))} Days`; else document.getElementById('days-counter').innerText = `Day ${Math.ceil((now - START_DATE)/(1000*60*60*24))} / 100`; }
         function toggleTheme() { const d = document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', d ? 'dark' : 'light'); }
+        
+                // --- WORKOUT DATA (EXTRACTED FROM SCREENSHOTS) ---
+        const workouts = {
+            'warmup': { title: "Warm-Up", time: "6 Min", cal: "76", mode: "Warm Up", color: "orange", list: [
+                {n: "Jumping Jacks", t: "40s"}, {n: "Hip Circles", t: "40s"}, {n: "Forward Arm Circles", t: "40s"}, {n: "Squats", t: "40s"}, {n: "High Knees", t: "40s"}, {n: "Standing Torso Twist", t: "40s"}
+            ]},
+            'stretch': { title: "Stretch", time: "6 Min", cal: "34", mode: "Yoga / Flexibility", color: "blue", list: [
+                {n: "Standing Chest Stretch", t: "40s"}, {n: "Quadricep Stretch", t: "40s"}, {n: "Calf & Ham Stretch", t: "40s"}, {n: "Supine Hamstring Stretch", t: "40s"}, {n: "Child Pose", t: "40s"}, {n: "Deep Breathing", t: "40s"}
+            ]},
+            'push': { title: "Push Day", time: "30 Min", cal: "385", mode: "Strength Training", color: "indigo", list: [
+                {n: "Push-Ups", t: "40s"}, {n: "Bench Press", t: "40s"}, {n: "Neutral Shoulder Press", t: "40s"}, {n: "Lateral Raises", t: "40s"}, {n: "Neutral Grip Front Raise", t: "40s"},
+                {n: "REST", t: "45s", type: "rest"},
+                {n: "Chest Crossover", t: "40s"}, {n: "Tricep Dips", t: "40s"}, {n: "Tricep French Press", t: "40s"}, {n: "Push-Up & Pike", t: "40s"}, {n: "Incline Push-Ups", t: "40s"}
+            ]},
+            'pull': { title: "Pull Day", time: "32 Min", cal: "367", mode: "Strength Training", color: "cyan", list: [
+                {n: "Bent Over Row", t: "40s"}, {n: "Upper Back Row", t: "40s"}, {n: "Wide Grip Row", t: "40s"}, {n: "Overhead Pulldown", t: "40s"}, {n: "Reverse Fly", t: "40s"},
+                {n: "REST", t: "45s", type: "rest"},
+                {n: "Lower Reverse Fly", t: "40s"}, {n: "Shoulder Shrug", t: "40s"}, {n: "Archer", t: "40s"}, {n: "Bicep Curls", t: "40s"}, {n: "Superman", t: "40s"}, {n: "Hammer Grip Curls", t: "40s"}
+            ]},
+            'legs': { title: "Leg + Core Day", time: "31 Min", cal: "331", mode: "Strength Training", color: "rose", list: [
+                {n: "Dumbbell Squat", t: "40s"}, {n: "Rear Lunges", t: "40s"}, {n: "Backward Glute Raises", t: "40s"}, {n: "Deadlift", t: "40s"}, {n: "Bird Dog", t: "40s"},
+                {n: "REST", t: "45s", type: "rest"},
+                {n: "Wall Sit", t: "40s"}, {n: "Calf Raises", t: "40s"}, {n: "Side Plank", t: "20s/side"}, {n: "Hip Thrusts", t: "40s"}, {n: "Superman", t: "40s"}
+            ]},
+            'hybrid': { title: "Hybrid Storm", time: "35 Min", cal: "412", mode: "HIIT / Cardio", color: "yellow", list: [
+                {n: "Jumping Jacks", t: "40s"}, {n: "High Knees", t: "40s"}, {n: "Squats", t: "40s"}, {n: "Push-Ups", t: "40s"}, {n: "Shoulder Tap Plank", t: "40s"},
+                {n: "REST", t: "45s", type: "rest"},
+                {n: "Jump Rope", t: "40s"}, {n: "Donkey Kick", t: "40s"}, {n: "Alternating Side Lunge", t: "40s"}, {n: "Crunches", t: "40s"}, {n: "Mountain Climbers", t: "40s"}
+            ]}
+        };
+
+        // --- WORKOUT LOGIC (REFERENCE ONLY MODE) ---
+        function openWorkoutModal(id) {
+            vibrate();
+            const w = workouts[id];
+            const m = document.getElementById('workout-modal');
+            
+            // Populate Header
+            document.getElementById('modal-title').innerText = w.title.toUpperCase();
+            document.getElementById('modal-subtitle').innerText = `${w.time} • ${w.cal} KCAL`;
+            document.getElementById('watch-mode-text').innerText = `Set Watch to: ${w.mode}`;
+            
+            // Render List (Clean Version)
+            const list = document.getElementById('modal-list');
+            list.innerHTML = '';
+            
+            // Note: Warmup Toggle code removed here for static view
+
+            w.list.forEach(ex => {
+                if(ex.type === 'rest') {
+                    // Rest Block
+                    list.innerHTML += `
+                    <div class="flex items-center justify-center py-2 opacity-70">
+                        <span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                            <i class="fas fa-pause mr-1"></i> Rest ${ex.t}
+                        </span>
+                    </div>`;
+                } else {
+                    // Exercise Item (No Checkbox, Just Info)
+                    list.innerHTML += `
+                        <div class="exercise-item justify-between group border-b border-slate-50 dark:border-slate-800/50 mb-2 pb-2">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center text-slate-400 font-bold text-lg text-${w.color}-500">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200">${ex.n}</h4>
+                                    <p class="text-xs font-bold text-${w.color}-500 opacity-80">${ex.t}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                }
+            });
+
+            // Show Modal
+            m.classList.remove('hidden');
+            setTimeout(() => m.classList.remove('translate-y-full'), 10);
+        }
+
+        function closeWorkoutModal() {
+            const m = document.getElementById('workout-modal');
+            m.classList.add('translate-y-full');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        }
+
+
+        // --- DYNAMIC HERO HEADER ---
+        function updateHeroHeader() {
+            const day = new Date().getDay(); // 0=Sun, 1=Mon...
+            const map = {
+                1: 'push', 4: 'push', // Mon, Thu
+                2: 'pull', 5: 'pull', // Tue, Fri
+                3: 'hybrid', // Wed
+                6: 'legs', // Sat
+                0: 'stretch' // Sun
+            };
+            const todayKey = map[day] || 'stretch';
+            const w = workouts[todayKey];
+            
+            document.getElementById('hero-workout-title').innerText = w.title.toUpperCase();
+            document.getElementById('hero-duration').innerText = w.time;
+            document.getElementById('hero-exercises').innerText = `${w.list.length} Exercises`;
+            document.getElementById('hero-calories').innerText = w.cal;
+            
+            // On Click
+            document.getElementById('workout-hero').onclick = () => openWorkoutModal(todayKey);
+        }
+        
+        // Call this on load
+        document.addEventListener("DOMContentLoaded", () => {
+             // ... existing calls ...
+             updateHeroHeader();
+        });
+
+        
     </script>
 </body>
 </html>
