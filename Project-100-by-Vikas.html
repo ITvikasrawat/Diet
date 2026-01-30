@@ -1,629 +1,673 @@
+<!-- 
+    ================================================================
+    FILE START: Project-100-War-Plan.html
+    AUTHOR: Vikas Rawat
+    MISSION: 13 KG DROP (Target 65.5 KG)
+    ================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 
+        META TAGS & VIEWPORT (MOBILE OPTIMIZATION)
+        Explainer:
+        - Yeh line browser ko batati hai ki website mobile screen par fit honi chahiye.
+        - Zooming disable ki gayi hai taaki "App" jaisa feel aaye.
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROJECT 100 | VIKAS RAWAT</title>
+    <title>PROJECT 100: RELOADED | VIKAS RAWAT</title>
     
-    <!-- ✅ Favicon Added (100 Emoji) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💯</text></svg>">
+    <!-- 
+        FAVICON (BROWSER TAB ICON)
+        Explainer:
+        - Browser ke tab par jo chhota icon dikhta hai, wahan humne ek 🚀 (Rocket) emoji lagaya hai.
+    -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
     
-    <!-- Dependencies -->
+    <!-- 
+        EXTERNAL LIBRARIES (DEPENDENCIES)
+        Explainer:
+        1. Tailwind CSS: Isse hum bina CSS file likhe sundar design bana rahe hain.
+        2. FontAwesome: Isse hum Icons (Home, Dumbbell, Apple) la rahe hain.
+        3. Google Fonts: Headings ke liye 'Outfit' aur text ke liye 'Plus Jakarta Sans' use kiya hai (Modern look ke liye).
+    -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- 
+        TAILWIND CONFIGURATION (CUSTOM THEME)
+        Explainer:
+        - Yahan humne apne colors define kiye hain.
+        - 'Rose' aur 'Orange' color hum 'War Mode' feel ke liye use kar rahe hain.
+        - Dark mode enable kiya hai taaki raat ko aankhon par zor na pade.
+    -->
     <script>
         tailwind.config = {
-            darkMode: 'class',
+            darkMode: 'class', // JS se dark mode control hoga
             theme: {
                 extend: {
                     colors: {
-                        brand: '#4f46e5',
-                        brand_dark: '#3730a3',
-                        dark_bg: '#0f172a',
+                        war_primary: '#e11d48',   // Rose 600 (Main Action Color)
+                        war_dark: '#881337',      // Rose 900
+                        dark_bg: '#0f172a',       // Slate 900 (Dark Background)
                     },
                     fontFamily: { 
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif']
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], // Body Text
+                        heading: ['Outfit', 'sans-serif']          // Bold Headings
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite', // Floating effect
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
                     }
                 }
             }
         }
     </script>
 
+    <!-- 
+        CUSTOM CSS STYLES
+        Explainer:
+        - Glassmorphism: Cards ko transparent aur blurry banane ke liye.
+        - Scrollbar Hide: Mobile me clean look ke liye scrollbar chhupa diya hai.
+        - Transitions: Jab tab change karein to smooth effect aaye.
+    -->
     <style>
         body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
         .dark body { background-color: #020617; color: #e2e8f0; }
 
-        /* ✨ Glassmorphism */
+        /* ✨ Glass Panel (Transparent Card Effect) */
         .glass-panel { 
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .dark .glass-panel { background: rgba(15, 23, 42, 0.9); border-color: rgba(255,255,255,0.05); }
+        .dark .glass-panel { 
+            background: rgba(15, 23, 42, 0.85); 
+            border-color: rgba(255,255,255,0.05); 
+        }
 
-        /* ✨ Tab Animations */
+        /* ✨ Smooth Tab Animation (Fade In) */
         .tab-content { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* ✨ Hide Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .nav-item { transition: all 0.2s; opacity: 0.6; }
-        .nav-item.active { opacity: 1; color: #4f46e5; transform: translateY(-2px); }
-        .dark .nav-item.active { color: #818cf8; }
 
+        /* ✨ Bottom Nav Active State */
+        .nav-item { transition: all 0.2s; opacity: 0.6; }
+        .nav-item.active { opacity: 1; color: #e11d48; transform: translateY(-2px); }
+        .dark .nav-item.active { color: #fb7185; }
+
+        /* ✨ Accordion Chevron Rotation */
         details > summary { list-style: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] > summary .chevron { transform: rotate(180deg); }
         .chevron { transition: transform 0.3s; }
+        
+        /* ✨ Floating Button Glow */
+        .fab-glow { box-shadow: 0 0 20px rgba(225, 29, 72, 0.6); }
     </style>
 </head>
-<body class="text-slate-800 dark:text-slate-200 pb-32 select-none font-sans">
 
-    <!-- HEADER -->
+<body class="text-slate-800 dark:text-slate-200 pb-32 select-none font-sans transition-colors duration-300">
+
+    <!-- 
+        HEADER SECTION
+        Explainer:
+        - Yeh top bar hai jo hamesha upar rahega.
+        - Isme humne "WAR PLAN" title aur "ON WAR" status badge lagaya hai.
+    -->
     <header class="fixed top-0 w-full glass-panel z-40 px-5 py-4 shadow-sm">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg shadow-indigo-500/30">
+                <!-- Animated Logo -->
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg shadow-rose-500/30 animate-float">
                     100
                 </div>
                 <div>
-                    <h1 class="font-heading font-extrabold text-lg leading-none tracking-tight text-slate-900 dark:text-white">PROJECT <span class="text-indigo-600 dark:text-indigo-400">100</span></h1>
-                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Vikas Rawat • Dashboard</p>
+                    <h1 class="font-heading font-extrabold text-lg leading-none tracking-tight text-slate-900 dark:text-white">PROJECT <span class="text-rose-600">RELOADED</span></h1>
+                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Fat Domination • v2.0</p>
                 </div>
             </div>
-            <div class="bg-indigo-50 dark:bg-white/5 px-3 py-1 rounded-full border border-indigo-100 dark:border-white/10">
-                <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-300 flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ACTIVE
+            <!-- Status Badge -->
+            <div class="bg-rose-50 dark:bg-white/5 px-3 py-1 rounded-full border border-rose-100 dark:border-white/10">
+                <span class="text-[10px] font-bold text-rose-600 dark:text-rose-300 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> ACTIVE
                 </span>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
+    <!-- 
+        MAIN CONTENT AREA
+        Explainer:
+        - Saara content yahan load hoga.
+        - Tabs switch karne par yahan ka content badlega (Dashboard -> Diet -> Workout).
+    -->
     <main class="pt-24 px-4 max-w-2xl mx-auto">
 
-        <!-- ================= TAB 1: DASHBOARD ================= -->
-        <div id="tab-dashboard" class="tab-content active space-y-6">
+        <!-- ================= TAB 1: DASHBOARD (HOME) ================= -->
+        <div id="tab-dashboard" class="tab-content active space-y-5">
             
-            <!-- Hero Status Card -->
-            <div class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
-                <!-- Background Pattern -->
-                <div class="absolute -right-10 -top-10 text-9xl text-white opacity-5"><i class="fas fa-chart-line"></i></div>
+            <!-- 
+                HERO CARD (WEIGHT & TARGET)
+                Explainer:
+                - Target: 13 KG Drop.
+                - New Target Weight: 65.5 KG.
+                - Yeh card gradient background use karta hai attention kheenchne ke liye.
+            -->
+            <div class="bg-gradient-to-br from-rose-600 to-orange-600 rounded-[2rem] p-6 text-white shadow-xl shadow-rose-500/20 relative overflow-hidden group">
+                <!-- Decorative Background Icon -->
+                <div class="absolute -right-10 -top-10 text-[10rem] text-white opacity-10 transform rotate-12 group-hover:rotate-0 transition-transform duration-700"><i class="fas fa-bullseye"></i></div>
                 
-                <div class="flex justify-between items-start mb-8 relative z-10">
-                    <div>
-                        <span class="inline-block px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-2">Start: 19 JAN</span>
-                        <!-- Font Size Reduced for Mobile Fit -->
-                        <h2 class="text-2xl sm:text-4xl font-heading font-black mt-1 tracking-tight whitespace-nowrap" id="days-counter">--</h2>
-                        <p class="text-xs sm:text-sm font-medium opacity-90 text-indigo-100" id="days-label">Checking dates...</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="inline-block px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-100 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-2">Target</span>
-                        <!-- Font Size Reduced for Mobile Fit -->
-                        <h2 class="text-2xl sm:text-4xl font-heading font-black mt-1 text-emerald-300">66.0</h2>
-                        <p class="text-xs sm:text-sm font-medium opacity-90 text-indigo-100">Kgs (-12KG)</p>
-                    </div>
-                </div>
-
-                <!-- Progress Bar -->
                 <div class="relative z-10">
-                    <div class="flex justify-between text-[10px] font-bold opacity-80 mb-1.5">
-                        <span>Current: 78.0 KG</span>
-                        <span>End: 29 APR</span>
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <span class="inline-block px-2 py-1 rounded-lg bg-black/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-1 text-white/90">Mission Status</span>
+                            <!-- JS will update this text -->
+                            <h2 class="text-3xl font-heading font-black mt-1 tracking-tight" id="days-counter">Loading...</h2>
+                            <p class="text-xs font-medium opacity-90 text-orange-100 mt-0.5">Start: 02 Feb • End: 12 May</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block px-2 py-1 rounded-lg bg-white/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-1">Target Drop</span>
+                            <h2 class="text-3xl font-heading font-black mt-1 text-white">-13.0</h2>
+                            <p class="text-xs font-medium opacity-90 text-orange-100 mt-0.5">KG (Critical)</p>
+                        </div>
                     </div>
-                    <div class="w-full h-2.5 bg-black/20 rounded-full overflow-hidden backdrop-blur-sm">
-                        <div id="main-progress" class="h-full bg-white rounded-full transition-all duration-1000 w-0 shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+
+                    <!-- Progress Bar Logic -->
+                    <div class="bg-black/20 rounded-2xl p-4 backdrop-blur-sm border border-white/10">
+                        <div class="flex justify-between text-xs font-bold mb-2">
+                            <span class="opacity-80">Now: 78.5 KG <span class="text-[9px] bg-rose-500 px-1 rounded ml-1 animate-pulse">ALERT</span></span>
+                            <span class="text-emerald-300">Goal: 65.5 KG</span>
+                        </div>
+                        <div class="w-full h-3 bg-black/30 rounded-full overflow-hidden">
+                            <!-- Width JS se calculate hogi -->
+                            <div id="main-progress" class="h-full bg-white rounded-full transition-all duration-1000 w-0 shadow-[0_0_15px_rgba(255,255,255,0.8)] relative">
+                                <div class="absolute right-0 top-0 bottom-0 w-1 bg-white animate-pulse"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Vitals Grid (Replaced Waistline with Sleep) -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-2.5 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-500 flex items-center justify-center"><i class="fas fa-moon"></i></div>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Recovery</span>
+            <!-- 
+                IRON RULES GRID (STATS)
+                Explainer:
+                - 4 Chhote cards: Calories, Water, Steps, Sleep.
+                - Yeh data PDF ke rules section se liya gaya hai.
+            -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Calories Card -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center"><i class="fas fa-fire"></i></div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Limit</p>
                     </div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-heading font-black text-slate-800 dark:text-white">7 Hr</span>
-                        <span class="text-xs font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">Sleep</span>
-                    </div>
+                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">1650</p>
+                    <p class="text-[10px] text-slate-500 font-bold">Kcal Locked 🔒</p>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-2.5 mb-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center"><i class="fas fa-tint"></i></div>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Hydration</span>
+                <!-- Water Card -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center"><i class="fas fa-tint"></i></div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Water</p>
                     </div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-heading font-black text-slate-800 dark:text-white">4.0L</span>
-                        <span class="text-xs font-bold text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">Daily</span>
+                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">4.0 L</p>
+                    <p class="text-[10px] text-slate-500 font-bold">Flush Fat 💧</p>
+                </div>
+                <!-- Steps Card -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center"><i class="fas fa-shoe-prints"></i></div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">NEAT</p>
                     </div>
+                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">8,000</p>
+                    <p class="text-[10px] text-slate-500 font-bold">Steps Daily 👣</p>
+                </div>
+                <!-- Sleep Card -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center"><i class="fas fa-moon"></i></div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Sleep</p>
+                    </div>
+                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">10:30 PM</p>
+                    <p class="text-[10px] text-slate-500 font-bold">Recovery 😴</p>
                 </div>
             </div>
 
-            <!-- Daily Checklist (With Logic) -->
-            <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+            <!-- 
+                DAILY BATTLE CHECKLIST
+                Explainer:
+                - Rozana ke tasks. Checkbox click karne par data local storage me save hoga.
+                - Refresh karne par bhi data nahi jayega.
+            -->
+            <div class="bg-white dark:bg-slate-800 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center">
                     <h3 class="font-heading font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                        <i class="fas fa-list-check text-indigo-500"></i> Daily Checklist
+                        <i class="fas fa-list-check text-rose-500"></i> Daily Battle
                     </h3>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase" id="checklist-date">Loading...</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase" id="current-date-display">--</span>
                 </div>
-                <div class="p-4 space-y-2">
+                <div class="p-2 space-y-1">
                     <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer group">
-                        <div class="relative flex items-center">
-                            <!-- ID Added for Logic -->
-                            <input type="checkbox" id="chk-wake" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-indigo-600 checked:border-indigo-600 focus:ring-indigo-500 transition appearance-none">
-                            <i class="fas fa-check absolute left-1 text-white text-[10px] opacity-0 peer-checked:opacity-100 transition"></i>
-                        </div>
-                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">05:30 AM Wake Up (No Snooze)</span>
+                        <input type="checkbox" id="chk-wake" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-rose-500 checked:border-rose-500 focus:ring-rose-500 transition appearance-none">
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 peer-checked:line-through peer-checked:opacity-50">05:30 AM Wake Up (No Snooze)</span>
                     </label>
                     <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer group">
-                        <div class="relative flex items-center">
-                            <input type="checkbox" id="chk-cardio" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-indigo-600 checked:border-indigo-600 focus:ring-indigo-500 transition appearance-none">
-                            <i class="fas fa-check absolute left-1 text-white text-[10px] opacity-0 peer-checked:opacity-100 transition"></i>
-                        </div>
-                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">Morning Cardio (35 min)</span>
+                        <input type="checkbox" id="chk-water" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-rose-500 checked:border-rose-500 focus:ring-rose-500 transition appearance-none">
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 peer-checked:line-through peer-checked:opacity-50">Warm Water + Lemon 🍋</span>
                     </label>
                     <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer group">
-                        <div class="relative flex items-center">
-                            <input type="checkbox" id="chk-food" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-indigo-600 checked:border-indigo-600 focus:ring-indigo-500 transition appearance-none">
-                            <i class="fas fa-check absolute left-1 text-white text-[10px] opacity-0 peer-checked:opacity-100 transition"></i>
-                        </div>
-                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">Log Food (1650 kcal)</span>
+                        <input type="checkbox" id="chk-cardio" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-rose-500 checked:border-rose-500 focus:ring-rose-500 transition appearance-none">
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 peer-checked:line-through peer-checked:opacity-50">06:15 AM Hybrid Storm Cardio</span>
                     </label>
                     <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer group">
-                        <div class="relative flex items-center">
-                            <input type="checkbox" id="chk-strength" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-indigo-600 checked:border-indigo-600 focus:ring-indigo-500 transition appearance-none">
-                            <i class="fas fa-check absolute left-1 text-white text-[10px] opacity-0 peer-checked:opacity-100 transition"></i>
-                        </div>
-                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">Evening Strength (1 Hr)</span>
+                        <input type="checkbox" id="chk-diet" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-rose-500 checked:border-rose-500 focus:ring-rose-500 transition appearance-none">
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 peer-checked:line-through peer-checked:opacity-50">Diet 100% Clean (No Cheat)</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer group">
+                        <input type="checkbox" id="chk-strength" onclick="saveChecklist()" class="peer w-5 h-5 rounded border-2 border-slate-300 checked:bg-rose-500 checked:border-rose-500 focus:ring-rose-500 transition appearance-none">
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300 peer-checked:line-through peer-checked:opacity-50">06:30 PM Iron Command (Gym)</span>
                     </label>
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB 2: DIET (FUEL) ================= -->
+        <!-- ================= TAB 2: DIET PLAN (FUEL) ================= -->
         <div id="tab-diet" class="tab-content space-y-6">
             
             <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white">Diet Plan</h2>
+                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white">Nutrition</h2>
                 <div class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold shadow-sm">1650 kcal</div>
             </div>
 
-            <!-- Banned List -->
-            <div class="bg-slate-100 dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
-                <h3 class="text-xs font-black text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <i class="fas fa-ban"></i> Avoid These (Strictly)
-                </h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white dark:bg-slate-900/50 px-3 py-2 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 flex items-center gap-2">
-                        <i class="fas fa-coffee text-red-500"></i> No Milk Tea
-                    </div>
-                    <div class="bg-white dark:bg-slate-900/50 px-3 py-2 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 flex items-center gap-2">
-                        <i class="fas fa-cubes text-red-500"></i> No Sugar
-                    </div>
-                    <div class="bg-white dark:bg-slate-900/50 px-3 py-2 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 flex items-center gap-2">
-                        <i class="fas fa-cookie-bite text-red-500"></i> No Biscuits
-                    </div>
-                    <div class="bg-white dark:bg-slate-900/50 px-3 py-2 rounded-lg text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 flex items-center gap-2">
-                        <i class="fas fa-moon text-red-500"></i> No Dinner Carbs
-                    </div>
+            <!-- Red Line Warning (PDF: ZERO Sugar/Maida) -->
+            <div class="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-xl border border-rose-100 dark:border-rose-900/50 flex items-start gap-3">
+                <i class="fas fa-ban text-rose-500 text-xl mt-0.5"></i>
+                <div>
+                    <h4 class="text-sm font-black text-rose-600 dark:text-rose-400 uppercase">The Red Line</h4>
+                    <p class="text-xs text-rose-800 dark:text-rose-200 mt-1">ZERO Sugar • ZERO Maida • ZERO Biscuits.<br>Chai mein cheeni = Zeher (Poison).</p>
                 </div>
             </div>
 
-            <!-- Meal Timeline -->
-            <div class="space-y-4">
+            <!-- Meal Timeline (Accordion Style from PDF Data) -->
+            <div class="space-y-3">
+                
                 <!-- Breakfast -->
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border-l-4 border-indigo-500 shadow-sm">
-                    <div class="flex justify-between items-start mb-1">
-                        <h4 class="font-bold text-slate-800 dark:text-white">Breakfast (High Protein)</h4>
-                        <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">07:15 AM</span>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 border-b border-indigo-100 dark:border-indigo-800/30">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-indigo-700 dark:text-indigo-300">08:00 AM • Breakfast</h3>
+                            <i class="fas fa-egg text-indigo-400"></i>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-600 dark:text-slate-300">5 Egg Whites Bhurji + 1 Roti.</p>
+                    <div class="p-4 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                        <p><strong>Option A:</strong> 5 Egg Whites (Boiled) + 1 Whole Egg + 1 Toast.</p>
+                        <p><strong>Option B:</strong> 100g Paneer Bhurji (Less Oil) + 1 Roti.</p>
+                        <p><strong>Option C:</strong> Oats (40g) + Whey Scoop in water.</p>
+                        <div class="mt-2 text-xs font-bold text-slate-400 flex gap-2">
+                            <span><i class="fas fa-pills mr-1"></i> Multivitamin + Vit D3</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Lunch -->
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border-l-4 border-emerald-500 shadow-sm">
-                    <div class="flex justify-between items-start mb-1">
-                        <h4 class="font-bold text-slate-800 dark:text-white">Lunch (Main Meal)</h4>
-                        <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">01:00 PM</span>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 border-b border-emerald-100 dark:border-emerald-800/30">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-emerald-700 dark:text-emerald-300">01:00 PM • Lunch</h3>
+                            <i class="fas fa-utensils text-emerald-400"></i>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-600 dark:text-slate-300">Rajma / Chole / Dal + 2 Roti + Salad. <br><span class="text-xs text-emerald-600 font-bold">*Use Office Lunchbox</span></p>
+                    <div class="p-4 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                        <p><strong>Option A:</strong> 2 Choti Roti + 1 Bowl Dal (Thick) + <span class="text-emerald-600 font-bold">BIG SALAD 🥗</span></p>
+                        <p><strong>Option B:</strong> 1 Katori Rice + 50g Soya Chunks + Salad.</p>
+                        <div class="mt-2 text-xs font-bold text-slate-400">
+                            *Rule: Phone side mein rakh kar chaba-chaba ke khao.
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Snack -->
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border-l-4 border-amber-500 shadow-sm">
-                    <div class="flex justify-between items-start mb-1">
-                        <h4 class="font-bold text-slate-800 dark:text-white">Snack</h4>
-                        <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">04:00 PM</span>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-4 bg-amber-50 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/30">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-amber-700 dark:text-amber-300">04:30 PM • Danger Zone</h3>
+                            <i class="fas fa-cookie-bite text-amber-400"></i>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-600 dark:text-slate-300">40g Roasted Chana / Sprouts. <br><span class="text-xs text-red-500 font-bold">No Samosas.</span></p>
+                    <div class="p-4 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                        <p><strong>Option A:</strong> 1 Apple or Papaya Bowl.</p>
+                        <p><strong>Option B:</strong> 40g Bhuna Chana (Roasted) - Best for hunger.</p>
+                        <p><strong>Drink:</strong> Black Coffee / Green Tea (No Sugar).</p>
+                    </div>
                 </div>
 
                 <!-- Dinner -->
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border-l-4 border-purple-500 shadow-sm">
-                    <div class="flex justify-between items-start mb-1">
-                        <h4 class="font-bold text-slate-800 dark:text-white">Dinner (Light)</h4>
-                        <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">07:30 PM</span>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-4 bg-purple-50 dark:bg-purple-900/20 border-b border-purple-100 dark:border-purple-800/30">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-purple-700 dark:text-purple-300">08:00 PM • Dinner</h3>
+                            <i class="fas fa-moon text-purple-400"></i>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-600 dark:text-slate-300">200g Paneer or 50g Soya + Veggies. <br><span class="text-xs text-purple-600 font-bold">No Roti/Rice at night.</span></p>
+                    <div class="p-4 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                        <div class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-xs font-bold inline-block mb-2">❌ STRICTLY NO GRAINS (NO ROTI)</div>
+                        <p><strong>Option A:</strong> Soya Chunks Stir Fry (Shimla mirch + Pyaaz).</p>
+                        <p><strong>Option B:</strong> Paneer Tikka (150g) + Veggies.</p>
+                        <div class="mt-2 text-xs font-bold text-slate-400">
+                            <span><i class="fas fa-fish mr-1"></i> Omega-3 Fish Oil</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Supplements -->
-            <div class="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-xl border border-blue-100 dark:border-blue-900/20">
-                <h4 class="text-xs font-bold text-blue-700 uppercase mb-2">Daily Supplements</h4>
-                <div class="flex gap-2 flex-wrap">
-                    <span class="text-[10px] font-bold bg-white dark:bg-slate-900 px-2 py-1 rounded text-slate-600 dark:text-slate-300 border border-blue-100">Whey Protein (Post-Workout)</span>
-                    <span class="text-[10px] font-bold bg-white dark:bg-slate-900 px-2 py-1 rounded text-slate-600 dark:text-slate-300 border border-blue-100">Multivitamin (Daily)</span>
-                </div>
             </div>
         </div>
 
-        <!-- ================= TAB 3: GYM (WORKOUT) ================= -->
+        <!-- ================= TAB 3: WORKOUT (BATTLE) ================= -->
         <div id="tab-workout" class="tab-content space-y-6">
             
             <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white">Workout Plan</h2>
-                <div class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold shadow-sm">2 Sessions/Day</div>
+                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white">War Protocol</h2>
+                <div class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs font-bold shadow-sm">2 Sessions</div>
             </div>
 
-            <!-- Morning Protocol -->
-            <div class="bg-gradient-to-r from-sky-500 to-blue-600 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
+            <!-- Morning Session Card -->
+            <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden">
                 <div class="absolute right-0 top-0 opacity-10 text-8xl -mr-4 -mt-4"><i class="fas fa-running"></i></div>
                 <div class="relative z-10">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-heading font-bold text-xl">AM: Cardio & Core</h3>
+                        <h3 class="font-heading font-bold text-xl">🌞 Morning: Hybrid Storm</h3>
                         <span class="bg-white/20 px-2 py-1 rounded text-[10px] font-bold backdrop-blur-sm">06:15 AM</span>
                     </div>
+                    <p class="text-xs opacity-90 mb-4 font-medium">Goal: Metabolism ko aag lagana 🔥</p>
                     
-                    <div class="space-y-3">
-                        <div class="bg-white/10 p-3 rounded-xl border border-white/10 backdrop-blur-sm">
-                            <p class="text-[10px] font-bold uppercase opacity-80 mb-2 tracking-widest">Part 1: Bodyweight (2 Rounds)</p>
-                            <div class="grid grid-cols-2 gap-2 text-xs font-medium">
-                                <span class="flex items-center gap-1"><i class="fas fa-check text-sky-300 text-[10px]"></i> Squats (45s)</span>
-                                <span class="flex items-center gap-1"><i class="fas fa-check text-sky-300 text-[10px]"></i> Push-ups (45s)</span>
-                                <span class="flex items-center gap-1"><i class="fas fa-check text-sky-300 text-[10px]"></i> Lunges (45s)</span>
-                                <span class="flex items-center gap-1"><i class="fas fa-check text-sky-300 text-[10px]"></i> Plank (45s)</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/10 p-3 rounded-xl border border-white/10 backdrop-blur-sm">
-                            <p class="text-[10px] font-bold uppercase opacity-80 mb-2 tracking-widest">Part 2: Cardio (2 Rounds)</p>
-                            <div class="grid grid-cols-2 gap-2 text-xs font-medium">
-                                <span class="flex items-center gap-1"><i class="fas fa-fire text-orange-300 text-[10px]"></i> Skipping</span>
-                                <span class="flex items-center gap-1"><i class="fas fa-fire text-orange-300 text-[10px]"></i> Crunches</span>
-                                <span class="flex items-center gap-1"><i class="fas fa-fire text-orange-300 text-[10px]"></i> High Knees</span>
-                                <span class="flex items-center gap-1"><i class="fas fa-fire text-orange-300 text-[10px]"></i> Donkey Kicks</span>
-                            </div>
-                        </div>
+                    <div class="bg-black/20 rounded-xl p-4 backdrop-blur-sm border border-white/10 space-y-2 text-xs font-bold">
+                        <div class="flex justify-between"><span>1. Jumping Jacks</span><span>45 Sec</span></div>
+                        <div class="flex justify-between"><span>2. High Knees</span><span>45 Sec</span></div>
+                        <div class="flex justify-between"><span>3. Mountain Climbers</span><span>45 Sec</span></div>
+                        <div class="flex justify-between"><span>4. Squats</span><span>20 Reps</span></div>
+                        <div class="flex justify-between text-yellow-300"><span>5. Plank Hold</span><span>Till Failure</span></div>
+                        <div class="mt-2 text-center text-[10px] uppercase tracking-widest bg-white/20 rounded py-1">Repeat 3 Times</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Evening Protocol -->
+            <!-- Evening Session Accordion (Updated Split) -->
             <div>
                 <h3 class="font-heading font-bold text-lg mb-3 flex items-center gap-2">
-                    <i class="fas fa-dumbbell text-purple-600"></i> PM: Strength Training
+                    <i class="fas fa-dumbbell text-purple-600"></i> Evening: Iron Command
                 </h3>
                 
                 <div class="space-y-3">
+                    <!-- Push -->
                     <details class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <summary class="flex justify-between items-center p-4 font-bold text-sm text-slate-700 dark:text-slate-200">
                             <span>MON / THU: <span class="text-purple-600">PUSH (Chest/Tri)</span></span>
                             <i class="fas fa-chevron-down text-slate-400 text-xs chevron"></i>
                         </summary>
-                        <div class="px-4 pb-4 pt-0 text-xs text-slate-500 dark:text-slate-400 space-y-1.5 border-t border-slate-100 dark:border-slate-700 mt-2 pt-3">
-                            <p>1. Chest Press (DB + Band)</p>
-                            <p>2. Shoulder Press</p>
-                            <p>3. Tricep Extensions</p>
-                            <p>4. Finisher: Push-ups to failure</p>
+                        <div class="px-4 pb-4 pt-0 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 mt-2 pt-3">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Pushups (Warmup)</li>
+                                <li>Chest Press (Dumbbell/Machine)</li>
+                                <li>Shoulder Overhead Press</li>
+                                <li>Tricep Extensions</li>
+                                <li>Lateral Raises</li>
+                            </ul>
                         </div>
                     </details>
 
+                    <!-- Pull -->
                     <details class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <summary class="flex justify-between items-center p-4 font-bold text-sm text-slate-700 dark:text-slate-200">
                             <span>TUE / FRI: <span class="text-purple-600">PULL (Back/Bi)</span></span>
                             <i class="fas fa-chevron-down text-slate-400 text-xs chevron"></i>
                         </summary>
-                        <div class="px-4 pb-4 pt-0 text-xs text-slate-500 dark:text-slate-400 space-y-1.5 border-t border-slate-100 dark:border-slate-700 mt-2 pt-3">
-                            <p>1. DB Rows</p>
-                            <p>2. Bicep Curls (Hybrid)</p>
-                            <p>3. Face Pulls (Band)</p>
-                            <p>4. Pull Aparts</p>
+                        <div class="px-4 pb-4 pt-0 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 mt-2 pt-3">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Pull-ups / Lat Pulldown</li>
+                                <li>Dumbbell Rows</li>
+                                <li>Bicep Curls</li>
+                                <li>Hammer Curls</li>
+                                <li>Face Pulls</li>
+                            </ul>
                         </div>
                     </details>
 
+                    <!-- Legs -->
                     <details class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <summary class="flex justify-between items-center p-4 font-bold text-sm text-slate-700 dark:text-slate-200">
-                            <span>WED: <span class="text-purple-600">LEGS + CORE</span></span>
+                            <span>WED: <span class="text-purple-600">LEGS + ABS</span></span>
                             <i class="fas fa-chevron-down text-slate-400 text-xs chevron"></i>
                         </summary>
-                        <div class="px-4 pb-4 pt-0 text-xs text-slate-500 dark:text-slate-400 space-y-1.5 border-t border-slate-100 dark:border-slate-700 mt-2 pt-3">
-                            <p>1. Squats (Barbell/DB)</p>
-                            <p>2. Lunges</p>
-                            <p>3. Glute Bridges</p>
-                            <p>4. Plank Max Hold</p>
+                        <div class="px-4 pb-4 pt-0 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 mt-2 pt-3">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Bodyweight Squats</li>
+                                <li>Lunges</li>
+                                <li>Glute Bridges</li>
+                                <li>Crunches & Leg Raises</li>
+                            </ul>
                         </div>
                     </details>
-                </div>
-            </div>
 
-            <!-- Steps Goal -->
-            <div class="flex items-center gap-4 bg-orange-50 dark:bg-orange-900/20 p-4 rounded-2xl border border-orange-100 dark:border-orange-900/30">
-                <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center"><i class="fas fa-shoe-prints"></i></div>
-                <div>
-                    <h4 class="text-sm font-bold text-slate-800 dark:text-white">Walking Target</h4>
-                    <p class="text-xs text-slate-500">6,000 (Mon-Fri) • 10,000 (Weekends)</p>
+                    <!-- Active Rest -->
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-800/30 flex items-center gap-3">
+                        <i class="fas fa-tree text-emerald-600 text-xl"></i>
+                        <div>
+                            <h4 class="text-sm font-bold text-emerald-700 dark:text-emerald-300">SATURDAY: ACTIVE</h4>
+                            <p class="text-xs text-emerald-600 dark:text-emerald-400">5km Walk in Park (Mandatory)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB 4: PROTOCOLS ================= -->
-        <div id="tab-protocols" class="tab-content space-y-6">
+        <!-- ================= TAB 4: THE OATH (CONTRACT) ================= -->
+        <div id="tab-oath" class="tab-content space-y-6 text-center">
             
-            <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white mb-2">Rules & Setup</h2>
+            <div class="py-8">
+                <i class="fas fa-scroll text-6xl text-slate-200 dark:text-slate-700 mb-4"></i>
+                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white">FINAL OATH</h2>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Kasam (The Promise)</p>
+            </div>
 
-            <!-- Office Rules -->
-            <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-4 border-b border-indigo-100 dark:border-indigo-900/30">
-                    <h3 class="font-bold text-indigo-700 dark:text-indigo-300 flex items-center gap-2">
-                        <i class="fas fa-building"></i> Office Routine
-                    </h3>
-                </div>
-                <div class="p-5 space-y-4">
-                    <div class="flex gap-3">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs"><i class="fas fa-clock"></i></div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800 dark:text-white">Focus Blocks</h4>
-                            <p class="text-xs text-slate-500 mt-1">3 x 50-min study sessions for AWS/Azure.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-3">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs"><i class="fas fa-walking"></i></div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800 dark:text-white">Movement</h4>
-                            <p class="text-xs text-slate-500 mt-1">Walk 500 steps during Tea Breaks. Don't just sit.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-3">
-                        <div class="mt-1 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs"><i class="fas fa-mobile-alt"></i></div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-800 dark:text-white">Lunch Protocol</h4>
-                            <p class="text-xs text-slate-500 mt-1">Keep phone silent. Eat slowly. Walk for 10 mins after.</p>
-                        </div>
-                    </div>
+            <!-- Contract Paper Effect -->
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-[2rem] border border-slate-200 dark:border-slate-700 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-rose-500 to-orange-500"></div>
+                
+                <p class="text-sm font-serif italic text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    "Main, <strong class="text-slate-900 dark:text-white not-italic">Vikas Rawat</strong>, aaj yeh wada karta hoon ki agle 100 din main koi bahana (excuse) nahi banaunga.<br><br>
+                    Mera weight 78.5 kg hai, aur yeh meri identity nahi hai.<br>
+                    Agar thakaan hogi, tab bhi main rukunga nahi.<br>
+                    Agar mann karega cheat karne ka, main paani piunga.<br><br>
+                    Mera naya target <strong class="text-rose-600">65.5 KG</strong> hai aur main ise haasil karke rahunga."
+                </p>
+
+                <div class="border-t border-slate-100 dark:border-slate-700 pt-6">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">Commando Signature</p>
+                    <div class="font-heading font-black text-2xl text-rose-600 mt-1" style="font-family: 'Outfit', cursive;">Vikas Rawat</div>
+                    <p class="text-[10px] font-bold text-slate-400 mt-1">Date: 02 Feb 2026</p>
                 </div>
             </div>
 
-            <!-- Weekend & Tech Grid -->
-            <div class="grid grid-cols-1 gap-4">
-                <!-- Weekend -->
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="font-bold text-sm text-slate-800 dark:text-white mb-3 flex items-center gap-2">
-                        <i class="fas fa-couch text-teal-500"></i> Weekend Plan
-                    </h3>
-                    <ul class="text-xs text-slate-500 space-y-2">
-                        <li>• <strong class="text-slate-700 dark:text-slate-300">Meals:</strong> Tandoori/Grill allowed. No deep fried.</li>
-                        <li>• <strong class="text-slate-700 dark:text-slate-300">Steps:</strong> 10,000 steps are mandatory (Park/Mall).</li>
-                        <li>• <strong class="text-slate-700 dark:text-slate-300">Sleep:</strong> Wake up on time. Don't break rhythm.</li>
-                    </ul>
+            <div class="flex justify-center">
+                <div class="bg-black text-white px-6 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2 animate-bounce">
+                    <i class="fas fa-rocket text-rose-500"></i> LET THE WAR BEGIN!
                 </div>
-
-                <!-- Tech Stack -->
-                <div class="bg-slate-900 text-white p-5 rounded-2xl shadow-lg">
-                    <h3 class="font-bold text-sm mb-3 flex items-center gap-2">
-                        <i class="fas fa-microchip text-indigo-400"></i> App Setup
-                    </h3>
-                    <div class="grid grid-cols-2 gap-3 text-xs">
-                        <div class="bg-white/10 p-2 rounded text-center backdrop-blur-sm">
-                            <span class="block font-bold text-indigo-300">Fitify</span>
-                            <span class="opacity-70">Workouts</span>
-                        </div>
-                        <div class="bg-white/10 p-2 rounded text-center backdrop-blur-sm">
-                            <span class="block font-bold text-indigo-300">HabitNow</span>
-                            <span class="opacity-70">Streaks</span>
-                        </div>
-                        <div class="bg-white/10 p-2 rounded text-center backdrop-blur-sm">
-                            <span class="block font-bold text-indigo-300">MyFitnessPal</span>
-                            <span class="opacity-70">Log Food</span>
-                        </div>
-                        <div class="bg-white/10 p-2 rounded text-center backdrop-blur-sm">
-                            <span class="block font-bold text-indigo-300">Amazfit</span>
-                            <span class="opacity-70">Tracker</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- The Contract -->
-            <div class="text-center p-6 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl opacity-70">
-                <i class="fas fa-signature text-2xl text-slate-400 mb-2"></i>
-                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">My Commitment</p>
-                <p class="text-sm font-serif italic mt-1">"Pure execution. No excuses. 100 Days."</p>
-                <p class="text-xs font-bold mt-2 text-indigo-600">— Vikas Rawat</p>
             </div>
 
         </div>
 
     </main>
 
-    <!-- NAVIGATION BAR -->
-    <nav class="fixed bottom-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pb-safe z-50">
-        <div class="grid grid-cols-5 h-16 max-w-2xl mx-auto relative">
-            
-            <button class="nav-item active flex flex-col items-center justify-center space-y-1" onclick="switchTab('dashboard', this)">
-                <i class="fas fa-chart-pie text-lg"></i>
-                <span class="text-[10px] font-bold">Dash</span>
+    <!-- 
+        BOTTOM NAVIGATION
+        Explainer:
+        - Floating Bottom Bar (Glass effect ke sath).
+        - Yahan se user Tabs (Dashboard, Diet, Workout, Oath) switch karega.
+        - Beech me ek bada FAB (Floating Action Button) hai Workout ke liye.
+    -->
+    <nav class="fixed bottom-6 left-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-full shadow-2xl z-50 h-16 flex items-center justify-around px-2 max-w-2xl mx-auto">
+        
+        <!-- Tab 1 Button -->
+        <button class="nav-item active flex flex-col items-center justify-center w-12 h-12" onclick="switchTab('dashboard', this)">
+            <i class="fas fa-chart-pie text-lg mb-0.5"></i>
+            <span class="text-[9px] font-bold">Dash</span>
+        </button>
+
+        <!-- Tab 2 Button -->
+        <button class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="switchTab('diet', this)">
+            <i class="fas fa-apple-alt text-lg mb-0.5"></i>
+            <span class="text-[9px] font-bold">Diet</span>
+        </button>
+
+        <!-- Center FAB (Workout) -->
+        <div class="relative -top-6">
+            <button class="w-14 h-14 bg-rose-600 rounded-full text-white flex items-center justify-center shadow-lg fab-glow transform hover:scale-105 transition active:scale-95" onclick="switchTab('workout', null)">
+                <i class="fas fa-dumbbell text-xl"></i>
             </button>
-
-            <button class="nav-item text-slate-400 flex flex-col items-center justify-center space-y-1" onclick="switchTab('diet', this)">
-                <i class="fas fa-apple-alt text-lg"></i>
-                <span class="text-[10px] font-bold">Diet</span>
-            </button>
-
-            <!-- Floating GYM Button -->
-            <div class="relative flex flex-col items-center justify-end pb-2">
-                <button id="gym-fab" class="absolute -top-6 w-14 h-14 bg-indigo-600 rounded-full text-white shadow-lg shadow-indigo-500/40 flex items-center justify-center transform transition active:scale-95 border-4 border-f1f5f9 dark:border-0f172a" onclick="switchTab('workout', null)">
-                    <i class="fas fa-dumbbell text-xl"></i>
-                </button>
-                <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-8 gym-label transition-colors">Gym</span>
-            </div>
-
-            <button class="nav-item text-slate-400 flex flex-col items-center justify-center space-y-1" onclick="switchTab('protocols', this)">
-                <i class="fas fa-shield-alt text-lg"></i>
-                <span class="text-[10px] font-bold">Rules</span>
-            </button>
-
-            <button class="nav-item text-slate-400 flex flex-col items-center justify-center space-y-1" onclick="toggleTheme()">
-                <i class="fas fa-moon text-lg"></i>
-                <span class="text-[10px] font-bold">Theme</span>
-            </button>
-
         </div>
+
+        <!-- Tab 3 Button -->
+        <button class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="switchTab('oath', this)">
+            <i class="fas fa-file-contract text-lg mb-0.5"></i>
+            <span class="text-[9px] font-bold">Oath</span>
+        </button>
+
+        <!-- Tab 4 Button (Theme Toggle) -->
+        <button class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="toggleTheme()">
+            <i class="fas fa-moon text-lg mb-0.5"></i>
+            <span class="text-[9px] font-bold">Theme</span>
+        </button>
+
     </nav>
 
+    <!-- 
+        JAVASCRIPT LOGIC
+        Explainer:
+        - Sabse important part. Yahan saara calculation hota hai.
+        - Date Math: Feb 02 se le kar May 12 tak din ginna.
+        - Local Storage: Checkbox ke status ko browser me save karna.
+        - Tabs switching ka logic.
+    -->
     <script>
-        // --- CHECKLIST LOGIC ---
-        const CHECKLIST_KEY = 'project100_checklist';
+        // --- CONFIGURATION ---
+        const CHECKLIST_KEY = 'project100_reloaded_checklist';
+        const START_DATE = new Date('2026-02-02T00:00:00'); // Mission Start
+        const END_DATE = new Date('2026-05-12T23:59:59');   // Mission End
 
-        // Helper to format date like "11th Jan 2026"
-        function getFormattedDate() {
-            const date = new Date();
-            const day = date.getDate();
-            const month = date.toLocaleString('default', { month: 'short' });
-            const year = date.getFullYear();
-
-            const suffix = (day) => {
-                if (day > 3 && day < 21) return 'th';
-                switch (day % 10) {
-                    case 1:  return "st";
-                    case 2:  return "nd";
-                    case 3:  return "rd";
-                    default: return "th";
-                }
-            };
-
-            return `${day}${suffix(day)} ${month} ${year}`;
-        }
-
+        // --- CHECKLIST LOGIC (Save/Load) ---
         function loadChecklist() {
-            const todayKey = new Date().toLocaleDateString(); // Internal key for storage
-            const displayDate = getFormattedDate(); // Display string for UI
-            
+            const todayKey = new Date().toLocaleDateString(); // "DD/MM/YYYY" format
             const savedData = JSON.parse(localStorage.getItem(CHECKLIST_KEY));
             
-            document.getElementById('checklist-date').innerText = displayDate;
+            // Header me date update karo
+            document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
 
             if (savedData && savedData.date === todayKey) {
-                // Restore state
-                document.getElementById('chk-wake').checked = savedData.wake;
-                document.getElementById('chk-cardio').checked = savedData.cardio;
-                document.getElementById('chk-food').checked = savedData.food;
-                document.getElementById('chk-strength').checked = savedData.strength;
+                // Agar aaj ka data saved hai, toh checkboxes restore karo
+                ['chk-wake', 'chk-water', 'chk-cardio', 'chk-diet', 'chk-strength'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.checked = savedData[id] || false;
+                });
             } else {
-                // New Day = Reset
+                // Naya din = Nayi shuruat (Clear old data)
                 localStorage.removeItem(CHECKLIST_KEY);
             }
         }
 
         function saveChecklist() {
+            // Checkbox ke state ko JSON object me save karo
             const data = {
                 date: new Date().toLocaleDateString(),
-                wake: document.getElementById('chk-wake').checked,
-                cardio: document.getElementById('chk-cardio').checked,
-                food: document.getElementById('chk-food').checked,
-                strength: document.getElementById('chk-strength').checked
+                'chk-wake': document.getElementById('chk-wake').checked,
+                'chk-water': document.getElementById('chk-water').checked,
+                'chk-cardio': document.getElementById('chk-cardio').checked,
+                'chk-diet': document.getElementById('chk-diet').checked,
+                'chk-strength': document.getElementById('chk-strength').checked
             };
             localStorage.setItem(CHECKLIST_KEY, JSON.stringify(data));
         }
 
-        // --- TAB LOGIC ---
+        // --- TAB SWITCHER LOGIC ---
         function switchTab(tabId, btn) {
+            // 1. Saare tabs chupao
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // 2. Jo click hua use dikhao
             document.getElementById('tab-' + tabId).classList.add('active');
             
+            // 3. Navigation icons ko reset karo
             document.querySelectorAll('.nav-item').forEach(el => {
                 el.classList.remove('active');
                 el.classList.add('text-slate-400');
             });
 
-            const gymFab = document.getElementById('gym-fab');
-            const gymLabel = document.querySelector('.gym-label');
-
-            if(tabId === 'workout') {
-                gymFab.classList.add('bg-indigo-800');
-                gymFab.classList.remove('bg-indigo-600');
-                gymLabel.classList.add('text-indigo-600');
-                gymLabel.classList.remove('text-slate-500');
-            } else {
-                gymFab.classList.add('bg-indigo-600');
-                gymFab.classList.remove('bg-indigo-800');
-                gymLabel.classList.remove('text-indigo-600');
-                gymLabel.classList.add('text-slate-500');
-                if (btn) {
-                    btn.classList.add('active');
-                    btn.classList.remove('text-slate-400');
-                }
+            // 4. Active button ko highlight karo (Agar button pass hua hai)
+            if (btn) {
+                btn.classList.add('active');
+                btn.classList.remove('text-slate-400');
             }
+
+            // 5. Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- COUNTDOWN LOGIC ---
-        function updateStatus() {
-            const startDate = new Date('2026-01-19T05:30:00');
-            const endDate = new Date('2026-04-29T23:59:59');
+        // --- MISSION TIMER & PROGRESS BAR LOGIC ---
+        function updateMissionStatus() {
             const now = new Date();
-            
             const countEl = document.getElementById('days-counter');
-            const labelEl = document.getElementById('days-label');
             const progressEl = document.getElementById('main-progress');
 
-            if (now < startDate) {
-                const diff = startDate - now;
-                const hours = Math.floor(diff / (1000 * 60 * 60));
-                
-                if (hours > 24) {
-                    const days = Math.ceil(hours / 24);
-                    countEl.innerText = "Starts in " + days + " Days";
-                } else {
-                    countEl.innerText = "Starts in " + hours + " Hours";
-                }
-                
-                labelEl.innerText = "Preparation Phase";
+            if (now < START_DATE) {
+                // Mission abhi shuru nahi hua (Pre-Start)
+                const diff = START_DATE - now;
+                const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                countEl.innerText = `Starts in ${days} Days`;
                 progressEl.style.width = '0%';
-            } else if (now > endDate) {
-                countEl.innerText = "DONE";
-                labelEl.innerText = "Mission Complete";
+            } else if (now > END_DATE) {
+                // Mission Khatam
+                countEl.innerText = "MISSION COMPLETE";
                 progressEl.style.width = '100%';
                 progressEl.classList.add('bg-emerald-400');
             } else {
-                const total = endDate - startDate;
-                const elapsed = now - startDate;
-                const percent = Math.min((elapsed / total) * 100, 100).toFixed(1);
+                // Mission Active Hai
+                const totalDuration = END_DATE - START_DATE;
+                const elapsed = now - START_DATE;
                 
-                const left = endDate - now;
-                const daysLeft = Math.ceil(left / (1000 * 60 * 60 * 24));
-
-                countEl.innerText = daysLeft + " Days Left";
-                labelEl.innerText = "Keep Pushing";
-                progressEl.style.width = percent + '%';
+                // Day Calculation
+                const dayNumber = Math.ceil(elapsed / (1000 * 60 * 60 * 24));
+                countEl.innerText = `Day ${dayNumber} / 100`;
+                
+                // Progress Bar Percentage
+                const percent = Math.min((elapsed / totalDuration) * 100, 100).toFixed(1);
+                progressEl.style.width = `${percent}%`;
             }
         }
 
-        // --- THEME ---
+        // --- THEME TOGGLE LOGIC ---
         function toggleTheme() {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
+        // Page load hote hi check karo purana theme kya tha
         if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
 
-        // Init
+        // --- INITIALIZATION ---
         loadChecklist();
-        setInterval(updateStatus, 60000);
-        updateStatus();
+        updateMissionStatus();
+        setInterval(updateMissionStatus, 60000); // Har minute update karo
     </script>
 </body>
 </html>
