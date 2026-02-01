@@ -215,6 +215,56 @@
     text-transform: uppercase; letter-spacing: 0.5px;
 }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+/* --- NEW ARMOR LAB CONTROLS --- */
+
+/* Control Pill (The Container) */
+.control-pill {
+    background: #f8fafc; /* Light Grey */
+    border-radius: 99px; /* Pill Shape */
+    padding: 6px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.dark .control-pill { background: #0f172a; }
+
+/* Round Buttons */
+.ctrl-btn-round {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: white;
+    color: #94a3b8;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+}
+.dark .ctrl-btn-round { background: #1e293b; color: #64748b; }
+.ctrl-btn-round:active { transform: scale(0.9); background: #e2e8f0; }
+
+/* Input Field (Invisible) */
+.stat-input {
+    background: transparent;
+    text-align: center;
+    width: 60px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #1e293b;
+    outline: none;
+}
+.dark .stat-input { color: white; }
+
+/* --- WAIST CARD (RED THEME) --- */
+.theme-red .control-pill { background: #fff1f2; } /* Rose 50 */
+.dark .theme-red .control-pill { background: rgba(225, 29, 72, 0.1); }
+
+.theme-red .ctrl-btn-round { color: #e11d48; background: white; }
+.dark .theme-red .ctrl-btn-round { background: #1e293b; color: #fb7185; }
+
+.theme-red .stat-input { color: #e11d48; }
+.dark .theme-red .stat-input { color: #fb7185; }
 
     </style>
 </head>
@@ -381,116 +431,121 @@
         </div>
 
         <!-- ================= TAB 3: BODY (VISUAL COMPARISON) ================= -->
-        <div id="tab-body" class="tab-content space-y-6 pb-24">
-            
-            <div class="flex justify-between items-end px-2 pt-2">
-                <div>
-                    <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Armor Lab</h2>
-                    <p class="text-xs font-bold text-slate-400">Transforming Structure</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded-lg">
-                        Start vs Now
-                    </p>
-                </div>
-            </div>
-
-            <div class="armor-card relative min-h-[300px] overflow-hidden bg-slate-50 dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900/50">
-                <div class="absolute inset-0 hologram-grid"></div>
-                <div class="scanner-line"></div>
-                <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
-                    <i class="fas fa-child-reaching text-[13rem] text-indigo-200 dark:text-slate-700 opacity-60"></i>
-                    <div class="absolute w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] animate-pulse" style="top: 32%; left: 35%;"></div>
-                    <div class="absolute w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] animate-pulse" style="top: 32%; right: 35%;"></div>
-                    <div class="absolute w-4 h-4 bg-rose-500 rounded-full shadow-[0_0_20px_#f43f5e] animate-ping" style="top: 45%; left: 50%; transform: translateX(-50%);"></div>
-                </div>
-                <div class="absolute bottom-3 left-0 right-0 text-center z-20">
-                    <span class="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-indigo-100 dark:border-slate-700 shadow-sm text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
-                        Latest: <span id="body-last-date">Syncing...</span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                
-                <!-- CHEST -->
-                <div class="armor-card p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><i class="fas fa-tshirt"></i></div>
-                            <span class="text-xs font-black text-slate-700 dark:text-white uppercase tracking-widest">CHEST</span>
-                        </div>
-                        <span id="diff-chest" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400">--</span>
-                    </div>
-                    <div class="control-pill mb-2">
-                        <button onclick="vibrate(); updateInputVal('in-chest', -0.5)" class="ctrl-btn-round"><i class="fas fa-minus text-[10px]"></i></button>
-                        <input type="number" id="in-chest" value="42.0" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-slate-800 dark:text-white outline-none">
-                        <button onclick="vibrate(); updateInputVal('in-chest', 0.5)" class="ctrl-btn-round"><i class="fas fa-plus text-[10px]"></i></button>
-                    </div>
-                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-chest">--</span>"</span><span>Current</span></div>
-                    <div class="stat-bar-bg"><div id="bar-chest" class="stat-bar-fill bg-indigo-500" style="width: 5%"></div></div>
-                </div>
-
-                <!-- WAIST -->
-                <div class="armor-card p-4 theme-red border-rose-200 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-900/5">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-rose-500"><i class="fas fa-bullseye animate-pulse"></i></div>
-                            <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest">WAIST</span>
-                        </div>
-                        <span id="diff-waist" class="text-[10px] font-bold px-2 py-1 rounded bg-rose-100 text-rose-600">--</span>
-                    </div>
-                    <div class="control-pill bg-white dark:bg-slate-800 border border-rose-100 dark:border-rose-900/30 mb-2">
-                        <button onclick="vibrate(); updateInputVal('in-waist', -0.5)" class="ctrl-btn-round text-rose-500"><i class="fas fa-minus text-[10px]"></i></button>
-                        <input type="number" id="in-waist" value="36.0" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-rose-600 dark:text-rose-400 outline-none">
-                        <button onclick="vibrate(); updateInputVal('in-waist', 0.5)" class="ctrl-btn-round text-rose-500"><i class="fas fa-plus text-[10px]"></i></button>
-                    </div>
-                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-waist">--</span>"</span><span class="text-rose-500">Target: 32.0"</span></div>
-                    <div class="stat-bar-bg"><div id="bar-waist" class="stat-bar-fill bg-rose-500" style="width: 5%"></div></div>
-                </div>
-
-                <!-- ARMS -->
-                <div class="armor-card p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><i class="fas fa-fist-raised"></i></div>
-                            <span class="text-xs font-black text-slate-700 dark:text-white uppercase tracking-widest">ARMS</span>
-                        </div>
-                        <span id="diff-arms" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400">--</span>
-                    </div>
-                    <div class="control-pill mb-2">
-                        <button onclick="vibrate(); updateInputVal('in-arms', -0.1)" class="ctrl-btn-round"><i class="fas fa-minus text-[10px]"></i></button>
-                        <input type="number" id="in-arms" value="14.5" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-slate-800 dark:text-white outline-none">
-                        <button onclick="vibrate(); updateInputVal('in-arms', 0.1)" class="ctrl-btn-round"><i class="fas fa-plus text-[10px]"></i></button>
-                    </div>
-                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-arms">--</span>"</span><span>Current</span></div>
-                    <div class="stat-bar-bg"><div id="bar-arms" class="stat-bar-fill bg-blue-500" style="width: 5%"></div></div>
-                </div>
-
-                <!-- THIGHS -->
-                <div class="armor-card p-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><i class="fas fa-person-running"></i></div>
-                            <span class="text-xs font-black text-slate-700 dark:text-white uppercase tracking-widest">THIGHS</span>
-                        </div>
-                        <span id="diff-thighs" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400">--</span>
-                    </div>
-                    <div class="control-pill mb-2">
-                        <button onclick="vibrate(); updateInputVal('in-thighs', -0.5)" class="ctrl-btn-round"><i class="fas fa-minus text-[10px]"></i></button>
-                        <input type="number" id="in-thighs" value="24.0" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-slate-800 dark:text-white outline-none">
-                        <button onclick="vibrate(); updateInputVal('in-thighs', 0.5)" class="ctrl-btn-round"><i class="fas fa-plus text-[10px]"></i></button>
-                    </div>
-                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-thighs">--</span>"</span><span>Current</span></div>
-                    <div class="stat-bar-bg"><div id="bar-thighs" class="stat-bar-fill bg-emerald-500" style="width: 5%"></div></div>
-                </div>
-
-            </div>
-
-            <button id="btn-save-body" onclick="saveBodyStats()" class="w-full py-4 rounded-[1.2rem] bg-gradient-to-r from-rose-600 to-orange-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-rose-500/30 flex items-center justify-center gap-3 active:scale-95 transition-transform hover:shadow-2xl">
-                <i class="fas fa-save animate-bounce"></i> Log Measurements
-            </button>
+      <div id="tab-body" class="tab-content space-y-6 pb-24">
+    
+    <div class="flex justify-between items-center px-2 pt-2">
+        <div>
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Armor Lab</h2>
+            <p class="text-xs font-bold text-slate-400">Structure Tracking</p>
         </div>
+        <div class="bg-slate-200 dark:bg-slate-700 p-1 rounded-xl flex gap-1">
+            <button onclick="toggleBodyMode('input')" id="btn-mode-input" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all bg-white dark:bg-slate-600 shadow-sm text-slate-900 dark:text-white">Input</button>
+            <button onclick="toggleBodyMode('history')" id="btn-mode-history" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all text-slate-400 hover:text-slate-600">History</button>
+        </div>
+    </div>
+
+    <div id="view-body-input" class="space-y-5 animate-fadeIn">
+        
+        <div class="armor-card relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 text-white border-0 shadow-xl">
+            <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500 rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute left-0 bottom-0 w-32 h-32 bg-rose-500 rounded-full blur-3xl opacity-20"></div>
+            
+            <div class="relative z-10 flex justify-between items-center text-center">
+                <div class="flex-1 border-r border-white/10">
+                    <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest">START (Feb 02)</p>
+                    <div class="text-2xl font-heading font-black mt-1 text-slate-300" id="disp-start-waist">--</div>
+                    <p class="text-[8px] opacity-50">Waist (In)</p>
+                </div>
+                <div class="px-4">
+                    <i class="fas fa-arrow-right text-white/40"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest text-emerald-400">CURRENT</p>
+                    <div class="text-3xl font-heading font-black mt-1 text-white" id="disp-curr-waist">--</div>
+                    <div id="disp-badge-waist" class="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-emerald-500/30">
+                        Syncing...
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-between text-[10px] font-medium opacity-70">
+                <span>Last Updated: <span id="body-last-date" class="text-white font-bold">Checking...</span></span>
+                <span id="overall-status">Analyzing Structure...</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <div class="armor-card p-3">
+                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">CHEST</span><i class="fas fa-tshirt text-indigo-400 text-xs"></i></div>
+                <div class="control-pill mb-2">
+                    <button onclick="vibrate(); updateInputVal('in-chest', -0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button>
+                    <input type="number" id="in-chest" value="42.0" class="stat-input text-lg w-12">
+                    <button onclick="vibrate(); updateInputVal('in-chest', 0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button>
+                </div>
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5">
+                    <span class="text-[8px] font-bold text-slate-400">Start: <span id="start-chest">--</span></span>
+                    <span id="diff-chest" class="text-[9px] font-black">--</span>
+                </div>
+            </div>
+
+            <div class="armor-card p-3 theme-red border-rose-500/30 bg-rose-50/50 dark:bg-rose-900/10">
+                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-rose-500 uppercase">WAIST</span><i class="fas fa-bullseye text-rose-500 text-xs animate-pulse"></i></div>
+                <div class="control-pill mb-2 bg-white dark:bg-slate-800 border border-rose-100 dark:border-rose-900/50">
+                    <button onclick="vibrate(); updateInputVal('in-waist', -0.5)" class="ctrl-btn-round w-8 h-8 text-rose-500"><i class="fas fa-minus text-[8px]"></i></button>
+                    <input type="number" id="in-waist" value="36.0" class="stat-input text-lg w-12 text-rose-600 dark:text-rose-400">
+                    <button onclick="vibrate(); updateInputVal('in-waist', 0.5)" class="ctrl-btn-round w-8 h-8 text-rose-500"><i class="fas fa-plus text-[8px]"></i></button>
+                </div>
+                <div class="flex justify-between items-center bg-white/50 dark:bg-black/20 rounded-lg p-1.5">
+                    <span class="text-[8px] font-bold text-rose-400">Start: <span id="start-waist">--</span></span>
+                    <span id="diff-waist" class="text-[9px] font-black text-rose-600">--</span>
+                </div>
+            </div>
+
+            <div class="armor-card p-3">
+                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">ARMS</span><i class="fas fa-fist-raised text-indigo-400 text-xs"></i></div>
+                <div class="control-pill mb-2">
+                    <button onclick="vibrate(); updateInputVal('in-arms', -0.25)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button>
+                    <input type="number" id="in-arms" value="14.5" class="stat-input text-lg w-12">
+                    <button onclick="vibrate(); updateInputVal('in-arms', 0.25)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button>
+                </div>
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5">
+                    <span class="text-[8px] font-bold text-slate-400">Start: <span id="start-arms">--</span></span>
+                    <span id="diff-arms" class="text-[9px] font-black">--</span>
+                </div>
+            </div>
+
+            <div class="armor-card p-3">
+                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">THIGHS</span><i class="fas fa-person-running text-indigo-400 text-xs"></i></div>
+                <div class="control-pill mb-2">
+                    <button onclick="vibrate(); updateInputVal('in-thighs', -0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button>
+                    <input type="number" id="in-thighs" value="24.0" class="stat-input text-lg w-12">
+                    <button onclick="vibrate(); updateInputVal('in-thighs', 0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button>
+                </div>
+                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5">
+                    <span class="text-[8px] font-bold text-slate-400">Start: <span id="start-thighs">--</span></span>
+                    <span id="diff-thighs" class="text-[9px] font-black">--</span>
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-save-body" onclick="saveBodyStats()" class="w-full py-4 rounded-[1.2rem] bg-gradient-to-r from-slate-800 to-slate-900 dark:from-white dark:to-slate-200 text-white dark:text-slate-900 font-black text-sm uppercase tracking-widest shadow-lg flex items-center justify-center gap-3 active:scale-95 transition-transform">
+            <i class="fas fa-save"></i> Save Logs
+        </button>
+    </div>
+
+    <div id="view-body-history" class="hidden animate-fadeIn space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Log History</span>
+                <i class="fas fa-history text-slate-400 text-xs"></i>
+            </div>
+            <div class="max-h-[400px] overflow-y-auto no-scrollbar p-1" id="body-history-list">
+                <div class="p-4 text-center text-xs text-slate-400">Loading History...</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
         <!-- ================= TAB 4: WORKOUT (RESTORED FULL) ================= -->
         <div id="tab-workout" class="tab-content space-y-6 pb-24">
@@ -920,102 +975,188 @@ function renderChart(labels, data) {
             input.value = val;
         }
 
-        async function fetchBodyHistory() {
-            try {
-                document.getElementById('body-last-date').innerText = "Syncing...";
-                const response = await fetch(`${API_URL}?action=get_body_history`, { method: "POST", body: JSON.stringify({ action: "get_body_history" }) });
-                const data = await response.json();
+        // --- UPDATED BODY TAB LOGIC (Fixing Sync Error) ---
 
-                if (data.status === 'success' && data.history.length > 0) {
-                    const latest = data.history[data.history.length - 1]; // Current (Latest Log)
-                    const first = data.history[0]; // Start (First Log)
+function toggleBodyMode(mode) {
+    vibrate();
+    const inputView = document.getElementById('view-body-input');
+    const historyView = document.getElementById('view-body-history');
+    const btnInput = document.getElementById('btn-mode-input');
+    const btnHistory = document.getElementById('btn-mode-history');
 
-                    // Update Input fields with Latest
-                    document.getElementById('in-chest').value = latest.chest;
-                    document.getElementById('in-waist').value = latest.waist;
-                    document.getElementById('in-arms').value = latest.arms;
-                    document.getElementById('in-thighs').value = latest.thighs;
-                    
-                    document.getElementById('body-last-date').innerText = new Date(latest.date).toLocaleDateString('en-US', {day:'numeric', month:'short'});
-                    
-                    // Render Comparison (Start vs Latest)
-                    renderBodyComparison(first, latest);
-                } else {
-                    document.getElementById('body-last-date').innerText = "New";
-                    renderBodyComparison(START_STATS, START_STATS);
-                }
-            } catch (e) {
-                console.error("Body Sync Error", e);
-                document.getElementById('body-last-date').innerText = "Error";
-            }
-        }
+    if (mode === 'input') {
+        inputView.classList.remove('hidden');
+        historyView.classList.add('hidden');
+        btnInput.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+        btnInput.classList.remove('text-slate-400');
+        btnHistory.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+        btnHistory.classList.add('text-slate-400');
+    } else {
+        inputView.classList.add('hidden');
+        historyView.classList.remove('hidden');
+        btnHistory.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+        btnHistory.classList.remove('text-slate-400');
+        btnInput.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+        btnInput.classList.add('text-slate-400');
+        fetchBodyHistory(true); // Force refresh history list
+    }
+}
 
-        function renderBodyComparison(start, current) {
-            const updatePart = (key, startVal, currVal, barId, diffId, isWaist=false) => {
-                const diff = (currVal - startVal).toFixed(1);
-                const diffEl = document.getElementById(diffId);
-                const barEl = document.getElementById(barId);
+async function fetchBodyHistory(renderListOnly = false) {
+    try {
+        if(!renderListOnly) document.getElementById('body-last-date').innerText = "Syncing...";
+        
+        // FIX: Using standardized POST body to ensure GAS handles it cleanly
+        const response = await fetch(API_URL, { 
+            method: "POST", 
+            body: JSON.stringify({ action: "get_body_history" }) 
+        });
+        
+        // Debugging: Check if response is okay
+        if (!response.ok) throw new Error("Network response was not ok");
+        
+        const data = await response.json();
+
+        if (data.status === 'success' && data.history.length > 0) {
+            const history = data.history;
+            const latest = history[history.length - 1]; // Latest
+            const start = history[0]; // Start
+
+            // 1. Update Inputs (Only if not just viewing history list)
+            if (!renderListOnly) {
+                document.getElementById('in-chest').value = latest.chest || 42.0;
+                document.getElementById('in-waist').value = latest.waist || 36.0;
+                document.getElementById('in-arms').value = latest.arms || 14.5;
+                document.getElementById('in-thighs').value = latest.thighs || 24.0;
                 
-                // Show Start Value
-                document.getElementById(`start-${key}`).innerText = startVal;
-
-                // Visual Badge Logic
-                if (diff < 0) {
-                    diffEl.innerText = `${diff}"`;
-                    diffEl.className = "text-[10px] font-bold px-2 py-1 rounded bg-emerald-100 text-emerald-600"; // Green for Loss (Good)
-                } else if (diff > 0) {
-                    diffEl.innerText = `+${diff}"`;
-                    const color = isWaist ? "bg-rose-100 text-rose-600" : "bg-blue-100 text-blue-600";
-                    diffEl.className = `text-[10px] font-bold px-2 py-1 rounded ${color}`;
-                } else {
-                    diffEl.innerText = "0.0";
-                    diffEl.className = "text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400";
-                }
-
-                // Progress Bar Logic (Visual)
-                let target = startVal * 0.9;
-                if (key === 'waist') target = 32.0;
-
-                const totalDist = startVal - target;
-                const covered = startVal - currVal;
-                let pct = (covered / totalDist) * 100;
+                // Formatted Date
+                const d = new Date(latest.date);
+                document.getElementById('body-last-date').innerText = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
                 
-                if (pct < 5) pct = 5; if (pct > 100) pct = 100; if (currVal > startVal) pct = 5; 
-
-                barEl.style.width = `${pct}%`;
-            };
-
-            updatePart('chest', parseFloat(start.chest), parseFloat(current.chest), 'bar-chest', 'diff-chest');
-            updatePart('waist', parseFloat(start.waist), parseFloat(current.waist), 'bar-waist', 'diff-waist', true);
-            updatePart('arms', parseFloat(start.arms), parseFloat(current.arms), 'bar-arms', 'diff-arms');
-            updatePart('thighs', parseFloat(start.thighs), parseFloat(current.thighs), 'bar-thighs', 'diff-thighs');
-        }
-
-        async function saveBodyStats() {
-            vibrate([50, 50]);
-            const btn = document.getElementById('btn-save-body');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-            btn.disabled = true;
-
-            const payload = {
-                action: 'log_body',
-                chest: document.getElementById('in-chest').value,
-                waist: document.getElementById('in-waist').value,
-                arms: document.getElementById('in-arms').value,
-                thighs: document.getElementById('in-thighs').value
-            };
-
-            try {
-                await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-                showToast("Armor Updated! 🛡️");
-                fetchBodyHistory(); 
-            } catch (e) {
-                showToast("Save Failed!");
-            } finally {
-                btn.innerHTML = '<i class="fas fa-save animate-bounce"></i> Log Measurements';
-                btn.disabled = false;
+                // Render Comparison Badges
+                renderModernComparison(start, latest);
             }
+
+            // 2. Render History List (New Table View)
+            renderHistoryList(history);
+
+        } else {
+            document.getElementById('body-last-date').innerText = "No Data";
+            document.getElementById('body-history-list').innerHTML = '<div class="p-4 text-center text-xs text-slate-400">No logs found yet. Start measuring!</div>';
         }
+    } catch (e) {
+        console.error("Body Sync Error:", e);
+        document.getElementById('body-last-date').innerText = "Sync Error";
+        // Optional: Show a toast only if user clicked specific buttons, to avoid annoyance on load
+    }
+}
+
+function renderModernComparison(start, current) {
+    // 1. Update The Big Card (Waist Focus)
+    document.getElementById('disp-start-waist').innerText = start.waist;
+    document.getElementById('disp-curr-waist').innerText = current.waist;
+    
+    const waistDiff = (current.waist - start.waist).toFixed(1);
+    const badge = document.getElementById('disp-badge-waist');
+    const status = document.getElementById('overall-status');
+
+    if (waistDiff < 0) {
+        badge.innerText = `${waistDiff}" Down`;
+        badge.className = "inline-block bg-emerald-500/20 text-emerald-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-emerald-500/30";
+        status.innerText = "Trending: FAT LOSS 📉";
+        status.className = "text-emerald-400 font-bold";
+    } else if (waistDiff > 0) {
+        badge.innerText = `+${waistDiff}" Up`;
+        badge.className = "inline-block bg-rose-500/20 text-rose-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-rose-500/30";
+        status.innerText = "Trending: GAIN ⚠️";
+        status.className = "text-rose-400 font-bold";
+    } else {
+        badge.innerText = "No Change";
+        badge.className = "inline-block bg-slate-500/20 text-slate-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1";
+        status.innerText = "Trending: STABLE";
+        status.className = "text-slate-400 font-bold";
+    }
+
+    // 2. Update Small Cards (Helper function)
+    updateMiniCard('chest', start.chest, current.chest);
+    updateMiniCard('waist', start.waist, current.waist, true); // True = Reverse color logic (less is good)
+    updateMiniCard('arms', start.arms, current.arms); // Arms usually gain is muscle (context dependent, keeping neutral for now)
+    updateMiniCard('thighs', start.thighs, current.thighs, true);
+}
+
+function updateMiniCard(id, startVal, currVal, isFatLossMetric = false) {
+    document.getElementById(`start-${id}`).innerText = startVal;
+    const el = document.getElementById(`diff-${id}`);
+    const diff = (currVal - startVal).toFixed(1);
+    
+    if (diff == 0) {
+        el.innerText = "0.0";
+        el.className = "text-[9px] font-black text-slate-300";
+        return;
+    }
+
+    const isNegative = diff < 0;
+    // For Waist/Thighs: Negative is GOOD (Green). For Chest/Arms: Positive is usually GOOD (Green) or Gain.
+    // Simplifying: Green for Loss if isFatLossMetric, else Blue for Gain.
+    
+    if (isFatLossMetric) {
+        if (isNegative) { // Lost inches (Good)
+            el.innerText = `${diff}"`;
+            el.className = "text-[9px] font-black text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 rounded";
+        } else { // Gained inches (Bad)
+            el.innerText = `+${diff}"`;
+            el.className = "text-[9px] font-black text-rose-500 bg-rose-50 dark:bg-rose-900/30 px-1.5 rounded";
+        }
+    } else {
+        if (isNegative) { 
+            el.innerText = `${diff}"`;
+            el.className = "text-[9px] font-black text-slate-400";
+        } else {
+            el.innerText = `+${diff}"`;
+            el.className = "text-[9px] font-black text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded";
+        }
+    }
+}
+
+function renderHistoryList(history) {
+    const container = document.getElementById('body-history-list');
+    container.innerHTML = '';
+    
+    // Reverse array to show newest first
+    const reversed = [...history].reverse();
+
+    reversed.forEach((log, index) => {
+        const d = new Date(log.date);
+        const dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+        
+        // Calculate diff from previous log (which is next in this reversed array)
+        let trendIcon = '<i class="fas fa-minus text-slate-300"></i>';
+        if (index < reversed.length - 1) {
+            const prev = reversed[index + 1];
+            if (log.waist < prev.waist) trendIcon = '<i class="fas fa-arrow-down text-emerald-500"></i>';
+            else if (log.waist > prev.waist) trendIcon = '<i class="fas fa-arrow-up text-rose-500"></i>';
+        }
+
+        const html = `
+        <div class="flex items-center justify-between p-3 border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
+            <div class="w-10">
+                <p class="text-[10px] font-black text-slate-400 uppercase">${dateStr}</p>
+            </div>
+            <div class="flex-1 px-4 grid grid-cols-4 gap-2 text-center">
+                <div><p class="text-[8px] text-slate-400 uppercase">Chest</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.chest}</p></div>
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded"><p class="text-[8px] text-indigo-400 uppercase">Waist</p><p class="text-xs font-black text-indigo-600 dark:text-indigo-400">${log.waist}</p></div>
+                <div><p class="text-[8px] text-slate-400 uppercase">Arms</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.arms}</p></div>
+                <div><p class="text-[8px] text-slate-400 uppercase">Thighs</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.thighs}</p></div>
+            </div>
+            <div class="w-6 text-right text-xs">
+                ${trendIcon}
+            </div>
+        </div>
+        `;
+        container.innerHTML += html;
+    });
+}
+
 
     </script>
 </body>
