@@ -1,59 +1,38 @@
 <!-- 
     ================================================================
-    FILE: Project-100-Ultimate-v4.html
+    FILE: Project-100-Ultimate-v6.5.html
     AUTHOR: Vikas Rawat
-    MISSION: 13 KG DROP (Target 65.5 KG)
-    STATUS: War Mode (Feb 02 - May 12)
-    
-    UPDATES v4.0:
-    1. Loading State on Save Button (Spinner added).
-    2. Modern Timeline Design for Diet Page.
-    3. Deep Mood Integration (Theme changes completely).
-    4. Haptic Feedback everywhere.
+    MISSION: 80 KG -> 66 KG
+    UPDATES: 
+    1. Workout Tab restored (Pull/Legs added back).
+    2. Body Tab now compares Sheet Data (First Log vs Latest Log).
+    3. Visual Badges for Inches Lost/Gained.
     ================================================================
 -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- 
-        META TAGS
-        Explainer:
-        - Viewport: Mobile screen par website app jaisi dikhegi.
-        - User-scalable=no: Zoom band hai taaki native app feel aaye.
-    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROJECT 100 | RELOADED</title>
+    <title>PROJECT 100 | FAT DOMINATION</title>
     
-    <!-- FAVICON -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
-    <!-- 
-        LIBRARIES (DEPENDENCIES)
-        Explainer:
-        - Tailwind: Design engine.
-        - Chart.js: Graph engine.
-        - FontAwesome: Icons.
-        - Google Fonts: Premium Typography.
-    -->
+    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 
-    <!-- TAILWIND CONFIGURATION -->
     <script>
         tailwind.config = {
             darkMode: 'class', 
             theme: {
                 extend: {
                     colors: {
-                        war: '#e11d48',       // Rose 600 (Danger)
-                        victory: '#10b981',   // Emerald 500 (Success)
-                        neutral: '#4f46e5',   // Indigo 600 (Stable)
-                        dark_bg: '#0f172a',   // Slate 900
+                        war: '#e11d48', victory: '#10b981', neutral: '#4f46e5', dark_bg: '#0f172a',
                     },
                     fontFamily: { 
                         sans: ['Plus Jakarta Sans', 'sans-serif'], 
@@ -62,1357 +41,347 @@
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 8s linear infinite',
                     },
                     keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-5px)' },
-                        }
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } }
                     }
                 }
             }
         }
     </script>
 
-    <!-- 
-        CSS STYLES
-        Explainer:
-        - Glassmorphism: Cards ko transparent look dene ke liye.
-        - Modal Logic: Popups ko smooth open/close karne ke liye.
-    -->
     <style>
         body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
         .dark body { background-color: #020617; color: #e2e8f0; }
 
-        /* ✨ Glass Panel */
-        .glass-panel { 
-            background: rgba(255, 255, 255, 0.90); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .dark .glass-panel { 
-            background: rgba(15, 23, 42, 0.90); 
-            border-color: rgba(255,255,255,0.05); 
-        }
+        /* Glass Panel */
+        .glass-panel { background: rgba(255, 255, 255, 0.90); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .dark .glass-panel { background: rgba(15, 23, 42, 0.90); border-color: rgba(255,255,255,0.05); }
 
-        /* ✨ Tabs Animation */
+        /* Animations */
         .tab-content { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ✨ Clean UI */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .nav-item { transition: all 0.2s; opacity: 0.6; }
         .nav-item.active { opacity: 1; transform: translateY(-3px); font-weight: 800; }
+
+        /* Hologram Grid */
+        .hologram-grid { background-image: linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px); background-size: 20px 20px; }
+        .scanner-line { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #6366f1; box-shadow: 0 0 10px #6366f1, 0 0 20px #6366f1; animation: scan 3s linear infinite; z-index: 5; }
+        @keyframes scan { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+        /* Armor Lab Cards */
+        .armor-card { background: white; border-radius: 1.5rem; padding: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; transition: transform 0.2s; }
+        .dark .armor-card { background: #1e293b; border-color: #334155; }
+        .armor-card:active { transform: scale(0.98); }
+
+        .control-pill { background: #f8fafc; border-radius: 1rem; padding: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .dark .control-pill { background: #0f172a; }
         
-        /* Mood Based Nav Colors (JS will toggle classes) */
-        .nav-active-war { color: #e11d48; }
-        .nav-active-victory { color: #10b981; }
-        .nav-active-neutral { color: #4f46e5; }
+        .ctrl-btn-round { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #94a3b8; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s; }
+        .dark .ctrl-btn-round { background: #1e293b; color: #64748b; }
+        .ctrl-btn-round:active { transform: scale(0.9); background: #e2e8f0; }
 
-        /* ✨ Modal Animation */
-        .modal-overlay {
-            transition: opacity 0.3s ease-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-card {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform: scale(0.9);
-        }
-        .modal-overlay.open .modal-card {
-            transform: scale(1);
-        }
+        /* Body Progress Bars */
+        .stat-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin-top: 8px; position: relative; }
+        .dark .stat-bar-bg { background: #334155; }
+        .stat-bar-fill { height: 100%; border-radius: 10px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* ✨ Signature Font */
-        .signature-font { font-family: 'Satisfy', cursive; font-style: italic; }
-        
-        .fab-glow { box-shadow: 0 0 25px rgba(225, 29, 72, 0.6); }
-        
-        /* Timeline Line */
-        .timeline-line::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 20px;
-            width: 2px;
-            background: #e2e8f0;
-            z-index: 0;
-        }
-        .dark .timeline-line::before { background: #334155; }
-        
-/* --- CUSTOM CHECKBOX ANIMATION (Daily Battle) --- */
-.cb-container {
-  /* Theme Variables */
-  --check-color: #e11d48; /* Rose 600 */
-  --text-light: #475569;  /* Slate 600 */
-  --text-dark: #cbd5e1;   /* Slate 300 */
-  --disabled: #94a3b8;    /* Slate 400 */
-  --bg-light: #ffffff;
-  --bg-dark: #1e293b;     /* Slate 800 */
-}
+        /* Checkbox & Misc Styles from previous versions kept for stability */
+        .ios-checkbox { --checkbox-size: 24px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; width: 100%; }
+        .ios-checkbox input { display: none; }
+        .checkbox-wrapper { position: relative; width: var(--checkbox-size); height: var(--checkbox-size); border-radius: 8px; transition: transform 0.2s ease; flex-shrink: 0; }
+        .checkbox-bg { position: absolute; inset: 0; border-radius: 8px; border: 2px solid #cbd5e1; background: #f8fafc; transition: all 0.2s ease; }
+        .dark .checkbox-bg { border-color: #475569; background: #1e293b; }
+        .checkbox-icon { position: absolute; inset: 0; margin: auto; width: 80%; height: 80%; color: white; transform: scale(0); transition: all 0.2s ease; }
+        .ios-checkbox input:checked + .checkbox-wrapper .checkbox-bg { background: var(--checkbox-color); border-color: var(--checkbox-color); box-shadow: 0 4px 10px var(--checkbox-shadow); }
+        .ios-checkbox input:checked + .checkbox-wrapper .checkbox-icon { transform: scale(1); }
+        .ios-checkbox input:checked + .checkbox-wrapper { animation: bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .ios-checkbox input:checked ~ .task-text { text-decoration: line-through; opacity: 0.6; color: #94a3b8; }
+        .ios-checkbox.blue { --checkbox-color: #3b82f6; --checkbox-shadow: rgba(59, 130, 246, 0.4); }
+        .ios-checkbox.cyan { --checkbox-color: #06b6d4; --checkbox-shadow: rgba(6, 182, 212, 0.4); }
+        .ios-checkbox.orange { --checkbox-color: #f97316; --checkbox-shadow: rgba(249, 115, 22, 0.4); }
+        .ios-checkbox.green { --checkbox-color: #10b981; --checkbox-shadow: rgba(16, 185, 129, 0.4); }
+        .ios-checkbox.purple { --checkbox-color: #8b5cf6; --checkbox-shadow: rgba(139, 92, 246, 0.4); }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-/* Item Wrapper */
-.cb-item {
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-bottom: 8px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  transition: background 0.2s;
-}
-.cb-item:hover { background-color: rgba(0,0,0,0.03); }
-.dark .cb-item:hover { background-color: rgba(255,255,255,0.03); }
+        /* Liquid Progress Bar */
+        .liquid-gradient { background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%); box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+        .progress-text-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: rgba(255, 255, 255, 0.6); z-index: 0; pointer-events: none; }
+        .pulse-tip { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: white; border-radius: 50%; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); animation: tip-pulse 2s infinite; }
+        @keyframes tip-pulse { 0% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
-/* The Input (Hidden but functional) */
-.cb-item input[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  position: relative;
-  height: 20px;
-  width: 20px;
-  outline: none;
-  border: 0;
-  margin: 0 15px 0 0;
-  cursor: pointer;
-  background: transparent;
-  display: grid;
-  align-items: center;
-}
+        /* Marquee */
+        .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
+        .marquee-content { display: inline-block; animation: marquee 15s linear infinite; padding-left: 100%; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-/* Checkbox Box & Lines */
-.cb-item input[type="checkbox"]::before, .cb-item input[type="checkbox"]::after {
-  content: "";
-  position: absolute;
-  height: 2px;
-  top: auto;
-  background: var(--check-color);
-  border-radius: 2px;
-}
-.cb-item input[type="checkbox"]::before { width: 0px; right: 60%; transform-origin: right bottom; }
-.cb-item input[type="checkbox"]::after { width: 0px; left: 40%; transform-origin: left bottom; }
+        /* Timeline */
+        .fuel-timeline { position: relative; padding-left: 24px; }
+        .fuel-timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 20px; width: 2px; background: linear-gradient(to bottom, #10b981 0%, #3b82f6 50%, #6366f1 100%); opacity: 0.3; }
+        .fuel-node { position: absolute; left: -21px; top: 24px; width: 16px; height: 16px; border-radius: 50%; background: #0f172a; border: 3px solid #10b981; z-index: 10; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); transition: all 0.3s; }
 
-/* Checked State Animations */
-.cb-item input[type="checkbox"]:checked::before { animation: check-01 0.4s ease forwards; }
-.cb-item input[type="checkbox"]:checked::after { animation: check-02 0.4s ease forwards; }
+        /* FAB */
+        .hydro-fab { position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 50%; box-shadow: 0 10px 20px rgba(6, 182, 212, 0.4); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; z-index: 45; transition: all 0.2s; cursor: pointer; }
+        .hydro-fab:active { transform: scale(0.9); }
 
-/* The Label (Text) */
-.cb-item label {
-  color: var(--text-light);
-  position: relative;
-  cursor: pointer;
-  display: grid;
-  align-items: center;
-  width: fit-content;
-  transition: color 0.3s ease;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-.dark .cb-item label { color: var(--text-dark); }
-
-/* Strikethrough Line */
-.cb-item label::before {
-  content: "";
-  position: absolute;
-  height: 2px;
-  width: 0px; /* Initially 0 */
-  left: -2px; /* Offset for animation start */
-  background: var(--disabled);
-  border-radius: 2px;
-  transition: background 0.3s ease;
-  top: 50%; /* Center vertically */
-}
-
-/* Dots Particles */
-.cb-item label:after {
-  content: "";
-  position: absolute;
-  height: 4px;
-  width: 4px;
-  top: 8px;
-  left: -25px;
-  border-radius: 50%;
-}
-
-/* --- iOS ANIMATED CHECKBOX --- */
-.ios-checkbox {
-  --checkbox-size: 24px; /* Perfect Mobile Size */
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  width: 100%;
-}
-
-.ios-checkbox input { display: none; }
-
-.checkbox-wrapper {
-  position: relative;
-  width: var(--checkbox-size);
-  height: var(--checkbox-size);
-  border-radius: 8px;
-  transition: transform 0.2s ease;
-  flex-shrink: 0; /* Prevent shrinking */
-}
-
-/* Unchecked State (Visible Grey) */
-.checkbox-bg {
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  border: 2px solid #cbd5e1; /* Light Grey Border */
-  background: #f8fafc; /* Light BG */
-  transition: all 0.2s ease;
-}
-.dark .checkbox-bg {
-  border-color: #475569; /* Dark Mode Grey Border */
-  background: #1e293b; /* Dark Mode BG */
-}
-
-.checkbox-icon {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 80%;
-  height: 80%;
-  color: white;
-  transform: scale(0);
-  transition: all 0.2s ease;
-}
-
-.check-path {
-  stroke-dasharray: 40;
-  stroke-dashoffset: 40;
-  transition: stroke-dashoffset 0.3s ease 0.1s;
-}
-
-/* Checked State */
-.ios-checkbox input:checked + .checkbox-wrapper .checkbox-bg {
-  background: var(--checkbox-color);
-  border-color: var(--checkbox-color);
-  box-shadow: 0 4px 10px var(--checkbox-shadow);
-}
-
-.ios-checkbox input:checked + .checkbox-wrapper .checkbox-icon { transform: scale(1); }
-.ios-checkbox input:checked + .checkbox-wrapper .check-path { stroke-dashoffset: 0; }
-.ios-checkbox input:checked + .checkbox-wrapper { animation: bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-
-/* Strikethrough Text Effect */
-.ios-checkbox input:checked ~ .task-text {
-  text-decoration: line-through;
-  opacity: 0.6;
-  color: #94a3b8;
-}
-
-/* --- COLORS --- */
-.ios-checkbox.blue { --checkbox-color: #3b82f6; --checkbox-shadow: rgba(59, 130, 246, 0.4); }
-.ios-checkbox.cyan { --checkbox-color: #06b6d4; --checkbox-shadow: rgba(6, 182, 212, 0.4); }
-.ios-checkbox.orange { --checkbox-color: #f97316; --checkbox-shadow: rgba(249, 115, 22, 0.4); }
-.ios-checkbox.green { --checkbox-color: #10b981; --checkbox-shadow: rgba(16, 185, 129, 0.4); }
-.ios-checkbox.purple { --checkbox-color: #8b5cf6; --checkbox-shadow: rgba(139, 92, 246, 0.4); }
-
-@keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
-/* --- HERO CARD UPGRADES --- */
-
-/* 1. Liquid Gradient Bar */
-.liquid-gradient {
-    background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-}
-
-/* GHOST TEXT CENTER ALIGNMENT */
-.progress-text-overlay {
-    position: absolute;
-    inset: 0; /* Top, Bottom, Left, Right = 0 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.6);
-    z-index: 0; /* Bar ke peeche rahega */
-    pointer-events: none;
-}
-
-
-/* Jo text White Bar ke upar aayega, wo Dark ho jayega automatically */
-.progress-fill-text {
-    background: white;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: invert(1) grayscale(1) contrast(9); 
-    mix-blend-mode: difference; 
-}
-
-/* 3. The Percentage Bubble */
-.progress-bubble {
-    position: absolute;
-    right: -12px; /* Center bubble on tip */
-    top: -32px;
-    background: white;
-    color: #e11d48; /* War Color Default */
-    padding: 4px 8px;
-    border-radius: 8px;
-    font-size: 10px;
-    font-weight: 800;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transform: translateY(10px) scale(0.8);
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 20;
-}
-/* Bubble ka neeche wala teer (Arrow) */
-.progress-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 4px;
-    border-style: solid;
-    border-color: white transparent transparent transparent;
-}
-/* Show Bubble Class */
-.bubble-visible {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-}
-
-/* 4. Pulsing Tip (Heartbeat) */
-.pulse-tip {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-    animation: tip-pulse 2s infinite;
-}
-@keyframes tip-pulse {
-    0% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-    70% { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-    100% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-}
-
-/* --- WORKOUT TAB 2.0 STYLES --- */
-
-/* 1. Workout Cards */
-.workout-card {
-    background: white;
-    border-radius: 1.5rem;
-    padding: 1.25rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f1f5f9;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-}
-.dark .workout-card {
-    background: #1e293b;
-    border-color: #334155;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-}
-.workout-card:active { transform: scale(0.98); }
-
-/* 2. Exercise List Item (Inside Modal) */
-.exercise-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: #f8fafc;
-    border-radius: 1rem;
-    margin-bottom: 0.75rem;
-    border: 1px solid transparent;
-}
-.dark .exercise-item { background: #0f172a; }
-
-/* 3. Toggle Switch (Fitify Style) */
-.toggle-checkbox:checked {
-    right: 0;
-    border-color: #10b981;
-}
-.toggle-checkbox:checked + .toggle-label {
-    background-color: #10b981;
-}
-
-/* --- WAR ROOM STYLES --- */
-.war-card {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.war-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at top right, rgba(255,255,255,0.1), transparent 60%);
-    z-index: 1;
-}
-
-/* Weekly Streak Grid */
-.streak-dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 800;
-    background: #f1f5f9;
-    color: #94a3b8;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-}
-.dark .streak-dot { background: #1e293b; color: #475569; }
-
-/* Status Colors */
-.streak-dot.done { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transform: scale(1.1); }
-.streak-dot.missed { background: #e11d48; color: white; opacity: 0.5; }
-.streak-dot.today { border: 2px solid #6366f1; color: #6366f1; background: transparent; }
-.dark .streak-dot.today { border-color: #818cf8; color: #818cf8; }
-
-/* Input Fields */
-.war-input {
-    background: #f8fafc;
-    border: 2px solid #e2e8f0;
-    border-radius: 1rem;
-    padding: 1rem;
-    text-align: center;
-    font-weight: 800;
-    font-family: 'Outfit', sans-serif;
-    outline: none;
-    transition: all 0.2s;
-}
-.dark .war-input { background: #0f172a; border-color: #1e293b; color: white; }
-.war-input:focus { border-color: #6366f1; background: white; }
-.dark .war-input:focus { background: #1e293b; }
-/* --- FUEL STATION STYLES --- */
-
-/* 1. Circular Gauges (Energy Core) */
-.gauge-circle {
-    transition: stroke-dashoffset 1s ease-in-out;
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-}
-
-/* 2. Scrolling Marquee (Red Line) */
-.marquee-container {
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-}
-.marquee-content {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
-    padding-left: 100%;
-}
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
-
-/* 3. Cyberpunk Timeline */
-.fuel-timeline {
-    position: relative;
-    padding-left: 24px;
-}
-.fuel-timeline::before {
-    content: '';
-    position: absolute;
-    left: 7px; /* Align with dots */
-    top: 10px;
-    bottom: 20px;
-    width: 2px;
-    background: linear-gradient(to bottom, #10b981 0%, #3b82f6 50%, #6366f1 100%);
-    opacity: 0.3;
-}
-
-/* 4. Timeline Nodes (Dots) */
-.fuel-node {
-    position: absolute;
-    left: -21px; /* Adjust based on padding */
-    top: 24px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #0f172a;
-    border: 3px solid #10b981;
-    z-index: 10;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-    transition: all 0.3s;
-}
-.group:hover .fuel-node { transform: scale(1.3); background: #10b981; }
-
-/* 5. Hydration Floating Button */
-.hydro-fab {
-    position: fixed;
-    bottom: 100px; /* Above Bottom Nav */
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-    border-radius: 50%;
-    box-shadow: 0 10px 20px rgba(6, 182, 212, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    z-index: 45;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-.hydro-fab:active { transform: scale(0.9); }
-/* Water Ripple Animation */
-.hydro-fab::after {
-    content: '';
-    position: absolute;
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    border: 2px solid #06b6d4;
-    opacity: 0;
-    animation: ripple 2s infinite;
-}
-@keyframes ripple {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(2); opacity: 0; }
-}
-
-/* Accordion Styling */
-details summary::-webkit-details-marker { display: none; }
-
-/* --- FUEL STATION STYLES --- */
-
-/* 1. Circular Gauges (Energy Core) */
-.gauge-circle {
-    transition: stroke-dashoffset 1s ease-in-out;
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-}
-
-/* 2. Scrolling Marquee (The Red Line) */
-.marquee-container {
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-}
-.marquee-content {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
-    padding-left: 100%;
-}
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
-
-/* 3. Cyberpunk Timeline */
-.fuel-timeline {
-    position: relative;
-    padding-left: 24px;
-}
-.fuel-timeline::before {
-    content: '';
-    position: absolute;
-    left: 7px; /* Align with dots */
-    top: 10px;
-    bottom: 20px;
-    width: 2px;
-    background: linear-gradient(to bottom, #10b981 0%, #3b82f6 50%, #6366f1 100%);
-    opacity: 0.3;
-}
-
-/* 4. Timeline Nodes (Dots) */
-.fuel-node {
-    position: absolute;
-    left: -21px; /* Adjust based on padding */
-    top: 24px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #0f172a;
-    border: 3px solid #10b981;
-    z-index: 10;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-    transition: all 0.3s;
-}
-.group:hover .fuel-node { transform: scale(1.3); background: #10b981; }
-
-/* 5. Hydration Floating Button */
-.hydro-fab {
-    position: fixed;
-    bottom: 100px; /* Above Bottom Nav */
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-    border-radius: 50%;
-    box-shadow: 0 10px 20px rgba(6, 182, 212, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    z-index: 45;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-.hydro-fab:active { transform: scale(0.9); }
-
-/* Water Ripple Animation */
-.hydro-fab::after {
-    content: '';
-    position: absolute;
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    border: 2px solid #06b6d4;
-    opacity: 0;
-    animation: ripple 2s infinite;
-}
-@keyframes ripple {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(2); opacity: 0; }
-}
-
-/* Accordion Styling (Arrow hide) */
-details summary::-webkit-details-marker { display: none; }
-
-/* --- ARMOR LAB STYLES --- */
-
-/* 1. The Human Blueprint (Visual) */
-.blueprint-container {
-    position: relative;
-    height: 300px;
-    background: radial-gradient(circle at center, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
-}
-.blueprint-figure {
-    font-size: 12rem;
-    color: rgba(148, 163, 184, 0.2); /* Faded color */
-    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
-    animation: breathe 4s ease-in-out infinite;
-}
-@keyframes breathe {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.02); opacity: 1; }
-}
-
-/* Glowing Nodes on Body */
-.body-node {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #10b981; /* Emerald */
-    border-radius: 50%;
-    box-shadow: 0 0 15px #10b981;
-    z-index: 10;
-    animation: pulse-node 2s infinite;
-}
-.body-node::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 24px; height: 24px;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    border-radius: 50%;
-    animation: ripple-node 2s infinite;
-}
-@keyframes pulse-node { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-@keyframes ripple-node { 0% { width: 12px; height: 12px; opacity: 1; } 100% { width: 40px; height: 40px; opacity: 0; } }
-
-/* Node Positions (Approximate for visual) */
-.node-chest { top: 30%; }
-.node-waist { top: 45%; }
-.node-arms { top: 32%; left: 35%; }
-.node-thighs { top: 60%; right: 40%; }
-
-/* 2. Measurement Control Cards (Dials) */
-.stat-card {
-    background: white;
-    border: 1px solid #f1f5f9;
-    border-radius: 1.5rem;
-    padding: 1rem;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-}
-.dark .stat-card { background: #1e293b; border-color: #334155; }
-.stat-card:active { transform: scale(0.98); }
-
-.stat-value {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 900;
-    font-size: 1.5rem;
-    color: #0f172a;
-    text-align: center;
-    width: 60px;
-}
-.dark .stat-value { color: white; }
-
-/* Control Buttons (+ / -) */
-.ctrl-btn {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: #f1f5f9;
-    color: #64748b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    transition: all 0.2s;
-}
-.dark .ctrl-btn { background: #0f172a; color: #94a3b8; }
-.ctrl-btn:active { transform: scale(0.9); background: #cbd5e1; }
-
-/* 3. Theme Toggle Button (Header) */
-.theme-toggle-header {
-    width: 40px; height: 40px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    color: #64748b;
-    transition: all 0.3s;
-}
-.dark .theme-toggle-header { color: #f1f5f9; background: rgba(255,255,255,0.05); }
-.theme-toggle-header:active { transform: rotate(15deg) scale(0.9); }
+        .modal-overlay { transition: opacity 0.3s ease-out; opacity: 0; pointer-events: none; }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-card { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); transform: scale(0.9); }
+        .modal-overlay.open .modal-card { transform: scale(1); }
+        .theme-toggle-header { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #64748b; transition: all 0.3s; }
+        .dark .theme-toggle-header { color: #f1f5f9; background: rgba(255,255,255,0.05); }
 
     </style>
 </head>
 
 <body class="text-slate-800 dark:text-slate-200 pb-36 select-none font-sans transition-colors duration-300">
 
-    <!-- 
-        HEADER SECTION
-        Explainer:
-        - Logo aur Status Badge mood ke hisaab se color change karenge.
-    -->
-        <header class="fixed top-0 w-full glass-panel z-40 px-5 py-4 shadow-sm">
+    <header class="fixed top-0 w-full glass-panel z-40 px-5 py-4 shadow-sm">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <div class="flex items-center gap-3">
-                <div id="logo-box" class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg shadow-rose-500/30 animate-float">
-                    100
-                </div>
+                <div id="logo-box" class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg shadow-rose-500/30 animate-float">100</div>
                 <div>
                     <h1 class="font-heading font-extrabold text-lg leading-none tracking-tight text-slate-900 dark:text-white">PROJECT <span id="header-highlight" class="text-rose-600">RELOADED</span></h1>
-                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Fat Domination • v4.0</p>
+                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Fat Domination • v6.5</p>
                 </div>
             </div>
-            
             <div class="flex items-center gap-2">
-                <button onclick="vibrate(); toggleTheme()" class="theme-toggle-header shadow-sm">
-                    <i class="fas fa-moon"></i>
-                </button>
-                
+                <button onclick="vibrate(); toggleTheme()" class="theme-toggle-header shadow-sm"><i class="fas fa-moon"></i></button>
                 <div id="status-badge" class="bg-rose-50 dark:bg-white/5 px-3 py-2 rounded-xl border border-rose-100 dark:border-white/10 shadow-sm">
-                    <span class="text-[10px] font-bold text-rose-600 dark:text-rose-300 flex items-center gap-1.5">
-                        <span id="status-dot" class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> ACTIVE
-                    </span>
+                    <span class="text-[10px] font-bold text-rose-600 dark:text-rose-300 flex items-center gap-1.5"><span id="status-dot" class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> ACTIVE</span>
                 </div>
             </div>
         </div>
     </header>
 
-
-    <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-slate-900/90 text-white px-6 py-3 rounded-full text-xs font-bold shadow-2xl backdrop-blur-md z-[200] transition-all duration-300 opacity-0 translate-y-[-20px] pointer-events-none flex items-center gap-2">
         <i class="fas fa-check-circle text-emerald-400"></i> <span id="toast-msg">Action Successful</span>
     </div>
 
-    <!-- MAIN CONTENT -->
     <main class="pt-24 px-4 max-w-2xl mx-auto">
 
         <!-- ================= TAB 1: DASHBOARD ================= -->
         <div id="tab-dashboard" class="tab-content active space-y-5">
-            
-            <!-- 
-                HERO CARD (WEIGHT & TARGET)
-                Explainer:
-                - Mood Engine iska color badlega.
-                - WAR = Red/Orange
-                - VICTORY = Green/Teal
-                - NEUTRAL = Blue/Indigo
-            -->
-                        <div id="hero-card" class="bg-gradient-to-br from-rose-600 to-orange-600 rounded-[2rem] p-6 text-white shadow-xl shadow-rose-500/20 relative overflow-hidden group transition-all duration-700">
+            <div id="hero-card" class="bg-gradient-to-br from-rose-600 to-orange-600 rounded-[2rem] p-6 text-white shadow-xl shadow-rose-500/20 relative overflow-hidden group transition-all duration-700">
                 <div class="absolute -right-10 -top-10 text-[10rem] text-white opacity-10 transform rotate-12 group-hover:rotate-0 transition-transform duration-700"><i class="fas fa-bullseye"></i></div>
-                
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <span class="inline-block px-2 py-1 rounded-lg bg-black/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-1 text-white/90">Mission Status</span>
-                            <h2 class="text-3xl font-heading font-black mt-1 tracking-tight" id="days-counter">Loading...</h2>
-                            <p class="text-xs font-medium opacity-90 text-orange-100 mt-0.5">Start: 02 Feb • End: 12 May</p>
-                        </div>
-                        
-                        <div class="text-right">
-                            <div class="flex items-center justify-end gap-1.5 mb-1">
-                                <i class="fas fa-fire text-orange-300 animate-pulse"></i>
-                                <span class="text-2xl font-heading font-black" id="streak-counter">0</span>
-                            </div>
-                            <p class="text-[9px] font-bold opacity-80 uppercase tracking-widest">Day Streak</p>
-                        </div>
+                        <div><span class="inline-block px-2 py-1 rounded-lg bg-black/20 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm mb-1 text-white/90">Mission Status</span><h2 class="text-3xl font-heading font-black mt-1 tracking-tight" id="days-counter">Loading...</h2><p class="text-xs font-medium opacity-90 text-orange-100 mt-0.5">Start: 02 Feb • End: 12 May</p></div>
+                        <div class="text-right"><div class="flex items-center justify-end gap-1.5 mb-1"><i class="fas fa-fire text-orange-300 animate-pulse"></i><span class="text-2xl font-heading font-black" id="streak-counter">0</span></div><p class="text-[9px] font-bold opacity-80 uppercase tracking-widest">Day Streak</p></div>
                     </div>
-
                     <div class="bg-black/20 rounded-2xl p-5 backdrop-blur-sm border border-white/10 shadow-inner">
-                        <div class="flex justify-between text-xs font-bold mb-3">
-                            <span class="opacity-80">Current: <span id="current-weight-display" class="text-white text-sm">--</span> KG</span>
-                            <span class="text-white">Goal: 65.5 KG</span>
-                        </div>
-                        
-                        <div class="relative h-5 w-full bg-black/30 rounded-full mb-1"> <div class="progress-text-overlay z-0" id="progress-text-main">
-                                LOADING DATA...
-                            </div>
-
-                            <div id="main-progress" class="h-full liquid-gradient rounded-full transition-all duration-1000 ease-out w-0 relative z-10">
-                              
-
-                                <div class="pulse-tip"></div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 flex items-start gap-2 opacity-90">
-                            <i class="fas fa-microchip text-xs mt-0.5 animate-pulse text-cyan-300"></i>
-                            <p id="hero-quote" class="text-[10px] font-medium leading-relaxed italic">
-                                "Initializing Prophet Engine..."
-                            </p>
-                        </div>
+                        <div class="flex justify-between text-xs font-bold mb-3"><span class="opacity-80">Current: <span id="current-weight-display" class="text-white text-sm">--</span> KG</span><span class="text-white">Goal: 66 KG</span></div>
+                        <div class="relative h-5 w-full bg-black/30 rounded-full mb-1"> <div class="progress-text-overlay z-0" id="progress-text-main">LOADING DATA...</div><div id="main-progress" class="h-full liquid-gradient rounded-full transition-all duration-1000 ease-out w-0 relative z-10"><div class="pulse-tip"></div></div></div>
+                        <div class="mt-4 flex items-start gap-2 opacity-90"><i class="fas fa-microchip text-xs mt-0.5 animate-pulse text-cyan-300"></i><p id="hero-quote" class="text-[10px] font-medium leading-relaxed italic">"Initializing Prophet Engine..."</p></div>
                     </div>
                 </div>
             </div>
-
-            <!-- WEEKEND INDICATOR -->
             <div id="day-indicator" class="hidden rounded-xl p-3 border flex items-center justify-between shadow-sm animate-fadeIn"></div>
-
-            <!-- WEIGHT LOG & CHART -->
             <div class="bg-white dark:bg-slate-800 p-5 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 shadow-sm">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-heading font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                        <i class="fas fa-chart-line text-indigo-500"></i> Weight Trend
-                    </h3>
-                    <button onclick="openWeightModal()" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-xs font-bold shadow-lg active:scale-95 transition-transform flex items-center gap-2 hover:shadow-xl">
-                        <i class="fas fa-plus"></i> LOG TODAY
-                    </button>
-                </div>
-                <div class="h-40 w-full">
-                    <canvas id="weightChart"></canvas>
-                </div>
+                <div class="flex justify-between items-center mb-4"><h3 class="font-heading font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="fas fa-chart-line text-indigo-500"></i> Weight Trend</h3><button onclick="openWeightModal()" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-xs font-bold shadow-lg active:scale-95 transition-transform flex items-center gap-2 hover:shadow-xl"><i class="fas fa-plus"></i> LOG TODAY</button></div>
+                <div class="h-40 w-full"><canvas id="weightChart"></canvas></div>
             </div>
-
-            <!-- STATS GRID (CLICKABLE) -->
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="openStatModal('calories')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden">
-                    <div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-fire text-4xl text-orange-500"></i></div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center"><i class="fas fa-fire"></i></div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">Limit</p>
-                    </div>
-                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">1650</p>
-                    <p class="text-[10px] text-slate-500 font-bold">Kcal Locked 🔒</p>
-                </button>
-
-                <button onclick="openStatModal('water')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden">
-                    <div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-tint text-4xl text-blue-500"></i></div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center"><i class="fas fa-tint"></i></div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">Water</p>
-                    </div>
-                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">4.0 L</p>
-                    <p class="text-[10px] text-slate-500 font-bold">Flush Fat 💧</p>
-                </button>
-
-                <button onclick="openStatModal('neat')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden">
-                    <div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-shoe-prints text-4xl text-emerald-500"></i></div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center"><i class="fas fa-shoe-prints"></i></div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">NEAT</p>
-                    </div>
-                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">8,000</p>
-                    <p class="text-[10px] text-slate-500 font-bold">Steps Daily 👣</p>
-                </button>
-
-                <button onclick="openStatModal('sleep')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden">
-                    <div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-moon text-4xl text-purple-500"></i></div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center"><i class="fas fa-moon"></i></div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">Sleep</p>
-                    </div>
-                    <p class="text-xl font-heading font-black text-slate-800 dark:text-white">10:30 PM</p>
-                    <p class="text-[10px] text-slate-500 font-bold">Recovery 😴</p>
-                </button>
+                <button onclick="openStatModal('calories')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden"><div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-fire text-4xl text-orange-500"></i></div><div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center"><i class="fas fa-fire"></i></div><p class="text-[10px] font-bold text-slate-400 uppercase">Limit</p></div><p class="text-xl font-heading font-black text-slate-800 dark:text-white">1650</p><p class="text-[10px] text-slate-500 font-bold">Kcal Locked 🔒</p></button>
+                <button onclick="openStatModal('water')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden"><div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-tint text-4xl text-blue-500"></i></div><div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center"><i class="fas fa-tint"></i></div><p class="text-[10px] font-bold text-slate-400 uppercase">Water</p></div><p class="text-xl font-heading font-black text-slate-800 dark:text-white">4.0 L</p><p class="text-[10px] text-slate-500 font-bold">Flush Fat 💧</p></button>
+                <button onclick="openStatModal('neat')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden"><div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-shoe-prints text-4xl text-emerald-500"></i></div><div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center"><i class="fas fa-shoe-prints"></i></div><p class="text-[10px] font-bold text-slate-400 uppercase">NEAT</p></div><p class="text-xl font-heading font-black text-slate-800 dark:text-white">8,000</p><p class="text-[10px] text-slate-500 font-bold">Steps Daily 👣</p></button>
+                <button onclick="openStatModal('sleep')" class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition text-left active:scale-95 relative group overflow-hidden"><div class="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-moon text-4xl text-purple-500"></i></div><div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center"><i class="fas fa-moon"></i></div><p class="text-[10px] font-bold text-slate-400 uppercase">Sleep</p></div><p class="text-xl font-heading font-black text-slate-800 dark:text-white">10:30 PM</p><p class="text-[10px] text-slate-500 font-bold">Recovery 😴</p></button>
             </div>
-
-<!-- DAILY CHECKLIST (iOS ANIMATED) -->
-<div class="bg-white dark:bg-slate-800 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
-    <div class="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center">
-        <h3 class="font-heading font-bold text-slate-800 dark:text-white flex items-center gap-2">
-            <i class="fas fa-list-check text-rose-500"></i> Daily Battle
-        </h3>
-        <span class="text-[10px] font-bold text-slate-400 uppercase" id="current-date-display">--</span>
-    </div>
-    
-    <div class="p-2 space-y-1">
-        
-        <!-- Item 1: Wake Up (Blue) -->
-        <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <label class="ios-checkbox blue">
-                <input type="checkbox" id="chk-wake" onclick="vibrate(); saveChecklist()">
-                <div class="checkbox-wrapper">
-                    <div class="checkbox-bg"></div>
-                    <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg>
+            <div class="bg-white dark:bg-slate-800 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center"><h3 class="font-heading font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="fas fa-list-check text-rose-500"></i> Daily Battle</h3><span class="text-[10px] font-bold text-slate-400 uppercase" id="current-date-display">--</span></div>
+                <div class="p-2 space-y-1">
+                    <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition"><label class="ios-checkbox blue"><input type="checkbox" id="chk-wake" onclick="vibrate(); saveChecklist()"><div class="checkbox-wrapper"><div class="checkbox-bg"></div><svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg></div><span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">05:30 AM Wake Up</span></label></div>
+                    <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition"><label class="ios-checkbox cyan"><input type="checkbox" id="chk-water" onclick="vibrate(); saveChecklist()"><div class="checkbox-wrapper"><div class="checkbox-bg"></div><svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg></div><span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">Warm Water + Lemon 🍋</span></label></div>
+                    <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition"><label class="ios-checkbox orange"><input type="checkbox" id="chk-cardio" onclick="vibrate(); saveChecklist()"><div class="checkbox-wrapper"><div class="checkbox-bg"></div><svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg></div><span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">06:15 AM Hybrid Storm</span></label></div>
+                    <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition"><label class="ios-checkbox green"><input type="checkbox" id="chk-diet" onclick="vibrate(); saveChecklist()"><div class="checkbox-wrapper"><div class="checkbox-bg"></div><svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg></div><span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">Diet 100% Clean (No Cheat)</span></label></div>
+                    <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition"><label class="ios-checkbox purple"><input type="checkbox" id="chk-strength" onclick="vibrate(); saveChecklist()"><div class="checkbox-wrapper"><div class="checkbox-bg"></div><svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg></div><span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">06:30 PM Iron Command</span></label></div>
                 </div>
-                <span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">05:30 AM Wake Up</span>
-            </label>
-        </div>
+            </div>
+        </div> 
 
-        <!-- Item 2: Water (Cyan) -->
-        <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <label class="ios-checkbox cyan">
-                <input type="checkbox" id="chk-water" onclick="vibrate(); saveChecklist()">
-                <div class="checkbox-wrapper">
-                    <div class="checkbox-bg"></div>
-                    <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg>
-                </div>
-                <span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">Warm Water + Lemon 🍋</span>
-            </label>
-        </div>
-
-        <!-- Item 3: Cardio (Orange) -->
-        <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <label class="ios-checkbox orange">
-                <input type="checkbox" id="chk-cardio" onclick="vibrate(); saveChecklist()">
-                <div class="checkbox-wrapper">
-                    <div class="checkbox-bg"></div>
-                    <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg>
-                </div>
-                <span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">06:15 AM Hybrid Storm</span>
-            </label>
-        </div>
-
-        <!-- Item 4: Diet (Green) -->
-        <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <label class="ios-checkbox green">
-                <input type="checkbox" id="chk-diet" onclick="vibrate(); saveChecklist()">
-                <div class="checkbox-wrapper">
-                    <div class="checkbox-bg"></div>
-                    <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg>
-                </div>
-                <span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">Diet 100% Clean (No Cheat)</span>
-            </label>
-        </div>
-
-        <!-- Item 5: Gym (Purple) -->
-        <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <label class="ios-checkbox purple">
-                <input type="checkbox" id="chk-strength" onclick="vibrate(); saveChecklist()">
-                <div class="checkbox-wrapper">
-                    <div class="checkbox-bg"></div>
-                    <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg>
-                </div>
-                <span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">06:30 PM Iron Command</span>
-</label>
-        </div>
-
-    </div>
-</div> </div> 
-
-                <div id="tab-diet" class="tab-content pb-24 space-y-6">
-            
+        <!-- ================= TAB 2: DIET ================= -->
+        <div id="tab-diet" class="tab-content pb-24 space-y-6">
             <div class="sticky top-20 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
-                <div>
-                    <h2 class="text-xl font-heading font-black text-slate-900 dark:text-white uppercase italic">Fuel Station</h2>
-                    <p class="text-[10px] font-bold text-slate-400">Daily Intake Protocol</p>
-                </div>
-                
+                <div><h2 class="text-xl font-heading font-black text-slate-900 dark:text-white uppercase italic">Fuel Station</h2><p class="text-[10px] font-bold text-slate-400">Daily Intake Protocol</p></div>
                 <div class="flex gap-4">
-                    <div class="relative w-12 h-12 flex items-center justify-center">
-                        <svg class="w-full h-full" viewBox="0 0 36 36">
-                            <path class="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
-                            <path class="gauge-circle text-orange-500" stroke-dasharray="85, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
-                        </svg>
-                        <div class="absolute text-[8px] font-black text-slate-700 dark:text-white text-center leading-tight">1650<br>KCAL</div>
-                    </div>
-                    <div class="relative w-12 h-12 flex items-center justify-center">
-                        <svg class="w-full h-full" viewBox="0 0 36 36">
-                            <path class="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
-                            <path class="gauge-circle text-blue-500" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
-                        </svg>
-                        <div class="absolute text-[8px] font-black text-slate-700 dark:text-white text-center leading-tight">120G<br>PRO</div>
-                    </div>
+                    <div class="relative w-12 h-12 flex items-center justify-center"><svg class="w-full h-full" viewBox="0 0 36 36"><path class="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/><path class="gauge-circle text-orange-500" stroke-dasharray="85, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" /></svg><div class="absolute text-[8px] font-black text-slate-700 dark:text-white text-center leading-tight">1650<br>KCAL</div></div>
+                    <div class="relative w-12 h-12 flex items-center justify-center"><svg class="w-full h-full" viewBox="0 0 36 36"><path class="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/><path class="gauge-circle text-blue-500" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" /></svg><div class="absolute text-[8px] font-black text-slate-700 dark:text-white text-center leading-tight">120G<br>PRO</div></div>
                 </div>
             </div>
-
-            <div class="bg-rose-500 text-white py-2 overflow-hidden relative shadow-lg shadow-rose-500/20 rounded-xl">
-                <div class="marquee-container">
-                    <div class="marquee-content text-xs font-black uppercase tracking-widest flex items-center gap-8">
-                        <span>⚠️ THE RED LINE: ZERO SUGAR</span>
-                        <span>⚠️ ZERO MAIDA</span>
-                        <span>⚠️ ZERO BISCUITS</span>
-                        <span>⚠️ NO EXCUSES</span>
-                        <span>⚠️ THE RED LINE: ZERO SUGAR</span>
-                    </div>
-                </div>
-            </div>
-
+            <div class="bg-rose-500 text-white py-2 overflow-hidden relative shadow-lg shadow-rose-500/20 rounded-xl"><div class="marquee-container"><div class="marquee-content text-xs font-black uppercase tracking-widest flex items-center gap-8"><span>⚠️ THE RED LINE: ZERO SUGAR</span><span>⚠️ ZERO MAIDA</span><span>⚠️ ZERO BISCUITS</span><span>⚠️ NO EXCUSES</span><span>⚠️ THE RED LINE: ZERO SUGAR</span></div></div></div>
             <div class="fuel-timeline space-y-6 pt-4">
-                
-                <div class="relative group">
-                    <div class="fuel-node border-cyan-400"></div>
-                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600"><i class="fas fa-glass-water text-lg"></i></div>
-                        <div>
-                            <p class="text-[10px] font-bold text-cyan-500 uppercase tracking-wide">05:30 AM • IGNITION</p>
-                            <h4 class="font-bold text-slate-800 dark:text-white">Warm Water + Lemon 🍋</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative group">
-                    <div class="fuel-node border-yellow-400"></div>
-                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10 p-4 rounded-2xl border border-yellow-200 dark:border-yellow-700/50 shadow-sm flex items-center gap-4 relative overflow-hidden">
-                        <div class="absolute right-0 top-0 p-3 opacity-10"><i class="fas fa-bolt text-4xl text-yellow-500"></i></div>
-                        <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 z-10"><i class="fas fa-dna text-lg"></i></div>
-                        <div class="z-10">
-                            <p class="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wide">07:00 AM • POST-WORKOUT</p>
-                            <h4 class="font-bold text-slate-800 dark:text-white">1 Scoop Whey Protein</h4>
-                            <p class="text-[10px] text-slate-500 font-medium">In Water • Rapid Absorption 🧬</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative group">
-                    <div class="fuel-node border-indigo-500"></div>
-                    <details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item">
-                        <summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-                            <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600"><i class="fas fa-egg text-lg"></i></div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-wide">08:00 AM • BREAKFAST</p>
-                                <h4 class="font-bold text-slate-800 dark:text-white">High Protein Foundation</h4>
-                            </div>
-                            <i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 space-y-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700">
-                            <div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
-                                <span class="text-[9px] font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">OPTION A</span>
-                                <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">5 Egg Whites + 1 Yolk + Toast 🍞</p>
-                            </div>
-                            <div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
-                                <span class="text-[9px] font-bold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded">OPTION B (VEG)</span>
-                                <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">100g Paneer Bhurji + 1 Roti 🧀</p>
-                            </div>
-                            <div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
-                                <span class="text-[9px] font-bold bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded">OPTION C (QUICK)</span>
-                                <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">Oats + Whey Protein (Water) 🥣</p>
-                            </div>
-                            <div class="flex items-center gap-2 pt-2 border-t border-dashed border-slate-300 dark:border-slate-600">
-                                <i class="fas fa-pills text-indigo-400 text-xs"></i>
-                                <span class="text-[10px] font-bold text-slate-500">Add: Multivitamin + Vit D3</span>
-                            </div>
-                        </div>
-                    </details>
-                </div>
-
-                <div class="relative group">
-                    <div class="fuel-node border-emerald-500"></div>
-                    <details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item">
-                        <summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-                            <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600"><i class="fas fa-leaf text-lg"></i></div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-wide">01:00 PM • SMART REFUEL</p>
-                                <h4 class="font-bold text-slate-800 dark:text-white">Carb Load + Fiber</h4>
-                            </div>
-                            <i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700">
-                            <div class="mb-3 flex items-center gap-2 bg-emerald-100/50 dark:bg-emerald-900/20 p-2 rounded-lg border border-emerald-200 dark:border-emerald-800">
-                                <i class="fas fa-exclamation-circle text-emerald-600 text-xs"></i>
-                                <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">RULE: EAT SALAD FIRST 🥗</span>
-                            </div>
-                            <div class="space-y-2">
-                                <p class="text-xs text-slate-700 dark:text-slate-300"><strong class="text-slate-900 dark:text-white">Std:</strong> 2 Roti + Dal + Big Salad</p>
-                                <p class="text-xs text-slate-700 dark:text-slate-300"><strong class="text-slate-900 dark:text-white">Alt:</strong> Rice + 50g Soya Chunks</p>
-                            </div>
-                        </div>
-                    </details>
-                </div>
-
-                <div class="relative group">
-                    <div class="fuel-node border-orange-500"></div>
-                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600"><i class="fas fa-mug-hot text-lg"></i></div>
-                        <div>
-                            <p class="text-[10px] font-bold text-orange-500 uppercase tracking-wide">04:30 PM • DANGER ZONE</p>
-                            <h4 class="font-bold text-slate-800 dark:text-white text-sm">Black Coffee / Apple / Chana</h4>
-                            <p class="text-[9px] text-rose-500 font-bold mt-0.5">NO TEA • NO BISCUITS 🚫</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative group">
-                    <div class="fuel-node border-purple-500"></div>
-                    <details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item">
-                        <summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-                            <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600"><i class="fas fa-moon text-lg"></i></div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-bold text-purple-500 uppercase tracking-wide">08:00 PM • FAT BURN MODE</p>
-                                <h4 class="font-bold text-slate-800 dark:text-white">Zero Grain Protocol</h4>
-                            </div>
-                            <i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i>
-                        </summary>
-                        <div class="px-4 pb-4 pt-2 space-y-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700">
-                            <div class="flex items-center justify-between bg-rose-50 dark:bg-rose-900/20 p-2 rounded-lg border border-rose-100 mb-2">
-                                <span class="text-[10px] font-black text-rose-600 dark:text-rose-400">❌ NO ROTI / RICE</span>
-                                <span class="text-[10px] font-bold text-slate-500">Only Protein + Veg</span>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="p-2 bg-white dark:bg-slate-700 rounded-lg text-center border border-slate-100">
-                                    <span class="text-xl">🍲</span>
-                                    <p class="text-[10px] font-bold mt-1 text-slate-700 dark:text-slate-200">Soya Stir Fry</p>
-                                </div>
-                                <div class="p-2 bg-white dark:bg-slate-700 rounded-lg text-center border border-slate-100">
-                                    <span class="text-xl">🧀</span>
-                                    <p class="text-[10px] font-bold mt-1 text-slate-700 dark:text-slate-200">Paneer Tikka</p>
-                                </div>
-                            </div>
-                        </div>
-                    </details>
-                </div>
-
+                <div class="relative group"><div class="fuel-node border-cyan-400"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4"><div class="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600"><i class="fas fa-glass-water text-lg"></i></div><div><p class="text-[10px] font-bold text-cyan-500 uppercase tracking-wide">05:30 AM • IGNITION</p><h4 class="font-bold text-slate-800 dark:text-white">Warm Water + Lemon 🍋</h4></div></div></div>
+                <div class="relative group"><div class="fuel-node border-yellow-400"></div><div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10 p-4 rounded-2xl border border-yellow-200 dark:border-yellow-700/50 shadow-sm flex items-center gap-4 relative overflow-hidden"><div class="absolute right-0 top-0 p-3 opacity-10"><i class="fas fa-bolt text-4xl text-yellow-500"></i></div><div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 z-10"><i class="fas fa-dna text-lg"></i></div><div class="z-10"><p class="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wide">07:00 AM • POST-WORKOUT</p><h4 class="font-bold text-slate-800 dark:text-white">1 Scoop Whey Protein</h4><p class="text-[10px] text-slate-500 font-medium">In Water • Rapid Absorption 🧬</p></div></div></div>
+                <div class="relative group"><div class="fuel-node border-indigo-500"></div><details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item"><summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition"><div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600"><i class="fas fa-egg text-lg"></i></div><div class="flex-1"><p class="text-[10px] font-bold text-indigo-500 uppercase tracking-wide">08:00 AM • BREAKFAST</p><h4 class="font-bold text-slate-800 dark:text-white">High Protein Foundation</h4></div><i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i></summary><div class="px-4 pb-4 pt-2 space-y-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700"><div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600"><span class="text-[9px] font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">OPTION A</span><p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">5 Egg Whites + 1 Yolk + Toast 🍞</p></div><div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600"><span class="text-[9px] font-bold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded">OPTION B (VEG)</span><p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">100g Paneer Bhurji + 1 Roti 🧀</p></div></div></details></div>
+                <div class="relative group"><div class="fuel-node border-emerald-500"></div><details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item"><summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition"><div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600"><i class="fas fa-leaf text-lg"></i></div><div class="flex-1"><p class="text-[10px] font-bold text-emerald-500 uppercase tracking-wide">01:00 PM • SMART REFUEL</p><h4 class="font-bold text-slate-800 dark:text-white">Carb Load + Fiber</h4></div><i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i></summary><div class="px-4 pb-4 pt-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700"><div class="mb-3 flex items-center gap-2 bg-emerald-100/50 dark:bg-emerald-900/20 p-2 rounded-lg border border-emerald-200 dark:border-emerald-800"><i class="fas fa-exclamation-circle text-emerald-600 text-xs"></i><span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">RULE: EAT SALAD FIRST 🥗</span></div><div class="space-y-2"><p class="text-xs text-slate-700 dark:text-slate-300"><strong class="text-slate-900 dark:text-white">Std:</strong> 2 Roti + Dal + Big Salad</p></div></div></details></div>
+                <div class="relative group"><div class="fuel-node border-orange-500"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4"><div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600"><i class="fas fa-mug-hot text-lg"></i></div><div><p class="text-[10px] font-bold text-orange-500 uppercase tracking-wide">04:30 PM • DANGER ZONE</p><h4 class="font-bold text-slate-800 dark:text-white text-sm">Black Coffee / Apple / Chana</h4><p class="text-[9px] text-rose-500 font-bold mt-0.5">NO TEA • NO BISCUITS 🚫</p></div></div></div>
+                <div class="relative group"><div class="fuel-node border-purple-500"></div><details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item"><summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition"><div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600"><i class="fas fa-moon text-lg"></i></div><div class="flex-1"><p class="text-[10px] font-bold text-purple-500 uppercase tracking-wide">08:00 PM • FAT BURN MODE</p><h4 class="font-bold text-slate-800 dark:text-white">Zero Grain Protocol</h4></div><i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i></summary><div class="px-4 pb-4 pt-2 space-y-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700"><div class="flex items-center justify-between bg-rose-50 dark:bg-rose-900/20 p-2 rounded-lg border border-rose-100 mb-2"><span class="text-[10px] font-black text-rose-600 dark:text-rose-400">❌ NO ROTI / RICE</span><span class="text-[10px] font-bold text-slate-500">Only Protein + Veg</span></div><div class="grid grid-cols-2 gap-2"><div class="p-2 bg-white dark:bg-slate-700 rounded-lg text-center border border-slate-100"><span class="text-xl">🍲</span><p class="text-[10px] font-bold mt-1 text-slate-700 dark:text-slate-200">Soya Stir Fry</p></div><div class="p-2 bg-white dark:bg-slate-700 rounded-lg text-center border border-slate-100"><span class="text-xl">🧀</span><p class="text-[10px] font-bold mt-1 text-slate-700 dark:text-slate-200">Paneer Tikka</p></div></div></div></details></div>
             </div>
-
-            <div onclick="addWater()" class="hydro-fab" id="water-fab">
-                <i class="fas fa-tint"></i>
-            </div>
-
+            <div onclick="addWater()" class="hydro-fab" id="water-fab"><i class="fas fa-tint"></i></div>
         </div>
 
+        <!-- ================= TAB 3: BODY (VISUAL COMPARISON) ================= -->
         <div id="tab-body" class="tab-content space-y-6 pb-24">
             
-            <div class="text-center mb-2">
-                <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white uppercase">Armor Lab</h2>
-                <p class="text-xs font-bold text-slate-400 tracking-widest">Track Your Inches 📏</p>
+            <div class="flex justify-between items-end px-2 pt-2">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Armor Lab</h2>
+                    <p class="text-xs font-bold text-slate-400">Transforming Structure</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded-lg">
+                        Start vs Now
+                    </p>
+                </div>
             </div>
 
-            <div class="blueprint-container rounded-[2.5rem] overflow-hidden border border-indigo-100 dark:border-indigo-900/30">
-                <i class="fas fa-child-reaching blueprint-figure"></i>
-                
-                <div class="body-node node-chest"></div>
-                <div class="body-node node-waist"></div>
-                <div class="body-node node-arms"></div>
-                <div class="body-node node-thighs"></div>
-
-                <div class="absolute bottom-4 left-0 right-0 text-center">
-                    <span class="bg-indigo-500/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-indigo-500 border border-indigo-500/20 uppercase tracking-widest">
-                        LAST UPDATE: <span id="last-body-update">--</span>
+            <div class="armor-card relative min-h-[300px] overflow-hidden bg-slate-50 dark:bg-slate-900 border border-indigo-100 dark:border-indigo-900/50">
+                <div class="absolute inset-0 hologram-grid"></div>
+                <div class="scanner-line"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                    <i class="fas fa-child-reaching text-[13rem] text-indigo-200 dark:text-slate-700 opacity-60"></i>
+                    <div class="absolute w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] animate-pulse" style="top: 32%; left: 35%;"></div>
+                    <div class="absolute w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_15px_#10b981] animate-pulse" style="top: 32%; right: 35%;"></div>
+                    <div class="absolute w-4 h-4 bg-rose-500 rounded-full shadow-[0_0_20px_#f43f5e] animate-ping" style="top: 45%; left: 50%; transform: translateX(-50%);"></div>
+                </div>
+                <div class="absolute bottom-3 left-0 right-0 text-center z-20">
+                    <span class="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-indigo-100 dark:border-slate-700 shadow-sm text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                        Latest: <span id="body-last-date">Syncing...</span>
                     </span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-4">
                 
-                <div class="stat-card group">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">CHEST</span>
-                        <i class="fas fa-shirt text-indigo-400 text-xs"></i>
+                <!-- CHEST -->
+                <div class="armor-card p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><i class="fas fa-tshirt"></i></div>
+                            <span class="text-xs font-black text-slate-700 dark:text-white uppercase tracking-widest">CHEST</span>
+                        </div>
+                        <span id="diff-chest" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400">--</span>
                     </div>
-                    <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 rounded-xl p-2">
-                        <button class="ctrl-btn" onclick="updateStat('chest', -0.5)"><i class="fas fa-minus"></i></button>
-                        <span id="val-chest" class="stat-value">42.0</span>
-                        <button class="ctrl-btn" onclick="updateStat('chest', 0.5)"><i class="fas fa-plus"></i></button>
+                    <div class="control-pill mb-2">
+                        <button onclick="vibrate(); updateInputVal('in-chest', -0.5)" class="ctrl-btn-round"><i class="fas fa-minus text-[10px]"></i></button>
+                        <input type="number" id="in-chest" value="42.0" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-slate-800 dark:text-white outline-none">
+                        <button onclick="vibrate(); updateInputVal('in-chest', 0.5)" class="ctrl-btn-round"><i class="fas fa-plus text-[10px]"></i></button>
                     </div>
-                    <p class="text-[9px] text-center text-emerald-500 font-bold mt-2 opacity-0 group-hover:opacity-100 transition">TARGET: 40.0</p>
+                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-chest">--</span>"</span><span>Current</span></div>
+                    <div class="stat-bar-bg"><div id="bar-chest" class="stat-bar-fill bg-indigo-500" style="width: 5%"></div></div>
                 </div>
 
-                <div class="stat-card border-rose-200 dark:border-rose-900/50 shadow-sm group">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-rose-500">WAIST</span>
-                        <i class="fas fa-bullseye text-rose-500 text-xs animate-pulse"></i>
+                <!-- WAIST -->
+                <div class="armor-card p-4 theme-red border-rose-200 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-900/5">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-rose-500"><i class="fas fa-bullseye animate-pulse"></i></div>
+                            <span class="text-xs font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest">WAIST</span>
+                        </div>
+                        <span id="diff-waist" class="text-[10px] font-bold px-2 py-1 rounded bg-rose-100 text-rose-600">--</span>
                     </div>
-                    <div class="flex items-center justify-between bg-rose-50 dark:bg-rose-900/20 rounded-xl p-2">
-                        <button class="ctrl-btn text-rose-600" onclick="updateStat('waist', -0.5)"><i class="fas fa-minus"></i></button>
-                        <span id="val-waist" class="stat-value text-rose-600 dark:text-rose-400">36.0</span>
-                        <button class="ctrl-btn text-rose-600" onclick="updateStat('waist', 0.5)"><i class="fas fa-plus"></i></button>
+                    <div class="control-pill bg-white dark:bg-slate-800 border border-rose-100 dark:border-rose-900/30 mb-2">
+                        <button onclick="vibrate(); updateInputVal('in-waist', -0.5)" class="ctrl-btn-round text-rose-500"><i class="fas fa-minus text-[10px]"></i></button>
+                        <input type="number" id="in-waist" value="36.0" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-rose-600 dark:text-rose-400 outline-none">
+                        <button onclick="vibrate(); updateInputVal('in-waist', 0.5)" class="ctrl-btn-round text-rose-500"><i class="fas fa-plus text-[10px]"></i></button>
                     </div>
-                    <p class="text-[9px] text-center text-rose-500 font-bold mt-2">MAIN TARGET</p>
+                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-waist">--</span>"</span><span class="text-rose-500">Target: 32.0"</span></div>
+                    <div class="stat-bar-bg"><div id="bar-waist" class="stat-bar-fill bg-rose-500" style="width: 5%"></div></div>
                 </div>
 
-                <div class="stat-card group">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">ARMS</span>
-                        <i class="fas fa-fist-raised text-indigo-400 text-xs"></i>
+                <!-- ARMS -->
+                <div class="armor-card p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><i class="fas fa-fist-raised"></i></div>
+                            <span class="text-xs font-black text-slate-700 dark:text-white uppercase tracking-widest">ARMS</span>
+                        </div>
+                        <span id="diff-arms" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400">--</span>
                     </div>
-                    <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 rounded-xl p-2">
-                        <button class="ctrl-btn" onclick="updateStat('arms', -0.25)"><i class="fas fa-minus"></i></button>
-                        <span id="val-arms" class="stat-value">14.5</span>
-                        <button class="ctrl-btn" onclick="updateStat('arms', 0.25)"><i class="fas fa-plus"></i></button>
+                    <div class="control-pill mb-2">
+                        <button onclick="vibrate(); updateInputVal('in-arms', -0.1)" class="ctrl-btn-round"><i class="fas fa-minus text-[10px]"></i></button>
+                        <input type="number" id="in-arms" value="14.5" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-slate-800 dark:text-white outline-none">
+                        <button onclick="vibrate(); updateInputVal('in-arms', 0.1)" class="ctrl-btn-round"><i class="fas fa-plus text-[10px]"></i></button>
                     </div>
+                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-arms">--</span>"</span><span>Current</span></div>
+                    <div class="stat-bar-bg"><div id="bar-arms" class="stat-bar-fill bg-blue-500" style="width: 5%"></div></div>
                 </div>
 
-                <div class="stat-card group">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">THIGHS</span>
-                        <i class="fas fa-running text-indigo-400 text-xs"></i>
+                <!-- THIGHS -->
+                <div class="armor-card p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><i class="fas fa-person-running"></i></div>
+                            <span class="text-xs font-black text-slate-700 dark:text-white uppercase tracking-widest">THIGHS</span>
+                        </div>
+                        <span id="diff-thighs" class="text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400">--</span>
                     </div>
-                    <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 rounded-xl p-2">
-                        <button class="ctrl-btn" onclick="updateStat('thighs', -0.5)"><i class="fas fa-minus"></i></button>
-                        <span id="val-thighs" class="stat-value">24.0</span>
-                        <button class="ctrl-btn" onclick="updateStat('thighs', 0.5)"><i class="fas fa-plus"></i></button>
+                    <div class="control-pill mb-2">
+                        <button onclick="vibrate(); updateInputVal('in-thighs', -0.5)" class="ctrl-btn-round"><i class="fas fa-minus text-[10px]"></i></button>
+                        <input type="number" id="in-thighs" value="24.0" step="0.1" class="bg-transparent text-center w-20 font-black text-2xl text-slate-800 dark:text-white outline-none">
+                        <button onclick="vibrate(); updateInputVal('in-thighs', 0.5)" class="ctrl-btn-round"><i class="fas fa-plus text-[10px]"></i></button>
                     </div>
+                    <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2 px-1"><span>Start: <span id="start-thighs">--</span>"</span><span>Current</span></div>
+                    <div class="stat-bar-bg"><div id="bar-thighs" class="stat-bar-fill bg-emerald-500" style="width: 5%"></div></div>
                 </div>
+
             </div>
 
-            <button onclick="saveBodyStats()" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-sm shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-transform mt-4 group">
-                <i class="fas fa-save group-hover:animate-bounce"></i> LOG MEASUREMENTS
+            <button id="btn-save-body" onclick="saveBodyStats()" class="w-full py-4 rounded-[1.2rem] bg-gradient-to-r from-rose-600 to-orange-600 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-rose-500/30 flex items-center justify-center gap-3 active:scale-95 transition-transform hover:shadow-2xl">
+                <i class="fas fa-save animate-bounce"></i> Log Measurements
             </button>
         </div>
 
-
+        <!-- ================= TAB 4: WORKOUT (RESTORED FULL) ================= -->
         <div id="tab-workout" class="tab-content space-y-6 pb-24">
             
             <div id="workout-hero" class="bg-slate-900 dark:bg-white rounded-[2rem] p-6 text-white dark:text-slate-900 shadow-xl relative overflow-hidden group cursor-pointer" onclick="startTodaysWorkout()">
                 <div class="absolute right-0 top-0 w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full blur-3xl opacity-50"></div>
                 <div class="absolute -right-5 -bottom-5 text-8xl opacity-10 rotate-12"><i class="fas fa-dumbbell"></i></div>
-                
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-4">
                         <span class="px-2 py-1 rounded-lg bg-white/10 dark:bg-black/10 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md border border-white/10">Today's Mission</span>
-                        <div class="text-right">
-                            <p class="text-2xl font-heading font-black leading-none" id="hero-calories">--</p>
-                            <p class="text-[9px] opacity-70 uppercase font-bold">Est. Calories</p>
-                        </div>
+                        <div class="text-right"><p class="text-2xl font-heading font-black leading-none" id="hero-calories">--</p><p class="text-[9px] opacity-70 uppercase font-bold">Est. Calories</p></div>
                     </div>
-                    
                     <h2 class="text-3xl font-heading font-black mb-1" id="hero-workout-title">LOADING...</h2>
-                    <p class="text-xs font-medium opacity-80 mb-6 flex items-center gap-2">
-                        <i class="fas fa-clock"></i> <span id="hero-duration">-- Mins</span> • <span id="hero-exercises">-- Exercises</span>
-                    </p>
-
-                    <button class="w-full py-3.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
-                        <i class="fas fa-play"></i> START SESSION
-                    </button>
+                    <p class="text-xs font-medium opacity-80 mb-6 flex items-center gap-2"><i class="fas fa-clock"></i> <span id="hero-duration">-- Mins</span> • <span id="hero-exercises">-- Exercises</span></p>
+                    <button class="w-full py-3.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition"><i class="fas fa-play"></i> START SESSION</button>
                 </div>
             </div>
 
+            <!-- Warmup & Stretch -->
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="openWorkoutModal('warmup')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group">
                     <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center text-lg group-hover:scale-110 transition"><i class="fas fa-fire"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm text-slate-800 dark:text-white">Warm-Up</h4>
-                        <p class="text-[10px] text-slate-400 font-bold">6 Mins • Essential</p>
-                    </div>
+                    <div><h4 class="font-bold text-sm text-slate-800 dark:text-white">Warm-Up</h4><p class="text-[10px] text-slate-400 font-bold">6 Mins • Essential</p></div>
                 </button>
                 <button onclick="openWorkoutModal('stretch')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group">
                     <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center text-lg group-hover:scale-110 transition"><i class="fas fa-child-reaching"></i></div>
-                    <div>
-                        <h4 class="font-bold text-sm text-slate-800 dark:text-white">Stretch</h4>
-                        <p class="text-[10px] text-slate-400 font-bold">6 Mins • Recovery</p>
-                    </div>
+                    <div><h4 class="font-bold text-sm text-slate-800 dark:text-white">Stretch</h4><p class="text-[10px] text-slate-400 font-bold">6 Mins • Recovery</p></div>
                 </button>
             </div>
-
-            <div class="space-y-4">
-                <div class="flex items-center justify-between px-1">
-                    <h3 class="font-heading font-bold text-slate-900 dark:text-white text-lg">The Armory</h3>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Select Protocol</span>
+            
+            <!-- Full Protocol List -->
+            <div class="grid grid-cols-1 gap-3">
+                <div onclick="openWorkoutModal('push')" class="workout-card flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 text-xl"><i class="fas fa-hand-fist"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">PUSH DAY</h4><p class="text-xs text-slate-500 font-bold">Chest • Shoulders • Triceps</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                 </div>
-
-                <div class="grid grid-cols-1 gap-3">
-                    <div onclick="openWorkoutModal('push')" class="workout-card flex items-center justify-between cursor-pointer">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 text-xl"><i class="fas fa-hand-fist"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 dark:text-white text-base">PUSH DAY</h4>
-                                <p class="text-xs text-slate-500 font-bold">Chest • Shoulders • Triceps</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                    </div>
-
-                    <div onclick="openWorkoutModal('pull')" class="workout-card flex items-center justify-between cursor-pointer">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-900/20 flex items-center justify-center text-cyan-600 text-xl"><i class="fas fa-magnet"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 dark:text-white text-base">PULL DAY</h4>
-                                <p class="text-xs text-slate-500 font-bold">Back • Biceps • Traps</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                    </div>
-
-                    <div onclick="openWorkoutModal('legs')" class="workout-card flex items-center justify-between cursor-pointer">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-600 text-xl"><i class="fas fa-person-running"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 dark:text-white text-base">LEG + CORE</h4>
-                                <p class="text-xs text-slate-500 font-bold">Squats • Lunges • Abs</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                    </div>
-
-                    <div onclick="openWorkoutModal('hybrid')" class="workout-card flex items-center justify-between cursor-pointer">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600 text-xl"><i class="fas fa-bolt"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 dark:text-white text-base">HYBRID STORM</h4>
-                                <p class="text-xs text-slate-500 font-bold">HIIT • Cardio • Sweat</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                    </div>
+                <div onclick="openWorkoutModal('pull')" class="workout-card flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-900/20 flex items-center justify-center text-cyan-600 text-xl"><i class="fas fa-magnet"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">PULL DAY</h4><p class="text-xs text-slate-500 font-bold">Back • Biceps • Traps</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+                <div onclick="openWorkoutModal('legs')" class="workout-card flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-600 text-xl"><i class="fas fa-person-running"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">LEG + CORE</h4><p class="text-xs text-slate-500 font-bold">Squats • Lunges • Abs</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+                <div onclick="openWorkoutModal('hybrid')" class="workout-card flex items-center justify-between cursor-pointer">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600 text-xl"><i class="fas fa-bolt"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">HYBRID STORM</h4><p class="text-xs text-slate-500 font-bold">HIIT • Cardio • Sweat</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                 </div>
             </div>
         </div>
 
-    <div id="workout-modal" class="fixed inset-0 bg-slate-50 dark:bg-slate-900 z-[200] hidden flex flex-col transition-transform duration-300 translate-y-full">
-        <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-10">
-            <button onclick="closeWorkoutModal()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200"><i class="fas fa-arrow-left"></i></button>
-            <div class="text-center">
-                <h3 class="font-heading font-black text-lg text-slate-900 dark:text-white" id="modal-title">WORKOUT</h3>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" id="modal-subtitle">00 Mins • 000 Kcal</p>
-            </div>
-            <button class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300"><i class="fas fa-ellipsis-v"></i></button>
-        </div>
-
-        <div class="bg-indigo-50 dark:bg-indigo-900/20 px-5 py-3 flex items-center gap-3 border-b border-indigo-100 dark:border-indigo-900/30">
-            <i class="fas fa-watch text-indigo-500 text-xl"></i>
-            <div>
-                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Amazfit Bip 6</p>
-                <p class="text-xs font-bold text-indigo-700 dark:text-indigo-300" id="watch-mode-text">Set mode to: Strength Training</p>
-            </div>
-        </div>
-
-               <div class="flex-1 overflow-y-auto p-5 no-scrollbar" id="modal-list">
-            </div>
-        </div>
-
-
-
-        <!-- ================= TAB 4: OATH ================= -->
+<!-- ================= TAB 5: OATH ================= -->
         <div id="tab-oath" class="tab-content space-y-6">
             <div class="text-center py-6">
                 <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl text-slate-400"><i class="fas fa-file-signature"></i></div>
@@ -1421,10 +390,8 @@ details summary::-webkit-details-marker { display: none; }
             </div>
             <div class="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-200 dark:border-slate-700 shadow-2xl relative overflow-hidden">
                 <div class="h-3 w-full bg-gradient-to-r from-rose-500 via-orange-500 to-rose-500 animate-gradient"></div>
-                <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div class="p-8 relative z-10">
-                    <div class="flex justify-center mb-6"><div class="px-4 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Official Document</div></div>
-                    <p class="text-sm font-serif italic text-slate-600 dark:text-slate-300 leading-loose text-center mb-8">"I, <strong class="text-slate-900 dark:text-white not-italic border-b-2 border-rose-500">Vikas Rawat</strong>, hereby pledge to execute the <span class="font-bold text-rose-600">Project 100</span> protocol with zero excuses. My target <strong class="text-slate-900 dark:text-white bg-yellow-100 dark:bg-yellow-900/30 px-1 rounded">65.5 KG</strong> is non-negotiable."</p>
+                    <p class="text-sm font-serif italic text-slate-600 dark:text-slate-300 leading-loose text-center mb-8">"I, <strong class="text-slate-900 dark:text-white not-italic border-b-2 border-rose-500">Vikas Rawat</strong>, hereby pledge to execute the <span class="font-bold text-rose-600">Project 100</span> protocol. My target <strong class="text-slate-900 dark:text-white bg-yellow-100 dark:bg-yellow-900/30 px-1 rounded">66 KG</strong> is non-negotiable."</p>
                     <div class="border-t border-dashed border-slate-300 dark:border-slate-600 pt-6 mt-6">
                         <div class="flex justify-between items-end">
                             <div><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Signed & Sealed</p><div class="signature-font text-3xl text-rose-600 transform -rotate-2">Vikas Rawat</div></div>
@@ -1433,68 +400,43 @@ details summary::-webkit-details-marker { display: none; }
                     </div>
                 </div>
             </div>
-            <div class="flex justify-center"><button onclick="vibrate(50)" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-full font-bold text-sm shadow-xl active:scale-95 transition-transform flex items-center gap-2"><i class="fas fa-check-circle"></i> I ACCEPT THE CHALLENGE</button></div>
         </div>
-
     </main>
 
+    <!-- Bottom Navigation -->
     <nav class="fixed bottom-6 left-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-full shadow-2xl z-50 h-16 flex items-center justify-around px-2 max-w-2xl mx-auto">
         <button id="nav-dash" class="nav-item active flex flex-col items-center justify-center w-12 h-12" onclick="vibrate(); switchTab('dashboard', this)"><i class="fas fa-chart-pie text-lg mb-0.5"></i><span class="text-[9px] font-bold">Dash</span></button>
         <button id="nav-diet" class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="vibrate(); switchTab('diet', this)"><i class="fas fa-apple-alt text-lg mb-0.5"></i><span class="text-[9px] font-bold">Diet</span></button>
-        
         <div class="relative -top-6"><button id="nav-fab" class="w-14 h-14 bg-rose-600 rounded-full text-white flex items-center justify-center shadow-lg fab-glow transform hover:scale-105 transition active:scale-95" onclick="vibrate(); switchTab('workout', null)"><i class="fas fa-dumbbell text-xl"></i></button></div>
-        
         <button id="nav-oath" class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="vibrate(); switchTab('oath', this)"><i class="fas fa-file-contract text-lg mb-0.5"></i><span class="text-[9px] font-bold">Oath</span></button>
-        
         <button id="nav-body" class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="vibrate(); switchTab('body', this)"><i class="fas fa-ruler-combined text-lg mb-0.5"></i><span class="text-[9px] font-bold">Body</span></button>
     </nav>
 
+    <!-- Modals -->
+    <div id="weight-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4 modal-overlay"><div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl modal-card relative"><div class="text-center mb-6"><h3 class="text-2xl font-heading font-black text-slate-900 dark:text-white">Log Weight</h3><p class="text-xs text-slate-500">Record your daily progress</p></div><div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 text-center mb-6"><input type="number" id="weight-input" step="0.1" placeholder="00.0" class="w-full bg-transparent text-center text-5xl font-heading font-black text-slate-800 dark:text-white outline-none placeholder-slate-300"><p class="text-sm font-bold text-slate-400 mt-2">KG</p></div><div class="flex gap-3"><button onclick="vibrate(); closeWeightModal()" id="cancel-btn" class="flex-1 py-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-xs hover:bg-slate-200 transition">CANCEL</button><button onclick="vibrate(); saveWeight()" id="save-btn" class="flex-1 py-4 rounded-xl bg-rose-600 text-white font-bold text-xs shadow-lg shadow-rose-500/30 hover:bg-rose-700 transition flex items-center justify-center gap-2"><span>SAVE LOG</span> <i class="fas fa-arrow-right"></i></button></div></div></div>
+    
+    <div id="info-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4 modal-overlay"><div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl modal-card relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-10"></div><div class="relative z-10 text-center"><div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md" id="info-icon-container"><i id="info-icon" class="fas fa-info"></i></div><h3 class="text-2xl font-heading font-black text-slate-900 dark:text-white mb-1" id="info-title">Title</h3><p class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="info-subtitle">Subtitle</p><div class="mt-6 bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 text-left border border-slate-100 dark:border-slate-700"><ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300" id="info-list"></ul></div><button onclick="vibrate(); closeInfoModal()" class="mt-6 w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition">GOT IT</button></div></div></div>
 
-    <!-- WEIGHT LOG MODAL (Z-INDEX 200, LOADING STATE) -->
-    <div id="weight-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4 modal-overlay">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl modal-card relative">
-            <div class="text-center mb-6"><h3 class="text-2xl font-heading font-black text-slate-900 dark:text-white">Log Weight</h3><p class="text-xs text-slate-500">Record your daily progress</p></div>
-            <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 text-center mb-6">
-                <input type="number" id="weight-input" step="0.1" placeholder="00.0" class="w-full bg-transparent text-center text-5xl font-heading font-black text-slate-800 dark:text-white outline-none placeholder-slate-300">
-                <p class="text-sm font-bold text-slate-400 mt-2">KG</p>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="vibrate(); closeWeightModal()" id="cancel-btn" class="flex-1 py-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-xs hover:bg-slate-200 transition">CANCEL</button>
-                <button onclick="vibrate(); saveWeight()" id="save-btn" class="flex-1 py-4 rounded-xl bg-rose-600 text-white font-bold text-xs shadow-lg shadow-rose-500/30 hover:bg-rose-700 transition flex items-center justify-center gap-2"><span>SAVE LOG</span> <i class="fas fa-arrow-right"></i></button>
-            </div>
-        </div>
-    </div>
+    <div id="workout-modal" class="fixed inset-0 bg-slate-50 dark:bg-slate-900 z-[200] hidden flex flex-col transition-transform duration-300 translate-y-full"><div class="p-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-10"><button onclick="closeWorkoutModal()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200"><i class="fas fa-arrow-left"></i></button><div class="text-center"><h3 class="font-heading font-black text-lg text-slate-900 dark:text-white" id="modal-title">WORKOUT</h3><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" id="modal-subtitle">00 Mins • 000 Kcal</p></div><button class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300"><i class="fas fa-ellipsis-v"></i></button></div><div class="bg-indigo-50 dark:bg-indigo-900/20 px-5 py-3 flex items-center gap-3 border-b border-indigo-100 dark:border-indigo-900/30"><i class="fas fa-watch text-indigo-500 text-xl"></i><div><p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Amazfit Bip 6</p><p class="text-xs font-bold text-indigo-700 dark:text-indigo-300" id="watch-mode-text">Set mode to: Strength Training</p></div></div><div class="flex-1 overflow-y-auto p-5 no-scrollbar" id="modal-list"></div></div>
 
-    <!-- INFO MODAL -->
-    <div id="info-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4 modal-overlay">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl modal-card relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-10"></div>
-            <div class="relative z-10 text-center">
-                <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md" id="info-icon-container"><i id="info-icon" class="fas fa-info"></i></div>
-                <h3 class="text-2xl font-heading font-black text-slate-900 dark:text-white mb-1" id="info-title">Title</h3>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="info-subtitle">Subtitle</p>
-                <div class="mt-6 bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 text-left border border-slate-100 dark:border-slate-700"><ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300" id="info-list"></ul></div>
-                <button onclick="vibrate(); closeInfoModal()" class="mt-6 w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition">GOT IT</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT -->
+    <!-- Script -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbylIi79pgzqOgtK6l5yT6BfTi3KyHeB3A-F3cL8vxgwSxJ80iJamZphCV8Z_JkhcbY9/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbxDLAx23v5iQKsfoXdrRshcsfc1ApfyfkNtlnqAI__RS3y7bM_O7TSveCiATUJNyDAZ/exec";
         const CHECKLIST_KEY = 'project100_reloaded_checklist';
         const START_DATE = new Date('2026-02-02T00:00:00');
         const END_DATE = new Date('2026-05-12T23:59:59');
         let weightChart = null;
-        let lastRecordedWeight = 78.5;
+        let lastRecordedWeight = 80.0;
 
         document.addEventListener("DOMContentLoaded", () => {
             loadChecklist();
             updateMissionStatus();
             checkWeekendMode();
-            setInterval(updateMissionStatus, 60000);
+            setInterval(updateMissionStatus, 60000); 
             if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
             fetchWeightHistory();
+            fetchBodyHistory();
+            updateHeroHeader();
         });
 
         function vibrate(ms = 50) { if (navigator.vibrate) navigator.vibrate(ms); }
@@ -1512,516 +454,279 @@ details summary::-webkit-details-marker { display: none; }
             indicator.classList.remove('hidden');
         }
 
-        // --- STATS MODAL ---
-        function openStatModal(type) {
-            vibrate(30);
-            const m = document.getElementById('info-modal'); const list = document.getElementById('info-list'); list.innerHTML = '';
-            const t = document.getElementById('info-title'); const s = document.getElementById('info-subtitle'); const i = document.getElementById('info-icon'); const ic = document.getElementById('info-icon-container');
-            
-            let data = [];
-            if(type==='calories'){ i.className="fas fa-fire"; ic.className="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="1650 Kcal"; s.innerText="Energy Budget"; data=["High Protein (120g)", "Low Carb", "No Sugar", "Accuracy is King ⚖️"]; }
-            else if(type==='water'){ i.className="fas fa-tint"; ic.className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="4.0 Liters"; s.innerText="Hydration"; data=["1L Morning", "1L Workout", "2L Day"]; }
-            else if(type==='neat'){ i.className="fas fa-shoe-prints"; ic.className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="8,000 Steps"; s.innerText="Movement"; data=["Walk after meals", "Take stairs", "Pace on calls"]; }
-            else if(type==='sleep'){ i.className="fas fa-moon"; ic.className="w-16 h-16 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="10:30 PM"; s.innerText="Recovery"; data=["No Phone 10pm", "Dark Room", "7 Hrs Sleep"]; }
-            
-            data.forEach(d => list.innerHTML += `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-slate-400 mt-1"></i><span>${d}</span></li>`);
-            m.classList.remove('hidden'); setTimeout(() => m.classList.add('open'), 10);
-        }
-        function closeInfoModal() { const m = document.getElementById('info-modal'); m.classList.remove('open'); setTimeout(() => m.classList.add('hidden'), 300); }
-
-        function openWeightModal() { vibrate(); const m = document.getElementById('weight-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.add('open'), 10); }
-        
-        function closeWeightModal() { 
-            // Only close if not loading
-            const btn = document.getElementById('save-btn');
-            if (btn.disabled) return; 
-            
-            const m = document.getElementById('weight-modal'); 
-            m.classList.remove('open'); 
-            setTimeout(() => m.classList.add('hidden'), 300); 
-        }
-
-                                              async function fetchWeightHistory() {
+        async function fetchWeightHistory() {
             try {
-                // UI Loading State
                 const btn = document.querySelector('button[onclick="openWeightModal()"]');
                 if(btn) btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SYNCING';
                 
-                // Fetch Data
                 const response = await fetch(`${API_URL}?action=get_history`, { method: "POST", body: JSON.stringify({ action: "get_history" }) });
                 const data = await response.json();
                 
                 if (data.status === 'success' && data.history.length > 0) {
-                    
-                    // 1. Date Formatting
                     const dates = data.history.map(h => { 
                         const cleanDate = h.date.replace(/(\d+)(st|nd|rd|th)/, '$1');
                         const d = new Date(cleanDate);
                         if (isNaN(d.getTime())) return "N/A";
                         return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
                     });
-
-                    // 2. Weight Parsing
                     const weights = data.history.map(h => parseFloat(h.weight));
                     lastRecordedWeight = weights[weights.length - 1]; 
                     
-                    // 3. UI Updates
                     document.getElementById('current-weight-display').innerText = lastRecordedWeight;
                     updateTheme(data.history[data.history.length - 1].mood);
                     renderChart(dates, weights);
 
-                    // ============================================================
-                    // 🔥 INTELLIGENCE ENGINE v4.1 (GHOST TEXT FIX) 🔥
-                    // ============================================================
-                    
-                    const startWeight = 78.5; 
-                    const goalWeight = 65.5;  
+                    const startWeight = 80.0; const goalWeight = 66.0;  
                     const totalToLose = startWeight - goalWeight; 
                     const currentLost = startWeight - lastRecordedWeight; 
                     
-                    // A. Percentage Calc
                     let percentage = (currentLost / totalToLose) * 100;
-                    if (percentage < 0) percentage = 0;
-                    if (percentage > 100) percentage = 100;
+                    if (percentage < 0) percentage = 0; if (percentage > 100) percentage = 100;
 
-                    // B. Animate Bar & Ghost Text
                     const bar = document.getElementById('main-progress');
                     const centerText = document.getElementById('progress-text-main');
 
-                    // Reset width (Animation Reset)
                     if(bar) bar.style.width = "0%";
-                    
                     setTimeout(() => {
                         if(bar) bar.style.width = percentage + "%";
-                        
-                        // 🔥 TEXT LOGIC: "% DONE • KG DOWN" 🔥
                         let mainMessage = "";
-                        
-                        if (currentLost > 0) {
-                            mainMessage = `${percentage.toFixed(0)}% DONE • ${currentLost.toFixed(1)} KG DOWN`;
-                        } else if (currentLost < 0) {
-                            mainMessage = `WAR MODE • ${Math.abs(currentLost).toFixed(1)} KG GAINED`;
-                        } else {
-                            mainMessage = "JOURNEY STARTS NOW";
-                        }
-
-                        if (lastRecordedWeight <= goalWeight) {
-                            mainMessage = "🏆 MISSION ACCOMPLISHED";
-                        }
-
-                        // Safety Check before updating text
+                        if (currentLost > 0) mainMessage = `${percentage.toFixed(0)}% DONE • ${currentLost.toFixed(1)} KG DOWN`;
+                        else if (currentLost < 0) mainMessage = `WAR MODE • ${Math.abs(currentLost).toFixed(1)} KG GAINED`;
+                        else mainMessage = "JOURNEY STARTS NOW";
+                        if (lastRecordedWeight <= goalWeight) mainMessage = "🏆 MISSION ACCOMPLISHED";
                         if(centerText) centerText.innerText = mainMessage;
-
                     }, 100);
 
-                    // C. PROPHET ENGINE (Predicts End Date)
                     const diffTime = Math.abs(new Date() - new Date('2026-02-02'));
                     const daysPassed = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
                     const rate = currentLost / (daysPassed || 1); 
                     
                     let predictionMsg = "";
-                    const quotes = [
-                        "Sweat is just fat crying.",
-                        "They don't know you son! Stay Hard.",
-                        "Pain is temporary. Glory is forever.",
-                        "Stop when you're done, not tired.",
-                        "You are your only competition."
-                    ];
-                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-
                     if (currentLost > 0.5 && rate > 0) {
                         const remainingKg = lastRecordedWeight - goalWeight;
                         const daysNeeded = remainingKg / rate;
                         const etaDate = new Date();
                         etaDate.setDate(etaDate.getDate() + daysNeeded);
-                        const options = { day: 'numeric', month: 'short' };
-                        predictionMsg = `🚀 Pace: ${rate.toFixed(2)}kg/day. Target: <strong class="text-white">${etaDate.toLocaleDateString('en-US', options)}</strong>.`;
+                        predictionMsg = `🚀 Pace: ${rate.toFixed(2)}kg/day. Target: <strong class="text-white">${etaDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</strong>.`;
                     } else {
-                        predictionMsg = `⚠️ Insufficient data for prediction. "${randomQuote}"`;
+                        predictionMsg = `⚠️ Insufficient data for prediction. "Pain is temporary."`;
                     }
-                    
                     const quoteEl = document.getElementById('hero-quote');
                     if(quoteEl) quoteEl.innerHTML = predictionMsg;
-
-                    // D. Update Streak
                     const streakEl = document.getElementById('streak-counter');
                     if(streakEl) streakEl.innerText = data.history.length;
 
-                } else { 
-                    renderChart([], []); 
-                }
+                } else { renderChart([], []); }
             } catch (error) { 
-                showToast("Sync Failed!"); 
-                console.error(error);
+                showToast("Sync Failed!"); console.error(error);
             } finally { 
                 const btn = document.querySelector('button[onclick="openWeightModal()"]');
                 if(btn) btn.innerHTML = '<i class="fas fa-plus"></i> LOG TODAY'; 
             }
         }
 
-
-
-
-
-
-        // --- SAVE WEIGHT WITH LOADING STATE ---
-        async function saveWeight() {
-    const w = parseFloat(document.getElementById('weight-input').value);
-    if (!w || w < 50 || w > 150) { vibrate(100); showToast("Enter valid weight!"); return; }
-    
-    const btn = document.getElementById('save-btn');
-    const cancelBtn = document.getElementById('cancel-btn');
-    
-    // Set Loading State
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SAVING...';
-    btn.disabled = true;
-    btn.classList.add('opacity-70');
-    cancelBtn.disabled = true;
-    
-    // Logic to determine mood & Detailed Remarks
-    const diff = w - lastRecordedWeight;
-    let mood = "NEUTRAL";
-    let remarks = "Maintained. Consistency is King. 🛡️";
-
-    if (diff < 0) {
-        mood = "VICTORY";
-        const loss = Math.abs(diff).toFixed(1);
-        if (loss >= 1.0) remarks = `Dropped ${loss}kg! COMMANDO MODE ACTIVATED! 🚀🔥`;
-        else if (loss >= 0.5) remarks = `Dropped ${loss}kg! Killing it! Fat is crying. 🔥`;
-        else remarks = `Dropped ${loss}kg. Good progress, keep pushing. 🌱`;
-    } 
-    else if (diff > 0) {
-        mood = "WAR";
-        const gain = diff.toFixed(1);
-        if (gain >= 1.0) remarks = `Gained ${gain}kg. RED ALERT! Fix diet immediately. ⚔️`;
-        else if (gain >= 0.5) remarks = `Gained ${gain}kg. Warning! Drink 4L water today. 🚨`;
-        else remarks = `Gained ${gain}kg. Minor fluctuation. Don't stress. 💧`;
-    }
-    
-    try {
-        // Optimistic UI Update
-        document.getElementById('current-weight-display').innerText = w;
-        updateTheme(mood);
-
-        // Custom Date Logic: "Fri, 30th Jan 26"
-        const now = new Date();
-        const d = now.getDate();
-        const suffix = (d > 3 && d < 21) ? 'th' : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10];
-        const formattedDate = `${now.toLocaleDateString('en-US', { weekday: 'short' })}, ${d}${suffix} ${now.toLocaleDateString('en-US', { month: 'short' })} ${now.getFullYear().toString().slice(-2)}`;
-
-        // Payload Object
-        const payload = {
-            action: "log_weight",
-            date: formattedDate, // ✅ AB SAHI DATE JAYEGI
-            weight: w,
-            diff: diff.toFixed(1),
-            mood: mood,
-            remarks: remarks
-        };
-
-        await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify(payload) // ✅ Correction: Use the payload variable
-        });
-        
-        vibrate([50, 50]); 
-        showToast("Weight Saved!"); 
-        
-        // Force Close Modal
-        const m = document.getElementById('weight-modal');
-        m.classList.remove('open');
-        setTimeout(() => m.classList.add('hidden'), 300);
-        
-        fetchWeightHistory();
-        
-    } catch (error) {
-        showToast("Connection Error!");
-        console.error(error);
-    } finally {
-        // Reset Button
-        btn.innerHTML = '<span>SAVE LOG</span> <i class="fas fa-arrow-right"></i>';
-        btn.disabled = false;
-        btn.classList.remove('opacity-70');
-        cancelBtn.disabled = false;
-    }
-}
-
-        // --- MOOD THEME ENGINE ---
-        function updateTheme(mood) {
-            const hero = document.getElementById('hero-card'); 
-            const logo = document.getElementById('logo-box'); 
-            const dot = document.getElementById('status-dot');
-            const navs = document.querySelectorAll('.nav-item');
-            const fab = document.getElementById('nav-fab');
-            const text = document.getElementById('header-highlight');
-
-            // Reset
-            hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group transition-all duration-700";
-            
-            if (mood === 'VICTORY') {
-                hero.classList.add('bg-gradient-to-br', 'from-emerald-500', 'to-teal-600', 'shadow-emerald-500/30');
-                logo.classList.replace('from-rose-600', 'from-emerald-600'); 
-                logo.classList.replace('to-orange-600', 'to-teal-600');
-                dot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
-                fab.className = "w-14 h-14 bg-emerald-600 rounded-full text-white flex items-center justify-center shadow-lg transform hover:scale-105 transition active:scale-95";
-                text.className = "text-emerald-600";
-                
-                // Active Nav Color
-                document.querySelector('.nav-item.active').style.color = '#10b981';
-            } else if (mood === 'NEUTRAL') {
-                hero.classList.add('bg-gradient-to-br', 'from-indigo-600', 'to-blue-600', 'shadow-indigo-500/30');
-                logo.classList.replace('from-rose-600', 'from-indigo-600'); 
-                logo.classList.replace('to-orange-600', 'to-blue-600');
-                dot.className = "w-2 h-2 rounded-full bg-indigo-500 animate-pulse";
-                fab.className = "w-14 h-14 bg-indigo-600 rounded-full text-white flex items-center justify-center shadow-lg transform hover:scale-105 transition active:scale-95";
-                text.className = "text-indigo-600";
-                document.querySelector('.nav-item.active').style.color = '#4f46e5';
-            } else {
-                // WAR (Default)
-                hero.classList.add('bg-gradient-to-br', 'from-rose-600', 'to-orange-600', 'shadow-rose-500/30');
-                logo.classList.replace('from-emerald-600', 'from-rose-600'); 
-                logo.classList.replace('to-teal-600', 'to-orange-600');
-                dot.className = "w-2 h-2 rounded-full bg-rose-500 animate-pulse";
-                fab.className = "w-14 h-14 bg-rose-600 rounded-full text-white flex items-center justify-center shadow-lg transform hover:scale-105 transition active:scale-95";
-                text.className = "text-rose-600";
-                document.querySelector('.nav-item.active').style.color = '#e11d48';
-            }
-        }
-
         function renderChart(labels, data) {
             const ctx = document.getElementById('weightChart').getContext('2d');
             if (weightChart) weightChart.destroy();
+            const idealData = labels.map((_, index) => { const daysPassed = index + 1; const ideal = 80.0 - (0.14 * daysPassed); return ideal.toFixed(2); });
             let gradient = ctx.createLinearGradient(0, 0, 0, 400); gradient.addColorStop(0, 'rgba(79, 70, 229, 0.5)'); gradient.addColorStop(1, 'rgba(79, 70, 229, 0.0)');
-            weightChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: 'Weight', data, borderColor: '#4f46e5', backgroundColor: gradient, borderWidth: 3, pointRadius: 4, fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { display: false } } } });
+            weightChart = new Chart(ctx, { 
+                type: 'line', data: { labels, datasets: [ { label: 'Actual Progress', data, borderColor: '#4f46e5', backgroundColor: gradient, borderWidth: 3, pointRadius: 4, fill: true, tension: 0.4, order: 1 }, { label: 'Target Path', data: idealData, borderColor: '#94a3b8', borderWidth: 2, borderDash: [5, 5], pointRadius: 0, fill: false, tension: 0, order: 2 } ] }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } }, scales: { x: { grid: { display: false } }, y: { display: false } } } 
+            });
         }
-        
-                    // ... (renderChart line ke baad)
 
-                    // 🔥 NEW: PROGRESS BAR LOGIC ADDED 🔥
-                    const startWeight = 78.5; // Jahan se shuru kiya
-                    const goalWeight = 65.5;  // Target
-                    const totalToLose = startWeight - goalWeight; // Total 13 KG
-                    const currentLost = startWeight - lastRecordedWeight; // Abhi kitna gaya?
-                    
-                    // Percentage Calculate karo
-                    let percentage = (currentLost / totalToLose) * 100;
-                    
-                    // Logic: 0% se kam nahi, 100% se zyada nahi
-                    if (percentage < 0) percentage = 0;
-                    if (percentage > 100) percentage = 100;
+        async function saveWeight() {
+            const w = parseFloat(document.getElementById('weight-input').value);
+            if (!w || w < 50 || w > 150) { vibrate(100); showToast("Enter valid weight!"); return; }
+            const btn = document.getElementById('save-btn'); const cancelBtn = document.getElementById('cancel-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SAVING...'; btn.disabled = true; btn.classList.add('opacity-70'); cancelBtn.disabled = true;
+            
+            const diff = w - lastRecordedWeight; let mood = "NEUTRAL"; let remarks = "Maintained.";
+            if (diff < 0) { mood = "VICTORY"; remarks = "Dropped weight!"; } 
+            else if (diff > 0) { const gain = diff.toFixed(1); if (gain > 0.5) { mood = "CODE_RED"; remarks = "Critical Gain!"; } else { mood = "WAR"; remarks = "Slight Gain"; } }
+            
+            try {
+                document.getElementById('current-weight-display').innerText = w; updateTheme(mood); 
+                const now = new Date(); const d = now.getDate(); const suffix = (d > 3 && d < 21) ? 'th' : ['th', 'st', 'nd', 'rd', 'th'][d % 10] || 'th';
+                const formattedDate = `${now.toLocaleDateString('en-US', { weekday: 'short' })}, ${d}${suffix} ${now.toLocaleDateString('en-US', { month: 'short' })} ${now.getFullYear().toString().slice(-2)}`;
+                const payload = { action: "log_weight", date: formattedDate, weight: w, diff: diff.toFixed(1), mood: mood, remarks: remarks };
+                await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+                vibrate([50, 50, 50]); showToast(mood === "CODE_RED" ? "⚠️ PENALTY APPLIED!" : "Weight Saved!"); 
+                const m = document.getElementById('weight-modal'); m.classList.remove('open'); setTimeout(() => m.classList.add('hidden'), 300); fetchWeightHistory();
+            } catch (error) { showToast("Connection Error!"); console.error(error); } finally { btn.innerHTML = '<span>SAVE LOG</span> <i class="fas fa-arrow-right"></i>'; btn.disabled = false; btn.classList.remove('opacity-70'); cancelBtn.disabled = false; }
+        }
 
-                    // Bar ki width update karo
-                    const bar = document.getElementById('main-progress');
-                    bar.style.width = percentage + "%";
-                    
-                    // Color Logic: Agar 0% hai toh grey, warna White
-                    if(percentage > 0) {
-                        bar.classList.remove('w-0');
-                    }
+        function updateTheme(mood) {
+            const hero = document.getElementById('hero-card'); const logo = document.getElementById('logo-box'); const dot = document.getElementById('status-dot'); const fab = document.getElementById('nav-fab'); const text = document.getElementById('header-highlight');
+            hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group transition-all duration-700"; document.body.classList.remove('border-4', 'border-red-600'); logo.innerHTML = '100'; 
+            if (mood === 'VICTORY') { hero.classList.add('bg-gradient-to-br', 'from-emerald-500', 'to-teal-600', 'shadow-emerald-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-emerald-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#10b981'; } 
+            else if (mood === 'NEUTRAL') { hero.classList.add('bg-gradient-to-br', 'from-indigo-600', 'to-blue-600', 'shadow-indigo-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-indigo-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#4f46e5'; } 
+            else if (mood === 'CODE_RED') { hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group animate-pulse duration-700 bg-red-900 border-4 border-red-600"; logo.className = "w-11 h-11 rounded-xl bg-red-700 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-ping"; logo.innerHTML = '<i class="fas fa-skull"></i>'; text.innerText = "SYSTEM FAILURE"; text.className = "text-red-600 font-black tracking-widest"; document.body.classList.add('border-4', 'border-red-600'); if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#dc2626'; } 
+            else { hero.classList.add('bg-gradient-to-br', 'from-rose-600', 'to-orange-600', 'shadow-rose-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-rose-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#e11d48'; }
+        }
 
-
-        // --- UTILS ---
         function showToast(msg) { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.classList.remove('opacity-0', 'translate-y-[-20px]'); setTimeout(() => t.classList.add('opacity-0', 'translate-y-[-20px]'), 3000); }
         function loadChecklist() { const d = JSON.parse(localStorage.getItem(CHECKLIST_KEY)); if (d && d.date === new Date().toLocaleDateString()) { ['chk-wake','chk-water','chk-cardio','chk-diet','chk-strength'].forEach(id => { const e = document.getElementById(id); if(e) e.checked = d[id] || false; }); } }
         function saveChecklist() { localStorage.setItem(CHECKLIST_KEY, JSON.stringify({ date: new Date().toLocaleDateString(), 'chk-wake': document.getElementById('chk-wake').checked, 'chk-water': document.getElementById('chk-water').checked, 'chk-cardio': document.getElementById('chk-cardio').checked, 'chk-diet': document.getElementById('chk-diet').checked, 'chk-strength': document.getElementById('chk-strength').checked })); }
-        function switchTab(id, btn) { document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active')); document.getElementById('tab-' + id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(e => { e.classList.remove('active'); e.style.color = ''; e.classList.add('text-slate-400'); }); if(btn) { btn.classList.add('active'); btn.classList.remove('text-slate-400'); } window.scrollTo({ top: 0, behavior: 'smooth' }); updateTheme(lastRecordedWeight < 78.5 ? 'VICTORY' : 'WAR'); }
+        function switchTab(id, btn) { document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active')); document.getElementById('tab-' + id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(e => { e.classList.remove('active'); e.style.color = ''; e.classList.add('text-slate-400'); }); if(btn) { btn.classList.add('active'); btn.classList.remove('text-slate-400'); } window.scrollTo({ top: 0, behavior: 'smooth' }); updateTheme(lastRecordedWeight < 80.0 ? 'VICTORY' : 'WAR'); }
         function updateMissionStatus() { const now = new Date(); const diff = START_DATE - now; if(diff > 0) document.getElementById('days-counter').innerText = `Starts in ${Math.ceil(diff/(1000*60*60*24))} Days`; else document.getElementById('days-counter').innerText = `Day ${Math.ceil((now - START_DATE)/(1000*60*60*24))} / 100`; }
         function toggleTheme() { const d = document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', d ? 'dark' : 'light'); }
         
-                // --- WORKOUT DATA (EXTRACTED FROM SCREENSHOTS) ---
         const workouts = {
-            'warmup': { title: "Warm-Up", time: "6 Min", cal: "76", mode: "Warm Up", color: "orange", list: [
-                {n: "Jumping Jacks", t: "40s"}, {n: "Hip Circles", t: "40s"}, {n: "Forward Arm Circles", t: "40s"}, {n: "Squats", t: "40s"}, {n: "High Knees", t: "40s"}, {n: "Standing Torso Twist", t: "40s"}
-            ]},
-            'stretch': { title: "Stretch", time: "6 Min", cal: "34", mode: "Yoga / Flexibility", color: "blue", list: [
-                {n: "Standing Chest Stretch", t: "40s"}, {n: "Quadricep Stretch", t: "40s"}, {n: "Calf & Ham Stretch", t: "40s"}, {n: "Supine Hamstring Stretch", t: "40s"}, {n: "Child Pose", t: "40s"}, {n: "Deep Breathing", t: "40s"}
-            ]},
-            'push': { title: "Push Day", time: "30 Min", cal: "385", mode: "Strength Training", color: "indigo", list: [
-                {n: "Push-Ups", t: "40s"}, {n: "Bench Press", t: "40s"}, {n: "Neutral Shoulder Press", t: "40s"}, {n: "Lateral Raises", t: "40s"}, {n: "Neutral Grip Front Raise", t: "40s"},
-                {n: "REST", t: "45s", type: "rest"},
-                {n: "Chest Crossover", t: "40s"}, {n: "Tricep Dips", t: "40s"}, {n: "Tricep French Press", t: "40s"}, {n: "Push-Up & Pike", t: "40s"}, {n: "Incline Push-Ups", t: "40s"}
-            ]},
-            'pull': { title: "Pull Day", time: "32 Min", cal: "367", mode: "Strength Training", color: "cyan", list: [
-                {n: "Bent Over Row", t: "40s"}, {n: "Upper Back Row", t: "40s"}, {n: "Wide Grip Row", t: "40s"}, {n: "Overhead Pulldown", t: "40s"}, {n: "Reverse Fly", t: "40s"},
-                {n: "REST", t: "45s", type: "rest"},
-                {n: "Lower Reverse Fly", t: "40s"}, {n: "Shoulder Shrug", t: "40s"}, {n: "Archer", t: "40s"}, {n: "Bicep Curls", t: "40s"}, {n: "Superman", t: "40s"}, {n: "Hammer Grip Curls", t: "40s"}
-            ]},
-            'legs': { title: "Leg + Core Day", time: "31 Min", cal: "331", mode: "Strength Training", color: "rose", list: [
-                {n: "Dumbbell Squat", t: "40s"}, {n: "Rear Lunges", t: "40s"}, {n: "Backward Glute Raises", t: "40s"}, {n: "Deadlift", t: "40s"}, {n: "Bird Dog", t: "40s"},
-                {n: "REST", t: "45s", type: "rest"},
-                {n: "Wall Sit", t: "40s"}, {n: "Calf Raises", t: "40s"}, {n: "Side Plank", t: "20s/side"}, {n: "Hip Thrusts", t: "40s"}, {n: "Superman", t: "40s"}
-            ]},
-            'hybrid': { title: "Hybrid Storm", time: "35 Min", cal: "412", mode: "HIIT / Cardio", color: "yellow", list: [
-                {n: "Jumping Jacks", t: "40s"}, {n: "High Knees", t: "40s"}, {n: "Squats", t: "40s"}, {n: "Push-Ups", t: "40s"}, {n: "Shoulder Tap Plank", t: "40s"},
-                {n: "REST", t: "45s", type: "rest"},
-                {n: "Jump Rope", t: "40s"}, {n: "Donkey Kick", t: "40s"}, {n: "Alternating Side Lunge", t: "40s"}, {n: "Crunches", t: "40s"}, {n: "Mountain Climbers", t: "40s"}
-            ]}
+            'warmup': { title: "Warm-Up", time: "6 Min", cal: "76", mode: "Warm Up", color: "orange", list: [{n: "Jumping Jacks", t: "40s"}, {n: "Hip Circles", t: "40s"}, {n: "Forward Arm Circles", t: "40s"}, {n: "Squats", t: "40s"}, {n: "High Knees", t: "40s"}, {n: "Standing Torso Twist", t: "40s"}] },
+            'stretch': { title: "Stretch", time: "6 Min", cal: "34", mode: "Yoga / Flexibility", color: "blue", list: [{n: "Standing Chest Stretch", t: "40s"}, {n: "Quadricep Stretch", t: "40s"}, {n: "Calf & Ham Stretch", t: "40s"}, {n: "Supine Hamstring Stretch", t: "40s"}, {n: "Child Pose", t: "40s"}, {n: "Deep Breathing", t: "40s"}] },
+            'push': { title: "Push Day", time: "30 Min", cal: "385", mode: "Strength Training", color: "indigo", list: [{n: "Push-Ups", t: "40s"}, {n: "Bench Press", t: "40s"}, {n: "Neutral Shoulder Press", t: "40s"}, {n: "Lateral Raises", t: "40s"}, {n: "Neutral Grip Front Raise", t: "40s"}, {n: "REST", t: "45s", type: "rest"}, {n: "Chest Crossover", t: "40s"}, {n: "Tricep Dips", t: "40s"}, {n: "Tricep French Press", t: "40s"}, {n: "Push-Up & Pike", t: "40s"}, {n: "Incline Push-Ups", t: "40s"}] },
+            'pull': { title: "Pull Day", time: "32 Min", cal: "367", mode: "Strength Training", color: "cyan", list: [{n: "Bent Over Row", t: "40s"}, {n: "Upper Back Row", t: "40s"}, {n: "Wide Grip Row", t: "40s"}, {n: "Overhead Pulldown", t: "40s"}, {n: "Reverse Fly", t: "40s"}, {n: "REST", t: "45s", type: "rest"}, {n: "Lower Reverse Fly", t: "40s"}, {n: "Shoulder Shrug", t: "40s"}, {n: "Archer", t: "40s"}, {n: "Bicep Curls", t: "40s"}, {n: "Superman", t: "40s"}, {n: "Hammer Grip Curls", t: "40s"}] },
+            'legs': { title: "Leg + Core Day", time: "31 Min", cal: "331", mode: "Strength Training", color: "rose", list: [{n: "Dumbbell Squat", t: "40s"}, {n: "Rear Lunges", t: "40s"}, {n: "Backward Glute Raises", t: "40s"}, {n: "Deadlift", t: "40s"}, {n: "Bird Dog", t: "40s"}, {n: "REST", t: "45s", type: "rest"}, {n: "Wall Sit", t: "40s"}, {n: "Calf Raises", t: "40s"}, {n: "Side Plank", t: "20s/side"}, {n: "Hip Thrusts", t: "40s"}, {n: "Superman", t: "40s"}] },
+            'hybrid': { title: "Hybrid Storm", time: "35 Min", cal: "412", mode: "HIIT / Cardio", color: "yellow", list: [{n: "Jumping Jacks", t: "40s"}, {n: "High Knees", t: "40s"}, {n: "Squats", t: "40s"}, {n: "Push-Ups", t: "40s"}, {n: "Shoulder Tap Plank", t: "40s"}, {n: "REST", t: "45s", type: "rest"}, {n: "Jump Rope", t: "40s"}, {n: "Donkey Kick", t: "40s"}, {n: "Alternating Side Lunge", t: "40s"}, {n: "Crunches", t: "40s"}, {n: "Mountain Climbers", t: "40s"}] }
         };
 
-        // --- WORKOUT LOGIC (REFERENCE ONLY MODE) ---
         function openWorkoutModal(id) {
             vibrate();
             const w = workouts[id];
             const m = document.getElementById('workout-modal');
-            
-            // Populate Header
             document.getElementById('modal-title').innerText = w.title.toUpperCase();
             document.getElementById('modal-subtitle').innerText = `${w.time} • ${w.cal} KCAL`;
             document.getElementById('watch-mode-text').innerText = `Set Watch to: ${w.mode}`;
-            
-            // Render List (Clean Version)
             const list = document.getElementById('modal-list');
             list.innerHTML = '';
-            
-            // Note: Warmup Toggle code removed here for static view
-
             w.list.forEach(ex => {
                 if(ex.type === 'rest') {
-                    // Rest Block
-                    list.innerHTML += `
-                    <div class="flex items-center justify-center py-2 opacity-70">
-                        <span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                            <i class="fas fa-pause mr-1"></i> Rest ${ex.t}
-                        </span>
-                    </div>`;
+                    list.innerHTML += `<div class="flex items-center justify-center py-2 opacity-70"><span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"><i class="fas fa-pause mr-1"></i> Rest ${ex.t}</span></div>`;
                 } else {
-                    // Exercise Item (No Checkbox, Just Info)
-                    list.innerHTML += `
-                        <div class="exercise-item justify-between group border-b border-slate-50 dark:border-slate-800/50 mb-2 pb-2">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center text-slate-400 font-bold text-lg text-${w.color}-500">
-                                    <i class="fas fa-dumbbell"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm text-slate-700 dark:text-slate-200">${ex.n}</h4>
-                                    <p class="text-xs font-bold text-${w.color}-500 opacity-80">${ex.t}</p>
-                                </div>
-                            </div>
-                        </div>`;
+                    list.innerHTML += `<div class="exercise-item justify-between group border-b border-slate-50 dark:border-slate-800/50 mb-2 pb-2"><div class="flex items-center gap-4"><div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center text-slate-400 font-bold text-lg text-${w.color}-500"><i class="fas fa-dumbbell"></i></div><div><h4 class="font-bold text-sm text-slate-700 dark:text-slate-200">${ex.n}</h4><p class="text-xs font-bold text-${w.color}-500 opacity-80">${ex.t}</p></div></div></div>`;
                 }
             });
-
-            // Show Modal
-            m.classList.remove('hidden');
-            setTimeout(() => m.classList.remove('translate-y-full'), 10);
+            m.classList.remove('hidden'); setTimeout(() => m.classList.remove('translate-y-full'), 10);
         }
-
-        function closeWorkoutModal() {
-            const m = document.getElementById('workout-modal');
-            m.classList.add('translate-y-full');
-            setTimeout(() => m.classList.add('hidden'), 300);
-        }
-
-
-        // --- DYNAMIC HERO HEADER ---
+        function closeWorkoutModal() { const m = document.getElementById('workout-modal'); m.classList.add('translate-y-full'); setTimeout(() => m.classList.add('hidden'), 300); }
         function updateHeroHeader() {
-            const day = new Date().getDay(); // 0=Sun, 1=Mon...
-            const map = {
-                1: 'push', 4: 'push', // Mon, Thu
-                2: 'pull', 5: 'pull', // Tue, Fri
-                3: 'hybrid', // Wed
-                6: 'legs', // Sat
-                0: 'stretch' // Sun
-            };
+            const day = new Date().getDay(); 
+            const map = { 1: 'push', 4: 'push', 2: 'pull', 5: 'pull', 3: 'hybrid', 6: 'legs', 0: 'stretch' };
             const todayKey = map[day] || 'stretch';
             const w = workouts[todayKey];
-            
             document.getElementById('hero-workout-title').innerText = w.title.toUpperCase();
             document.getElementById('hero-duration').innerText = w.time;
             document.getElementById('hero-exercises').innerText = `${w.list.length} Exercises`;
             document.getElementById('hero-calories').innerText = w.cal;
-            
-            // On Click
             document.getElementById('workout-hero').onclick = () => openWorkoutModal(todayKey);
         }
-        
-        // Call this on load
-        document.addEventListener("DOMContentLoaded", () => {
-             // ... existing calls ...
-             updateHeroHeader();
-        });
 
-        // --- FUEL STATION LOGIC ---
-        
         let waterCount = 0;
+        function addWater() { vibrate(50); waterCount += 0.25; showToast(`Hydration: ${waterCount}L Added 💧`); const fab = document.getElementById('water-fab'); fab.style.transform = "scale(1.2)"; setTimeout(() => fab.style.transform = "scale(1)", 200); const waterStat = document.querySelector('button[onclick="openStatModal(\'water\')"] h4'); if(waterStat) waterStat.innerText = `${waterCount.toFixed(1)} L`; }
+
+        function openStatModal(type) { vibrate(30); const m = document.getElementById('info-modal'); const list = document.getElementById('info-list'); list.innerHTML = ''; const t = document.getElementById('info-title'); const s = document.getElementById('info-subtitle'); const i = document.getElementById('info-icon'); const ic = document.getElementById('info-icon-container'); let data = []; if(type==='calories'){ i.className="fas fa-fire"; ic.className="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="1650 Kcal"; s.innerText="Energy Budget"; data=["High Protein (120g)", "Low Carb", "No Sugar", "Accuracy is King ⚖️"]; } else if(type==='water'){ i.className="fas fa-tint"; ic.className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="4.0 Liters"; s.innerText="Hydration"; data=["1L Morning", "1L Workout", "2L Day"]; } else if(type==='neat'){ i.className="fas fa-shoe-prints"; ic.className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="8,000 Steps"; s.innerText="Movement"; data=["Walk after meals", "Take stairs", "Pace on calls"]; } else if(type==='sleep'){ i.className="fas fa-moon"; ic.className="w-16 h-16 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="10:30 PM"; s.innerText="Recovery"; data=["No Phone 10pm", "Dark Room", "7 Hrs Sleep"]; } data.forEach(d => list.innerHTML += `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-slate-400 mt-1"></i><span>${d}</span></li>`); m.classList.remove('hidden'); setTimeout(() => m.classList.add('open'), 10); }
+        function closeInfoModal() { const m = document.getElementById('info-modal'); m.classList.remove('open'); setTimeout(() => m.classList.add('hidden'), 300); }
+        function openWeightModal() { vibrate(); const m = document.getElementById('weight-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.add('open'), 10); }
+        function closeWeightModal() { const btn = document.getElementById('save-btn'); if (btn.disabled) return; const m = document.getElementById('weight-modal'); m.classList.remove('open'); setTimeout(() => m.classList.add('hidden'), 300); }
+
+        // --- BODY STATS LOGIC (UPDATED WITH COMPARISON) ---
+        const START_STATS = { chest: 42.0, waist: 36.0, arms: 14.5, thighs: 24.0 };
         
-        function addWater() {
-            vibrate(50);
-            waterCount += 0.25; // Add 250ml
-            showToast(`Hydration: ${waterCount}L Added 💧`);
-            
-            // Visual Pop Effect
-            const fab = document.getElementById('water-fab');
-            fab.style.transform = "scale(1.2)";
-            setTimeout(() => fab.style.transform = "scale(1)", 200);
-            
-            // Update Dashboard Stat (Optional sync)
-            const waterStat = document.querySelector('button[onclick="openStatModal(\'water\')"] h4'); 
-            if(waterStat) waterStat.innerText = `${waterCount.toFixed(1)} L`;
+        function updateInputVal(id, change) {
+            const input = document.getElementById(id);
+            let val = parseFloat(input.value) || 0;
+            val = Math.round((val + change) * 10) / 10;
+            input.value = val;
         }
 
-        // --- ARMOR LAB LOGIC (BODY STATS) ---
-        
-        // Initial Data (Inches)
-        let bodyStats = {
-            chest: 42.0,
-            waist: 36.0,
-            arms: 14.5,
-            thighs: 24.0
-        };
+        async function fetchBodyHistory() {
+            try {
+                document.getElementById('body-last-date').innerText = "Syncing...";
+                const response = await fetch(`${API_URL}?action=get_body_history`, { method: "POST", body: JSON.stringify({ action: "get_body_history" }) });
+                const data = await response.json();
 
-        // Load saved stats on startup
-        function loadBodyStats() {
-            const saved = JSON.parse(localStorage.getItem('project100_body_stats'));
-            if(saved) {
-                bodyStats = saved;
-                document.getElementById('last-body-update').innerText = saved.date || 'Unknown';
-            } else {
-                document.getElementById('last-body-update').innerText = 'Not Set';
+                if (data.status === 'success' && data.history.length > 0) {
+                    const latest = data.history[data.history.length - 1]; // Current (Latest Log)
+                    const first = data.history[0]; // Start (First Log)
+
+                    // Update Input fields with Latest
+                    document.getElementById('in-chest').value = latest.chest;
+                    document.getElementById('in-waist').value = latest.waist;
+                    document.getElementById('in-arms').value = latest.arms;
+                    document.getElementById('in-thighs').value = latest.thighs;
+                    
+                    document.getElementById('body-last-date').innerText = new Date(latest.date).toLocaleDateString('en-US', {day:'numeric', month:'short'});
+                    
+                    // Render Comparison (Start vs Latest)
+                    renderBodyComparison(first, latest);
+                } else {
+                    document.getElementById('body-last-date').innerText = "New";
+                    renderBodyComparison(START_STATS, START_STATS);
+                }
+            } catch (e) {
+                console.error("Body Sync Error", e);
+                document.getElementById('body-last-date').innerText = "Error";
             }
-            updateUIStats();
         }
 
-        // Handle + / - Buttons
-        function updateStat(part, change) {
-            vibrate(30);
-            bodyStats[part] += change;
-            // Limit decimal to 1 digit
-            bodyStats[part] = Math.round(bodyStats[part] * 100) / 100; 
-            updateUIStats();
+        function renderBodyComparison(start, current) {
+            const updatePart = (key, startVal, currVal, barId, diffId, isWaist=false) => {
+                const diff = (currVal - startVal).toFixed(1);
+                const diffEl = document.getElementById(diffId);
+                const barEl = document.getElementById(barId);
+                
+                // Show Start Value
+                document.getElementById(`start-${key}`).innerText = startVal;
+
+                // Visual Badge Logic
+                if (diff < 0) {
+                    diffEl.innerText = `${diff}"`;
+                    diffEl.className = "text-[10px] font-bold px-2 py-1 rounded bg-emerald-100 text-emerald-600"; // Green for Loss (Good)
+                } else if (diff > 0) {
+                    diffEl.innerText = `+${diff}"`;
+                    const color = isWaist ? "bg-rose-100 text-rose-600" : "bg-blue-100 text-blue-600";
+                    diffEl.className = `text-[10px] font-bold px-2 py-1 rounded ${color}`;
+                } else {
+                    diffEl.innerText = "0.0";
+                    diffEl.className = "text-[10px] font-bold px-2 py-1 rounded bg-slate-100 text-slate-400";
+                }
+
+                // Progress Bar Logic (Visual)
+                let target = startVal * 0.9;
+                if (key === 'waist') target = 32.0;
+
+                const totalDist = startVal - target;
+                const covered = startVal - currVal;
+                let pct = (covered / totalDist) * 100;
+                
+                if (pct < 5) pct = 5; if (pct > 100) pct = 100; if (currVal > startVal) pct = 5; 
+
+                barEl.style.width = `${pct}%`;
+            };
+
+            updatePart('chest', parseFloat(start.chest), parseFloat(current.chest), 'bar-chest', 'diff-chest');
+            updatePart('waist', parseFloat(start.waist), parseFloat(current.waist), 'bar-waist', 'diff-waist', true);
+            updatePart('arms', parseFloat(start.arms), parseFloat(current.arms), 'bar-arms', 'diff-arms');
+            updatePart('thighs', parseFloat(start.thighs), parseFloat(current.thighs), 'bar-thighs', 'diff-thighs');
         }
 
-        // Update the UI Text
-        function updateUIStats() {
-            document.getElementById('val-chest').innerText = bodyStats.chest.toFixed(1);
-            document.getElementById('val-waist').innerText = bodyStats.waist.toFixed(1);
-            document.getElementById('val-arms').innerText = bodyStats.arms.toFixed(1);
-            document.getElementById('val-thighs').innerText = bodyStats.thighs.toFixed(1);
-        }
+        async function saveBodyStats() {
+            vibrate([50, 50]);
+            const btn = document.getElementById('btn-save-body');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
 
-        // Save Data
-        function saveBodyStats() {
-            vibrate([50, 50, 50]);
-            
-            // Add Date
-            bodyStats.date = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-            
-            // Save to Local Storage
-            localStorage.setItem('project100_body_stats', JSON.stringify(bodyStats));
-            
-            // UI Feedback
-            showToast("Armor Stats Updated! 🛡️");
-            document.getElementById('last-body-update').innerText = "Just Now";
-            
-            // Optional: Send to Google Sheet logic here later
-        }
+            const payload = {
+                action: 'log_body',
+                chest: document.getElementById('in-chest').value,
+                waist: document.getElementById('in-waist').value,
+                arms: document.getElementById('in-arms').value,
+                thighs: document.getElementById('in-thighs').value
+            };
 
-        // Add to Init
-        document.addEventListener("DOMContentLoaded", () => {
-             // ... existing inits ...
-             loadBodyStats();
-        });
+            try {
+                await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                showToast("Armor Updated! 🛡️");
+                fetchBodyHistory(); 
+            } catch (e) {
+                showToast("Save Failed!");
+            } finally {
+                btn.innerHTML = '<i class="fas fa-save animate-bounce"></i> Log Measurements';
+                btn.disabled = false;
+            }
+        }
 
     </script>
 </body>
