@@ -1,15 +1,3 @@
-<!-- 
-    ================================================================
-    FILE: Project-100-Ultimate-v6.5.html
-    AUTHOR: Vikas Rawat
-    MISSION: 80 KG -> 66 KG
-    UPDATES: 
-    1. Workout Tab restored (Pull/Legs added back).
-    2. Body Tab now compares Sheet Data (First Log vs Latest Log).
-    3. Visual Badges for Inches Lost/Gained.
-    ================================================================
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,13 +7,10 @@
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
     
-    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
-    
     <link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
 
     <script>
@@ -62,17 +47,13 @@
 
         /* Animations */
         .tab-content { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .tab-content.active { display: block; }
+        /* Force display block when active to fix blank screen issues */
+        .tab-content.active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .nav-item { transition: all 0.2s; opacity: 0.6; }
         .nav-item.active { opacity: 1; transform: translateY(-3px); font-weight: 800; }
-
-        /* Hologram Grid */
-        .hologram-grid { background-image: linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px); background-size: 20px 20px; }
-        .scanner-line { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #6366f1; box-shadow: 0 0 10px #6366f1, 0 0 20px #6366f1; animation: scan 3s linear infinite; z-index: 5; }
-        @keyframes scan { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
         /* Armor Lab Cards */
         .armor-card { background: white; border-radius: 1.5rem; padding: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; transition: transform 0.2s; }
@@ -86,12 +67,7 @@
         .dark .ctrl-btn-round { background: #1e293b; color: #64748b; }
         .ctrl-btn-round:active { transform: scale(0.9); background: #e2e8f0; }
 
-        /* Body Progress Bars */
-        .stat-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin-top: 8px; position: relative; }
-        .dark .stat-bar-bg { background: #334155; }
-        .stat-bar-fill { height: 100%; border-radius: 10px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
-
-        /* Checkbox & Misc Styles from previous versions kept for stability */
+        /* Checkbox Styles */
         .ios-checkbox { --checkbox-size: 24px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; width: 100%; }
         .ios-checkbox input { display: none; }
         .checkbox-wrapper { position: relative; width: var(--checkbox-size); height: var(--checkbox-size); border-radius: 8px; transition: transform 0.2s ease; flex-shrink: 0; }
@@ -115,17 +91,12 @@
         .pulse-tip { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: white; border-radius: 50%; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); animation: tip-pulse 2s infinite; }
         @keyframes tip-pulse { 0% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
-        /* Marquee */
-        .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
-        .marquee-content { display: inline-block; animation: marquee 15s linear infinite; padding-left: 100%; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
         /* Timeline */
         .fuel-timeline { position: relative; padding-left: 24px; }
         .fuel-timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 20px; width: 2px; background: linear-gradient(to bottom, #10b981 0%, #3b82f6 50%, #6366f1 100%); opacity: 0.3; }
         .fuel-node { position: absolute; left: -21px; top: 24px; width: 16px; height: 16px; border-radius: 50%; background: #0f172a; border: 3px solid #10b981; z-index: 10; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); transition: all 0.3s; }
 
-        /* FAB */
+        /* FAB & Modals */
         .hydro-fab { position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 50%; box-shadow: 0 10px 20px rgba(6, 182, 212, 0.4); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; z-index: 45; transition: all 0.2s; cursor: pointer; }
         .hydro-fab:active { transform: scale(0.9); }
 
@@ -136,136 +107,72 @@
         .theme-toggle-header { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #64748b; transition: all 0.3s; }
         .dark .theme-toggle-header { color: #f1f5f9; background: rgba(255,255,255,0.05); }
         
-/* Real Ink Signature Effect */
-.real-signature {
-    font-family: 'Mrs Saint Delafield', cursive;
-    font-size: 3.5rem;
-    color: #e11d48; /* Red Ink */
-    transform: rotate(-5deg) skewX(-10deg);
-    text-shadow: 2px 2px 0px rgba(225, 29, 72, 0.1);
-    opacity: 0.9;
-}
+        /* Real Ink Signature Effect */
+        .real-signature { font-family: 'Mrs Saint Delafield', cursive; font-size: 3.5rem; color: #e11d48; transform: rotate(-5deg) skewX(-10deg); text-shadow: 2px 2px 0px rgba(225, 29, 72, 0.1); opacity: 0.9; }
+        
+        /* KPI Cards */
+        .kpi-card { position: relative; overflow: hidden; border-radius: 1.5rem; padding: 1.25rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(0,0,0,0.03); }
+        .kpi-card:active { transform: scale(0.96); }
+        .kpi-icon-bg { position: absolute; right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.1; transform: rotate(-15deg); transition: all 0.3s; }
+        .kpi-card:hover .kpi-icon-bg { transform: rotate(0deg) scale(1.1); opacity: 0.15; }
 
-/* Paper Texture Pattern */
-.contract-paper {
-    background-color: #ffffff;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-    position: relative;
-}
-.dark .contract-paper {
-    background-color: #0f172a;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
+        /* Themes */
+        .theme-fire { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
+        .dark .theme-fire { background: linear-gradient(135deg, rgba(234,88,12,0.1) 0%, rgba(234,88,12,0.05) 100%); border-color: rgba(234,88,12,0.2); }
+        .theme-water { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+        .dark .theme-water { background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%); border-color: rgba(59,130,246,0.2); }
+        .theme-earth { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+        .dark .theme-earth { background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%); border-color: rgba(16,185,129,0.2); }
+        .theme-moon { background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); }
+        .dark .theme-moon { background: linear-gradient(135deg, rgba(147,51,234,0.1) 0%, rgba(147,51,234,0.05) 100%); border-color: rgba(147,51,234,0.2); }
 
-/* Biometric Fingerprint Animation */
-.fingerprint-scan {
-    animation: scan-finger 3s ease-in-out infinite;
-    border-bottom: 2px solid #e11d48;
-    box-shadow: 0 0 15px #e11d48;
-}
-@keyframes scan-finger {
-    0%, 100% { height: 0%; opacity: 0; }
-    50% { height: 100%; opacity: 1; }
-}
+        /* Controls */
+        .control-pill { background: #f8fafc; border-radius: 99px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 8px; }
+        .dark .control-pill { background: #0f172a; }
+        .stat-input { background: transparent; text-align: center; width: 60px; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1e293b; outline: none; }
+        .dark .stat-input { color: white; }
 
-/* --- MODERN KPI CARDS (Bento Style) --- */
-.kpi-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1.5rem;
-    padding: 1.25rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(0,0,0,0.03);
-}
-.kpi-card:active { transform: scale(0.96); }
+        /* Theme Red specific */
+        .theme-red .control-pill { background: #fff1f2; }
+        .dark .theme-red .control-pill { background: rgba(225, 29, 72, 0.1); }
+        .theme-red .ctrl-btn-round { color: #e11d48; background: white; }
+        .dark .theme-red .ctrl-btn-round { background: #1e293b; color: #fb7185; }
+        .theme-red .stat-input { color: #e11d48; }
+        .dark .theme-red .stat-input { color: #fb7185; }
 
-/* Background Watermark Icon */
-.kpi-icon-bg {
-    position: absolute;
-    right: -10px;
-    bottom: -10px;
-    font-size: 5rem;
-    opacity: 0.1;
-    transform: rotate(-15deg);
-    transition: all 0.3s;
-}
-.kpi-card:hover .kpi-icon-bg { transform: rotate(0deg) scale(1.1); opacity: 0.15; }
+        /* Workout Accordion */
+        .workout-row { border-bottom: 1px solid #f1f5f9; transition: background-color 0.2s; }
+        .dark .workout-row { border-color: #334155; }
+        .workout-detail { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: #f8fafc; }
+        .dark .workout-detail { background: #0f172a; }
+        .workout-row.active .workout-detail { max-height: 200px; }
+        .workout-row.active .chevron-icon { transform: rotate(180deg); }
 
-/* Themes */
-.theme-fire { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
-.dark .theme-fire { background: linear-gradient(135deg, rgba(234,88,12,0.1) 0%, rgba(234,88,12,0.05) 100%); border-color: rgba(234,88,12,0.2); }
+        /* Timeline v2 */
+        .timeline-container { position: relative; padding-left: 20px; margin-left: 10px; margin-top: 10px; }
+        .timeline-container::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 0; width: 2px; background: #e2e8f0; border-radius: 99px; }
+        .dark .timeline-container::before { background: #334155; }
+        .timeline-dot { position: absolute; left: -6px; top: 24px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid #f8fafc; z-index: 10; }
+        .dark .timeline-dot { border-color: #020617; }
+        .timeline-item { position: relative; padding-left: 20px; padding-bottom: 30px; }
+        .time-pill { display: inline-block; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-.theme-water { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
-.dark .theme-water { background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%); border-color: rgba(59,130,246,0.2); }
+        /* Hydro Card Modern */
+        .hydro-card-modern { background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); border-radius: 1.75rem; position: relative; overflow: hidden; box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.4); color: white; }
+        .hydro-liquid { position: absolute; bottom: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); animation: liquid-spin 10s linear infinite; pointer-events: none; }
+        @keyframes liquid-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.theme-earth { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
-.dark .theme-earth { background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%); border-color: rgba(16,185,129,0.2); }
+        /* Sliding Button */
+        .btn-slide-fill { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); overflow: hidden; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+        .btn-slide-fill:active { transform: scale(0.95); }
+        .btn-slide-fill::after { content: ""; position: absolute; width: 0%; height: 100%; background: #fbbf24; right: 0; top: 0; transition: all 0.4s ease-in-out; z-index: 0; }
+        .btn-slide-fill:active::after { width: 100%; left: 0; right: auto; }
+        .btn-content { position: relative; z-index: 10; display: flex; flex-direction: column; items-center; width: 100%; padding: 10px 0; }
 
-.theme-moon { background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); }
-.dark .theme-moon { background: linear-gradient(135deg, rgba(147,51,234,0.1) 0%, rgba(147,51,234,0.05) 100%); border-color: rgba(147,51,234,0.2); }
-
-/* --- MODERN CHART LEGEND --- */
-.legend-pill {
-    display: flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: 99px;
-    font-size: 10px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 0.5px;
-}
-.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-/* --- NEW ARMOR LAB CONTROLS --- */
-
-/* Control Pill (The Container) */
-.control-pill {
-    background: #f8fafc; /* Light Grey */
-    border-radius: 99px; /* Pill Shape */
-    padding: 6px 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-.dark .control-pill { background: #0f172a; }
-
-/* Round Buttons */
-.ctrl-btn-round {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: white;
-    color: #94a3b8;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: all 0.2s;
-}
-.dark .ctrl-btn-round { background: #1e293b; color: #64748b; }
-.ctrl-btn-round:active { transform: scale(0.9); background: #e2e8f0; }
-
-/* Input Field (Invisible) */
-.stat-input {
-    background: transparent;
-    text-align: center;
-    width: 60px;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 900;
-    font-size: 1.5rem;
-    color: #1e293b;
-    outline: none;
-}
-.dark .stat-input { color: white; }
-
-/* --- WAIST CARD (RED THEME) --- */
-.theme-red .control-pill { background: #fff1f2; } /* Rose 50 */
-.dark .theme-red .control-pill { background: rgba(225, 29, 72, 0.1); }
-
-.theme-red .ctrl-btn-round { color: #e11d48; background: white; }
-.dark .theme-red .ctrl-btn-round { background: #1e293b; color: #fb7185; }
-
-.theme-red .stat-input { color: #e11d48; }
-.dark .theme-red .stat-input { color: #fb7185; }
-
+        /* History Drawer */
+        .history-drawer { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(0, 0, 0, 0.2); }
+        .history-drawer.open { max-height: 300px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .history-row { display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.75rem; color: rgba(255,255,255,0.8); }
     </style>
 </head>
 
@@ -277,7 +184,7 @@
                 <div id="logo-box" class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg shadow-rose-500/30 animate-float">100</div>
                 <div>
                     <h1 class="font-heading font-extrabold text-lg leading-none tracking-tight text-slate-900 dark:text-white">PROJECT <span id="header-highlight" class="text-rose-600">RELOADED</span></h1>
-                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Fat Domination • v6.5</p>
+                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Fat Domination • v1.0</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -295,7 +202,6 @@
 
     <main class="pt-24 px-4 max-w-2xl mx-auto">
 
-        <!-- ================= TAB 1: DASHBOARD ================= -->
         <div id="tab-dashboard" class="tab-content active space-y-5">
             <div id="hero-card" class="bg-gradient-to-br from-rose-600 to-orange-600 rounded-[2rem] p-6 text-white shadow-xl shadow-rose-500/20 relative overflow-hidden group transition-all duration-700">
                 <div class="absolute -right-10 -top-10 text-[10rem] text-white opacity-10 transform rotate-12 group-hover:rotate-0 transition-transform duration-700"><i class="fas fa-bullseye"></i></div>
@@ -311,113 +217,59 @@
                     </div>
                 </div>
             </div>
+            
             <div id="day-indicator" class="hidden rounded-xl p-3 border flex items-center justify-between shadow-sm animate-fadeIn"></div>
 
-<!-- ✅ NEW MODERN WEIGHT CHART CARD -->
-<div class="bg-white dark:bg-slate-800 p-1 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl relative overflow-hidden group">
-    
-    <!-- Floating Header -->
-    <div class="p-6 pb-0 flex flex-col gap-4 relative z-10">
-        
-        <div class="flex justify-between items-center">
-            <!-- Title & Icon -->
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                    <i class="fas fa-chart-line text-sm"></i>
+            <div class="bg-white dark:bg-slate-800 p-1 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl relative overflow-hidden group">
+                <div class="p-6 pb-0 flex flex-col gap-4 relative z-10">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400"><i class="fas fa-chart-line text-sm"></i></div>
+                            <div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Analytics</p><h3 class="font-heading font-extrabold text-lg text-slate-800 dark:text-white leading-tight">Weight Trend</h3></div>
+                        </div>
+                        <button onclick="openWeightModal()" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5"><i class="fas fa-plus text-[8px]"></i> LOG TODAY</button>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Analytics</p>
-                    <h3 class="font-heading font-extrabold text-lg text-slate-800 dark:text-white leading-tight">Weight Trend</h3>
+                <div class="h-56 w-full px-2 relative z-10 mt-1 overflow-hidden">
+                    <canvas id="weightChart"></canvas>
                 </div>
             </div>
-            
-            <!-- Modern Log Button -->
-            <button onclick="openWeightModal()" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-1.5">
-                <i class="fas fa-plus text-[8px]"></i> LOG TODAY
-            </button>
-        </div>
 
-        <!-- Custom Capsule Legend -->
-        <div class="flex items-center gap-2">
-            <!-- Current Pill -->
-            <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800">
-                <div class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
-                <span class="text-[9px] font-bold text-indigo-600 dark:text-indigo-300 uppercase tracking-wide">Current</span>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="openStatModal('calories')" class="kpi-card theme-fire group text-left">
+                    <i class="fas fa-fire kpi-icon-bg text-orange-500"></i>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-1"><div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-orange-500 shadow-sm"><i class="fas fa-fire text-xs"></i></div><p class="text-[10px] font-bold text-orange-700 dark:text-orange-300 uppercase tracking-wide">Intake</p></div>
+                        <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">1650</p>
+                        <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Kcal Locked 🔒</p>
+                    </div>
+                </button>
+                <button onclick="openStatModal('water')" class="kpi-card theme-water group text-left">
+                    <i class="fas fa-tint kpi-icon-bg text-blue-500"></i>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-1"><div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-blue-500 shadow-sm"><i class="fas fa-glass-water text-xs"></i></div><p class="text-[10px] font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Hydration</p></div>
+                        <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">4.0 L</p>
+                        <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Flush Fat 💧</p>
+                    </div>
+                </button>
+                <button onclick="openStatModal('neat')" class="kpi-card theme-earth group text-left">
+                    <i class="fas fa-shoe-prints kpi-icon-bg text-emerald-500"></i>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-1"><div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-emerald-500 shadow-sm"><i class="fas fa-person-walking text-xs"></i></div><p class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Movement</p></div>
+                        <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">8,000</p>
+                        <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Steps Daily 👣</p>
+                    </div>
+                </button>
+                <button onclick="openStatModal('sleep')" class="kpi-card theme-moon group text-left">
+                    <i class="fas fa-moon kpi-icon-bg text-purple-500"></i>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-1"><div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-purple-500 shadow-sm"><i class="fas fa-bed text-xs"></i></div><p class="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wide">Recovery</p></div>
+                        <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">10:30</p>
+                        <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Lights Out 😴</p>
+                    </div>
+                </button>
             </div>
-            <!-- Target Pill -->
-            <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
-                <div class="w-2 h-2 rounded-full border border-slate-400"></div>
-                <span class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Target Path</span>
-            </div>
-        </div>
 
-    </div>
-
-    <!-- Chart Canvas Area -->
-    <div class="h-56 w-full px-2 relative z-10 mt-1">
-        <canvas id="weightChart"></canvas>
-    </div>
-</div>
-
-
-
-
-<!-- MODERN KPI BENTO GRID -->
-<div class="grid grid-cols-2 gap-3">
-    
-    <!-- 1. CALORIES (Fire Theme) -->
-    <button onclick="openStatModal('calories')" class="kpi-card theme-fire group text-left">
-        <i class="fas fa-fire kpi-icon-bg text-orange-500"></i>
-        <div class="relative z-10">
-            <div class="flex items-center gap-2 mb-1">
-                <div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-orange-500 shadow-sm"><i class="fas fa-fire text-xs"></i></div>
-                <p class="text-[10px] font-bold text-orange-700 dark:text-orange-300 uppercase tracking-wide">Intake</p>
-            </div>
-            <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">1650</p>
-            <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Kcal Locked 🔒</p>
-        </div>
-    </button>
-
-    <!-- 2. WATER (Water Theme) -->
-    <button onclick="openStatModal('water')" class="kpi-card theme-water group text-left">
-        <i class="fas fa-tint kpi-icon-bg text-blue-500"></i>
-        <div class="relative z-10">
-            <div class="flex items-center gap-2 mb-1">
-                <div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-blue-500 shadow-sm"><i class="fas fa-glass-water text-xs"></i></div>
-                <p class="text-[10px] font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Hydration</p>
-            </div>
-            <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">4.0 L</p>
-            <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Flush Fat 💧</p>
-        </div>
-    </button>
-
-    <!-- 3. NEAT (Earth Theme) -->
-    <button onclick="openStatModal('neat')" class="kpi-card theme-earth group text-left">
-        <i class="fas fa-shoe-prints kpi-icon-bg text-emerald-500"></i>
-        <div class="relative z-10">
-            <div class="flex items-center gap-2 mb-1">
-                <div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-emerald-500 shadow-sm"><i class="fas fa-person-walking text-xs"></i></div>
-                <p class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Movement</p>
-            </div>
-            <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">8,000</p>
-            <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Steps Daily 👣</p>
-        </div>
-    </button>
-
-    <!-- 4. SLEEP (Moon Theme) -->
-    <button onclick="openStatModal('sleep')" class="kpi-card theme-moon group text-left">
-        <i class="fas fa-moon kpi-icon-bg text-purple-500"></i>
-        <div class="relative z-10">
-            <div class="flex items-center gap-2 mb-1">
-                <div class="w-6 h-6 rounded-full bg-white/80 dark:bg-black/20 flex items-center justify-center text-purple-500 shadow-sm"><i class="fas fa-bed text-xs"></i></div>
-                <p class="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wide">Recovery</p>
-            </div>
-            <p class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none mt-2">10:30</p>
-            <p class="text-[10px] font-bold text-slate-500 mt-1 opacity-80">Lights Out 😴</p>
-        </div>
-    </button>
-
-</div>
             <div class="bg-white dark:bg-slate-800 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
                 <div class="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center"><h3 class="font-heading font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="fas fa-list-check text-rose-500"></i> Daily Battle</h3><span class="text-[10px] font-bold text-slate-400 uppercase" id="current-date-display">--</span></div>
                 <div class="p-2 space-y-1">
@@ -428,149 +280,108 @@
                     <div class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition"><label class="ios-checkbox purple"><input type="checkbox" id="chk-strength" onclick="vibrate(); saveChecklist()"><div class="checkbox-wrapper"><div class="checkbox-bg"></div><svg fill="none" viewBox="0 0 24 24" class="checkbox-icon"><path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor" d="M4 12L10 18L20 6" class="check-path"></path></svg></div><span class="task-text text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">06:30 PM Iron Command</span></label></div>
                 </div>
             </div>
-        </div> 
+        </div>
 
-        <!-- ================= TAB 2: DIET ================= -->
-        <div id="tab-diet" class="tab-content pb-24 space-y-6">
-            <div class="sticky top-20 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
-                <div><h2 class="text-xl font-heading font-black text-slate-900 dark:text-white uppercase italic">Fuel Station</h2><p class="text-[10px] font-bold text-slate-400">Daily Intake Protocol</p></div>
-                <div class="flex gap-4">
-                    <div class="relative w-12 h-12 flex items-center justify-center"><svg class="w-full h-full" viewBox="0 0 36 36"><path class="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/><path class="gauge-circle text-orange-500" stroke-dasharray="85, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" /></svg><div class="absolute text-[8px] font-black text-slate-700 dark:text-white text-center leading-tight">1650<br>KCAL</div></div>
-                    <div class="relative w-12 h-12 flex items-center justify-center"><svg class="w-full h-full" viewBox="0 0 36 36"><path class="text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/><path class="gauge-circle text-blue-500" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" /></svg><div class="absolute text-[8px] font-black text-slate-700 dark:text-white text-center leading-tight">120G<br>PRO</div></div>
-                </div>
+        <div id="tab-diet" class="tab-content pb-24 space-y-3">
+            <div class="flex items-center justify-between px-2 pt-2">
+                <div><h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Fuel Station</h2><p class="text-xs font-bold text-slate-400">Daily Intake Protocol</p></div>
+                <div class="bg-orange-50 dark:bg-orange-900/20 px-3 py-1 rounded-lg border border-orange-200 dark:border-orange-800"><p class="text-[10px] font-black text-orange-600 dark:text-orange-400">TARGET: 1650 KCAL</p></div>
             </div>
-            <div class="bg-rose-500 text-white py-2 overflow-hidden relative shadow-lg shadow-rose-500/20 rounded-xl"><div class="marquee-container"><div class="marquee-content text-xs font-black uppercase tracking-widest flex items-center gap-8"><span>⚠️ THE RED LINE: ZERO SUGAR</span><span>⚠️ ZERO MAIDA</span><span>⚠️ ZERO BISCUITS</span><span>⚠️ NO EXCUSES</span><span>⚠️ THE RED LINE: ZERO SUGAR</span></div></div></div>
-            <div class="fuel-timeline space-y-6 pt-4">
-                <div class="relative group"><div class="fuel-node border-cyan-400"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4"><div class="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600"><i class="fas fa-glass-water text-lg"></i></div><div><p class="text-[10px] font-bold text-cyan-500 uppercase tracking-wide">05:30 AM • IGNITION</p><h4 class="font-bold text-slate-800 dark:text-white">Warm Water + Lemon 🍋</h4></div></div></div>
-                <div class="relative group"><div class="fuel-node border-yellow-400"></div><div class="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10 p-4 rounded-2xl border border-yellow-200 dark:border-yellow-700/50 shadow-sm flex items-center gap-4 relative overflow-hidden"><div class="absolute right-0 top-0 p-3 opacity-10"><i class="fas fa-bolt text-4xl text-yellow-500"></i></div><div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 z-10"><i class="fas fa-dna text-lg"></i></div><div class="z-10"><p class="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wide">07:00 AM • POST-WORKOUT</p><h4 class="font-bold text-slate-800 dark:text-white">1 Scoop Whey Protein</h4><p class="text-[10px] text-slate-500 font-medium">In Water • Rapid Absorption 🧬</p></div></div></div>
-                <div class="relative group"><div class="fuel-node border-indigo-500"></div><details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item"><summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition"><div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600"><i class="fas fa-egg text-lg"></i></div><div class="flex-1"><p class="text-[10px] font-bold text-indigo-500 uppercase tracking-wide">08:00 AM • BREAKFAST</p><h4 class="font-bold text-slate-800 dark:text-white">High Protein Foundation</h4></div><i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i></summary><div class="px-4 pb-4 pt-2 space-y-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700"><div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600"><span class="text-[9px] font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">OPTION A</span><p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">5 Egg Whites + 1 Yolk + Toast 🍞</p></div><div class="p-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600"><span class="text-[9px] font-bold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded">OPTION B (VEG)</span><p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-1">100g Paneer Bhurji + 1 Roti 🧀</p></div></div></details></div>
-                <div class="relative group"><div class="fuel-node border-emerald-500"></div><details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item"><summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition"><div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600"><i class="fas fa-leaf text-lg"></i></div><div class="flex-1"><p class="text-[10px] font-bold text-emerald-500 uppercase tracking-wide">01:00 PM • SMART REFUEL</p><h4 class="font-bold text-slate-800 dark:text-white">Carb Load + Fiber</h4></div><i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i></summary><div class="px-4 pb-4 pt-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700"><div class="mb-3 flex items-center gap-2 bg-emerald-100/50 dark:bg-emerald-900/20 p-2 rounded-lg border border-emerald-200 dark:border-emerald-800"><i class="fas fa-exclamation-circle text-emerald-600 text-xs"></i><span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">RULE: EAT SALAD FIRST 🥗</span></div><div class="space-y-2"><p class="text-xs text-slate-700 dark:text-slate-300"><strong class="text-slate-900 dark:text-white">Std:</strong> 2 Roti + Dal + Big Salad</p></div></div></details></div>
-                <div class="relative group"><div class="fuel-node border-orange-500"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4"><div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600"><i class="fas fa-mug-hot text-lg"></i></div><div><p class="text-[10px] font-bold text-orange-500 uppercase tracking-wide">04:30 PM • DANGER ZONE</p><h4 class="font-bold text-slate-800 dark:text-white text-sm">Black Coffee / Apple / Chana</h4><p class="text-[9px] text-rose-500 font-bold mt-0.5">NO TEA • NO BISCUITS 🚫</p></div></div></div>
-                <div class="relative group"><div class="fuel-node border-purple-500"></div><details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden group/item"><summary class="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition"><div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600"><i class="fas fa-moon text-lg"></i></div><div class="flex-1"><p class="text-[10px] font-bold text-purple-500 uppercase tracking-wide">08:00 PM • FAT BURN MODE</p><h4 class="font-bold text-slate-800 dark:text-white">Zero Grain Protocol</h4></div><i class="fas fa-chevron-down text-slate-300 text-xs group-open/item:rotate-180 transition-transform"></i></summary><div class="px-4 pb-4 pt-2 space-y-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700"><div class="flex items-center justify-between bg-rose-50 dark:bg-rose-900/20 p-2 rounded-lg border border-rose-100 mb-2"><span class="text-[10px] font-black text-rose-600 dark:text-rose-400">❌ NO ROTI / RICE</span><span class="text-[10px] font-bold text-slate-500">Only Protein + Veg</span></div><div class="grid grid-cols-2 gap-2"><div class="p-2 bg-white dark:bg-slate-700 rounded-lg text-center border border-slate-100"><span class="text-xl">🍲</span><p class="text-[10px] font-bold mt-1 text-slate-700 dark:text-slate-200">Soya Stir Fry</p></div><div class="p-2 bg-white dark:bg-slate-700 rounded-lg text-center border border-slate-100"><span class="text-xl">🧀</span><p class="text-[10px] font-bold mt-1 text-slate-700 dark:text-slate-200">Paneer Tikka</p></div></div></div></details></div>
-            </div>
-            <div onclick="addWater()" class="hydro-fab" id="water-fab"><i class="fas fa-tint"></i></div>
-        </div>
 
-        <!-- ================= TAB 3: BODY (VISUAL COMPARISON) ================= -->
-      <div id="tab-body" class="tab-content space-y-6 pb-24">
-    
-    <div class="flex justify-between items-center px-2 pt-2">
-        <div>
-            <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Armor Lab</h2>
-            <p class="text-xs font-bold text-slate-400">Structure Tracking</p>
-        </div>
-        <div class="bg-slate-200 dark:bg-slate-700 p-1 rounded-xl flex gap-1">
-            <button onclick="toggleBodyMode('input')" id="btn-mode-input" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all bg-white dark:bg-slate-600 shadow-sm text-slate-900 dark:text-white">Input</button>
-            <button onclick="toggleBodyMode('history')" id="btn-mode-history" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all text-slate-400 hover:text-slate-600">History</button>
-        </div>
-    </div>
-
-    <div id="view-body-input" class="space-y-5 animate-fadeIn">
-        
-        <div class="armor-card relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 text-white border-0 shadow-xl">
-            <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500 rounded-full blur-3xl opacity-20"></div>
-            <div class="absolute left-0 bottom-0 w-32 h-32 bg-rose-500 rounded-full blur-3xl opacity-20"></div>
-            
-            <div class="relative z-10 flex justify-between items-center text-center">
-                <div class="flex-1 border-r border-white/10">
-                    <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest">START (Feb 02)</p>
-                    <div class="text-2xl font-heading font-black mt-1 text-slate-300" id="disp-start-waist">--</div>
-                    <p class="text-[8px] opacity-50">Waist (In)</p>
-                </div>
-                <div class="px-4">
-                    <i class="fas fa-arrow-right text-white/40"></i>
-                </div>
-                <div class="flex-1">
-                    <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest text-emerald-400">CURRENT</p>
-                    <div class="text-3xl font-heading font-black mt-1 text-white" id="disp-curr-waist">--</div>
-                    <div id="disp-badge-waist" class="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-emerald-500/30">
-                        Syncing...
+            <div class="hydro-card-modern">
+                <div class="hydro-liquid"></div>
+                <div class="relative z-10 p-6 pb-2">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-1">Hydration Status</p>
+                            <div class="flex items-baseline gap-1"><span id="hydro-display" class="text-6xl font-heading font-black">0</span><span id="hydro-unit" class="text-lg font-bold text-blue-200">ml</span></div>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg animate-pulse"><i class="fas fa-droplet text-xl text-white"></i></div>
+                    </div>
+                    <div class="flex justify-between items-end text-xs font-bold text-blue-100 mb-2"><span>Goal: 4.0 L</span><span id="hydro-remaining">Remaining: 4000 ml</span></div>
+                    <div class="w-full h-4 bg-black/20 rounded-full overflow-hidden mb-6 p-0.5"><div id="hydro-bar" class="h-full bg-gradient-to-r from-cyan-300 to-white rounded-full transition-all duration-700 ease-out shadow-[0_0_15px_rgba(255,255,255,0.6)]" style="width: 0%"></div></div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <button onclick="logWater(150)" class="btn-slide-fill"><div class="btn-content"><span class="text-[12px] font-black">150</span><span class="text-[8px] opacity-80 uppercase">ml</span></div></button>
+                        <button onclick="logWater(250)" class="btn-slide-fill"><div class="btn-content"><span class="text-[12px] font-black">250</span><span class="text-[8px] opacity-80 uppercase">ml</span></div></button>
+                        <button onclick="logWater(500)" class="btn-slide-fill"><div class="btn-content"><span class="text-[12px] font-black">500</span><span class="text-[8px] opacity-80 uppercase">ml</span></div></button>
+                        <button onclick="logWater(1000)" class="btn-slide-fill"><div class="btn-content"><span class="text-[12px] font-black">1.0</span><span class="text-[8px] opacity-80 uppercase">L</span></div></button>
                     </div>
                 </div>
-            </div>
-            <div class="mt-4 pt-3 border-t border-white/10 flex justify-between text-[10px] font-medium opacity-70">
-                <span>Last Updated: <span id="body-last-date" class="text-white font-bold">Checking...</span></span>
-                <span id="overall-status">Analyzing Structure...</span>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-            <div class="armor-card p-3">
-                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">CHEST</span><i class="fas fa-tshirt text-indigo-400 text-xs"></i></div>
-                <div class="control-pill mb-2">
-                    <button onclick="vibrate(); updateInputVal('in-chest', -0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button>
-                    <input type="number" id="in-chest" value="42.0" class="stat-input text-lg w-12">
-                    <button onclick="vibrate(); updateInputVal('in-chest', 0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button>
+                <div onclick="toggleHydroHistory()" class="bg-black/10 backdrop-blur-sm p-2 flex justify-center items-center cursor-pointer hover:bg-black/20 transition">
+                    <span class="text-[10px] font-bold text-white/80 flex items-center gap-2"><i class="fas fa-clock-rotate-left"></i> View History <i id="history-arrow" class="fas fa-chevron-down transition-transform"></i></span>
                 </div>
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5">
-                    <span class="text-[8px] font-bold text-slate-400">Start: <span id="start-chest">--</span></span>
-                    <span id="diff-chest" class="text-[9px] font-black">--</span>
-                </div>
+                <div id="hydro-history-list" class="history-drawer"><div class="p-4 text-center text-[10px] text-white/60">Loading history...</div></div>
             </div>
 
-            <div class="armor-card p-3 theme-red border-rose-500/30 bg-rose-50/50 dark:bg-rose-900/10">
-                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-rose-500 uppercase">WAIST</span><i class="fas fa-bullseye text-rose-500 text-xs animate-pulse"></i></div>
-                <div class="control-pill mb-2 bg-white dark:bg-slate-800 border border-rose-100 dark:border-rose-900/50">
-                    <button onclick="vibrate(); updateInputVal('in-waist', -0.5)" class="ctrl-btn-round w-8 h-8 text-rose-500"><i class="fas fa-minus text-[8px]"></i></button>
-                    <input type="number" id="in-waist" value="36.0" class="stat-input text-lg w-12 text-rose-600 dark:text-rose-400">
-                    <button onclick="vibrate(); updateInputVal('in-waist', 0.5)" class="ctrl-btn-round w-8 h-8 text-rose-500"><i class="fas fa-plus text-[8px]"></i></button>
-                </div>
-                <div class="flex justify-between items-center bg-white/50 dark:bg-black/20 rounded-lg p-1.5">
-                    <span class="text-[8px] font-bold text-rose-400">Start: <span id="start-waist">--</span></span>
-                    <span id="diff-waist" class="text-[9px] font-black text-rose-600">--</span>
-                </div>
-            </div>
-
-            <div class="armor-card p-3">
-                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">ARMS</span><i class="fas fa-fist-raised text-indigo-400 text-xs"></i></div>
-                <div class="control-pill mb-2">
-                    <button onclick="vibrate(); updateInputVal('in-arms', -0.25)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button>
-                    <input type="number" id="in-arms" value="14.5" class="stat-input text-lg w-12">
-                    <button onclick="vibrate(); updateInputVal('in-arms', 0.25)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button>
-                </div>
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5">
-                    <span class="text-[8px] font-bold text-slate-400">Start: <span id="start-arms">--</span></span>
-                    <span id="diff-arms" class="text-[9px] font-black">--</span>
-                </div>
-            </div>
-
-            <div class="armor-card p-3">
-                <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">THIGHS</span><i class="fas fa-person-running text-indigo-400 text-xs"></i></div>
-                <div class="control-pill mb-2">
-                    <button onclick="vibrate(); updateInputVal('in-thighs', -0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button>
-                    <input type="number" id="in-thighs" value="24.0" class="stat-input text-lg w-12">
-                    <button onclick="vibrate(); updateInputVal('in-thighs', 0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button>
-                </div>
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5">
-                    <span class="text-[8px] font-bold text-slate-400">Start: <span id="start-thighs">--</span></span>
-                    <span id="diff-thighs" class="text-[9px] font-black">--</span>
+            <div>
+                <div class="flex items-center justify-between px-2 mb-2"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nutrition Protocol</p><i class="fas fa-utensils text-slate-300 text-xs"></i></div>
+                <div class="timeline-container">
+                    <div class="timeline-item"><div class="timeline-dot bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.4)]"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm relative"><span class="time-pill bg-cyan-50 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-300">05:30 AM • IGNITION</span><div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-cyan-100 dark:bg-cyan-900/50 flex items-center justify-center text-cyan-600 shrink-0 mt-0.5"><i class="fas fa-bolt text-xs"></i></div><div><h4 class="font-bold text-slate-800 dark:text-white text-sm">Wake Up Protocol</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">2 Glasses Warm Water + Half Lemon 🍋</p></div></div></div></div>
+                    <div class="timeline-item"><div class="timeline-dot bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.4)]"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm relative"><span class="time-pill bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300">08:00 AM • FUEL</span><div class="flex items-start gap-3 mb-3"><div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 shrink-0"><i class="fas fa-egg text-xs"></i></div><div><h4 class="font-bold text-slate-800 dark:text-white text-sm">High Protein Breakfast</h4><p class="text-[10px] text-slate-400 mt-0.5">Select One Option:</p></div></div><div class="space-y-2 pl-11"><div class="text-xs bg-slate-50 dark:bg-slate-700/30 p-2 rounded-lg border border-slate-100 dark:border-slate-700"><span class="font-bold text-indigo-500">A:</span> <span class="text-slate-600 dark:text-slate-300">5 Egg Whites + 1 Yolk + Toast</span></div><div class="text-xs bg-slate-50 dark:bg-slate-700/30 p-2 rounded-lg border border-slate-100 dark:border-slate-700"><span class="font-bold text-emerald-500">B:</span> <span class="text-slate-600 dark:text-slate-300">100g Paneer Bhurji + 1 Roti</span></div></div></div></div>
+                    <div class="timeline-item"><div class="timeline-dot bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm relative"><span class="time-pill bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300">01:00 PM • REFUEL</span><div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 shrink-0"><i class="fas fa-leaf text-xs"></i></div><div><h4 class="font-bold text-slate-800 dark:text-white text-sm">Smart Carbs Lunch</h4><p class="text-xs text-slate-600 dark:text-slate-300 mt-2 pl-1 border-l-2 border-emerald-200 dark:border-emerald-800">2 Roti + Dal (Thick) + Green Veggies</p></div></div></div></div>
+                    <div class="timeline-item"><div class="timeline-dot bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.4)]"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm relative"><span class="time-pill bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-300">04:30 PM • SNACK</span><div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center text-orange-600 shrink-0"><i class="fas fa-mug-hot text-xs"></i></div><div><h4 class="font-bold text-slate-800 dark:text-white text-sm">The Danger Zone</h4><p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Black Coffee ☕ + Apple / Chana</p><p class="text-[9px] font-black text-rose-500 mt-1 uppercase tracking-wide">🚫 No Biscuits Allowed</p></div></div></div></div>
+                    <div class="timeline-item"><div class="timeline-dot bg-purple-500 shadow-[0_0_10px_rgba(139,92,246,0.4)]"></div><div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm relative"><span class="time-pill bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300">08:00 PM • RECOVERY</span><div class="flex items-start gap-3 mb-2"><div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center text-purple-600 shrink-0"><i class="fas fa-moon text-xs"></i></div><div><h4 class="font-bold text-slate-800 dark:text-white text-sm">Fat Burn Dinner</h4><p class="text-[10px] font-black text-rose-500 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded mt-1 w-fit">❌ NO ROTI / RICE / GRAINS</p></div></div><div class="pl-11 space-y-1"><p class="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Soya Chunks Stir Fry</p><p class="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Paneer Tikka / Big Salad</p></div></div></div>
                 </div>
             </div>
         </div>
 
-        <button id="btn-save-body" onclick="saveBodyStats()" class="w-full py-4 rounded-[1.2rem] bg-gradient-to-r from-slate-800 to-slate-900 dark:from-white dark:to-slate-200 text-white dark:text-slate-900 font-black text-sm uppercase tracking-widest shadow-lg flex items-center justify-center gap-3 active:scale-95 transition-transform">
-            <i class="fas fa-save"></i> Save Logs
-        </button>
-    </div>
-
-    <div id="view-body-history" class="hidden animate-fadeIn space-y-4">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-            <div class="p-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
-                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Log History</span>
-                <i class="fas fa-history text-slate-400 text-xs"></i>
+        <div id="tab-body" class="tab-content space-y-6 pb-24">
+            <div class="flex justify-between items-center px-2 pt-2">
+                <div><h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Armor Lab</h2><p class="text-xs font-bold text-slate-400">Structure Tracking</p></div>
+                <div class="bg-slate-200 dark:bg-slate-700 p-1 rounded-xl flex gap-1">
+                    <button onclick="toggleBodyMode('input')" id="btn-mode-input" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all bg-white dark:bg-slate-600 shadow-sm text-slate-900 dark:text-white">Input</button>
+                    <button onclick="toggleBodyMode('history')" id="btn-mode-history" class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all text-slate-400 hover:text-slate-600">History</button>
+                </div>
             </div>
-            <div class="max-h-[400px] overflow-y-auto no-scrollbar p-1" id="body-history-list">
-                <div class="p-4 text-center text-xs text-slate-400">Loading History...</div>
+
+            <div id="view-body-input" class="space-y-5 animate-fadeIn">
+                <div class="armor-card relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 text-white border-0 shadow-xl">
+                    <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500 rounded-full blur-3xl opacity-20"></div><div class="absolute left-0 bottom-0 w-32 h-32 bg-rose-500 rounded-full blur-3xl opacity-20"></div>
+                    <div class="relative z-10 flex justify-between items-center text-center">
+                        <div class="flex-1 border-r border-white/10"><p class="text-[9px] font-bold opacity-60 uppercase tracking-widest">START (Feb 02)</p><div class="text-2xl font-heading font-black mt-1 text-slate-300" id="disp-start-waist">--</div><p class="text-[8px] opacity-50">Waist (In)</p></div>
+                        <div class="px-4"><i class="fas fa-arrow-right text-white/40"></i></div>
+                        <div class="flex-1"><p class="text-[9px] font-bold opacity-60 uppercase tracking-widest text-emerald-400">CURRENT</p><div class="text-3xl font-heading font-black mt-1 text-white" id="disp-curr-waist">--</div><div id="disp-badge-waist" class="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-emerald-500/30">Syncing...</div></div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/10 flex justify-between text-[10px] font-medium opacity-70"><span>Last Updated: <span id="body-last-date" class="text-white font-bold">Checking...</span></span><span id="overall-status">Analyzing Structure...</span></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="armor-card p-3">
+                        <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">CHEST</span><i class="fas fa-tshirt text-indigo-400 text-xs"></i></div>
+                        <div class="control-pill mb-2"><button onclick="vibrate(); updateInputVal('in-chest', -0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button><input type="number" id="in-chest" value="42.0" class="stat-input text-lg w-12"><button onclick="vibrate(); updateInputVal('in-chest', 0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button></div>
+                        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5"><span class="text-[8px] font-bold text-slate-400">Start: <span id="start-chest">--</span></span><span id="diff-chest" class="text-[9px] font-black">--</span></div>
+                    </div>
+                    <div class="armor-card p-3 theme-red border-rose-500/30 bg-rose-50/50 dark:bg-rose-900/10">
+                        <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-rose-500 uppercase">WAIST</span><i class="fas fa-bullseye text-rose-500 text-xs animate-pulse"></i></div>
+                        <div class="control-pill mb-2 bg-white dark:bg-slate-800 border border-rose-100 dark:border-rose-900/50"><button onclick="vibrate(); updateInputVal('in-waist', -0.5)" class="ctrl-btn-round w-8 h-8 text-rose-500"><i class="fas fa-minus text-[8px]"></i></button><input type="number" id="in-waist" value="36.0" class="stat-input text-lg w-12 text-rose-600 dark:text-rose-400"><button onclick="vibrate(); updateInputVal('in-waist', 0.5)" class="ctrl-btn-round w-8 h-8 text-rose-500"><i class="fas fa-plus text-[8px]"></i></button></div>
+                        <div class="flex justify-between items-center bg-white/50 dark:bg-black/20 rounded-lg p-1.5"><span class="text-[8px] font-bold text-rose-400">Start: <span id="start-waist">--</span></span><span id="diff-waist" class="text-[9px] font-black text-rose-600">--</span></div>
+                    </div>
+                    <div class="armor-card p-3">
+                        <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">ARMS</span><i class="fas fa-fist-raised text-indigo-400 text-xs"></i></div>
+                        <div class="control-pill mb-2"><button onclick="vibrate(); updateInputVal('in-arms', -0.25)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button><input type="number" id="in-arms" value="14.5" class="stat-input text-lg w-12"><button onclick="vibrate(); updateInputVal('in-arms', 0.25)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button></div>
+                        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5"><span class="text-[8px] font-bold text-slate-400">Start: <span id="start-arms">--</span></span><span id="diff-arms" class="text-[9px] font-black">--</span></div>
+                    </div>
+                    <div class="armor-card p-3">
+                        <div class="flex justify-between mb-2"><span class="text-[9px] font-black text-slate-400 uppercase">THIGHS</span><i class="fas fa-person-running text-indigo-400 text-xs"></i></div>
+                        <div class="control-pill mb-2"><button onclick="vibrate(); updateInputVal('in-thighs', -0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-minus text-[8px]"></i></button><input type="number" id="in-thighs" value="24.0" class="stat-input text-lg w-12"><button onclick="vibrate(); updateInputVal('in-thighs', 0.5)" class="ctrl-btn-round w-8 h-8"><i class="fas fa-plus text-[8px]"></i></button></div>
+                        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5"><span class="text-[8px] font-bold text-slate-400">Start: <span id="start-thighs">--</span></span><span id="diff-thighs" class="text-[9px] font-black">--</span></div>
+                    </div>
+                </div>
+
+                <button id="btn-save-body" onclick="saveBodyStats()" class="w-full py-4 rounded-[1.2rem] bg-gradient-to-r from-slate-800 to-slate-900 dark:from-white dark:to-slate-200 text-white dark:text-slate-900 font-black text-sm uppercase tracking-widest shadow-lg flex items-center justify-center gap-3 active:scale-95 transition-transform">
+                    <i class="fas fa-save"></i> Save Logs
+                </button>
+            </div>
+
+            <div id="view-body-history" class="hidden animate-fadeIn space-y-4">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center"><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Log History</span><i class="fas fa-history text-slate-400 text-xs"></i></div>
+                    <div class="max-h-[400px] overflow-y-auto no-scrollbar p-1" id="body-history-list"><div class="p-4 text-center text-xs text-slate-400">Loading History...</div></div>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
-
-
-        <!-- ================= TAB 4: WORKOUT (RESTORED FULL) ================= -->
         <div id="tab-workout" class="tab-content space-y-6 pb-24">
-            
             <div id="workout-hero" class="bg-slate-900 dark:bg-white rounded-[2rem] p-6 text-white dark:text-slate-900 shadow-xl relative overflow-hidden group cursor-pointer" onclick="startTodaysWorkout()">
                 <div class="absolute right-0 top-0 w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full blur-3xl opacity-50"></div>
                 <div class="absolute -right-5 -bottom-5 text-8xl opacity-10 rotate-12"><i class="fas fa-dumbbell"></i></div>
@@ -585,116 +396,44 @@
                 </div>
             </div>
 
-            <!-- Warmup & Stretch -->
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="openWorkoutModal('warmup')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group">
-                    <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center text-lg group-hover:scale-110 transition"><i class="fas fa-fire"></i></div>
-                    <div><h4 class="font-bold text-sm text-slate-800 dark:text-white">Warm-Up</h4><p class="text-[10px] text-slate-400 font-bold">6 Mins • Essential</p></div>
-                </button>
-                <button onclick="openWorkoutModal('stretch')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group">
-                    <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center text-lg group-hover:scale-110 transition"><i class="fas fa-child-reaching"></i></div>
-                    <div><h4 class="font-bold text-sm text-slate-800 dark:text-white">Stretch</h4><p class="text-[10px] text-slate-400 font-bold">6 Mins • Recovery</p></div>
-                </button>
+            <div>
+                <div class="flex items-center justify-between px-1 mb-2"><h3 class="font-heading font-bold text-slate-900 dark:text-white text-lg">Weekly Protocol</h3><span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Feb 02 - May 12</span></div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div class="workout-row" onclick="toggleSchedule(this)"><div class="flex items-center justify-between p-4 cursor-pointer"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 font-black text-xs">M/T</div><div><p class="text-sm font-bold text-slate-800 dark:text-white">PUSH DAY</p><p class="text-[10px] text-slate-400 font-medium">Chest • Shoulders • Triceps</p></div></div><i class="fas fa-chevron-down text-slate-300 text-xs transition-transform chevron-icon"></i></div><div class="workout-detail border-t border-slate-100 dark:border-slate-700"><div class="p-3 pl-16"><button onclick="event.stopPropagation(); openWorkoutModal('push')" class="text-[11px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 px-3 py-1.5 rounded-lg flex items-center gap-2">View Exercises <i class="fas fa-arrow-right"></i></button></div></div></div>
+                    <div class="workout-row" onclick="toggleSchedule(this)"><div class="flex items-center justify-between p-4 cursor-pointer"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-cyan-50 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600 font-black text-xs">T/F</div><div><p class="text-sm font-bold text-slate-800 dark:text-white">PULL DAY</p><p class="text-[10px] text-slate-400 font-medium">Back • Biceps • Traps</p></div></div><i class="fas fa-chevron-down text-slate-300 text-xs transition-transform chevron-icon"></i></div><div class="workout-detail border-t border-slate-100 dark:border-slate-700"><div class="p-3 pl-16"><button onclick="event.stopPropagation(); openWorkoutModal('pull')" class="text-[11px] font-bold text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20 px-3 py-1.5 rounded-lg flex items-center gap-2">View Exercises <i class="fas fa-arrow-right"></i></button></div></div></div>
+                    <div class="workout-row" onclick="toggleSchedule(this)"><div class="flex items-center justify-between p-4 cursor-pointer"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-900/30 flex items-center justify-center text-rose-600 font-black text-xs">WED</div><div><p class="text-sm font-bold text-slate-800 dark:text-white">LEG + CORE</p><p class="text-[10px] text-slate-400 font-medium">Squats • Lunges • Abs</p></div></div><i class="fas fa-chevron-down text-slate-300 text-xs transition-transform chevron-icon"></i></div><div class="workout-detail border-t border-slate-100 dark:border-slate-700"><div class="p-3 pl-16"><button onclick="event.stopPropagation(); openWorkoutModal('legs')" class="text-[11px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-900/20 px-3 py-1.5 rounded-lg flex items-center gap-2">View Exercises <i class="fas fa-arrow-right"></i></button></div></div></div>
+                    <div class="workout-row" onclick="toggleSchedule(this)"><div class="flex items-center justify-between p-4 cursor-pointer"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 font-black text-xs">SAT</div><div><p class="text-sm font-bold text-slate-800 dark:text-white">HYBRID STORM</p><p class="text-[10px] text-slate-400 font-medium">HIIT • Cardio • Sweat</p></div></div><i class="fas fa-chevron-down text-slate-300 text-xs transition-transform chevron-icon"></i></div><div class="workout-detail border-t border-slate-100 dark:border-slate-700"><div class="p-3 pl-16"><button onclick="event.stopPropagation(); openWorkoutModal('hybrid')" class="text-[11px] font-bold text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-1.5 rounded-lg flex items-center gap-2">View Exercises <i class="fas fa-arrow-right"></i></button></div></div></div>
+                </div>
             </div>
             
-            <!-- Full Protocol List -->
-            <div class="grid grid-cols-1 gap-3">
-                <div onclick="openWorkoutModal('push')" class="workout-card flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 text-xl"><i class="fas fa-hand-fist"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">PUSH DAY</h4><p class="text-xs text-slate-500 font-bold">Chest • Shoulders • Triceps</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                </div>
-                <div onclick="openWorkoutModal('pull')" class="workout-card flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-cyan-50 dark:bg-cyan-900/20 flex items-center justify-center text-cyan-600 text-xl"><i class="fas fa-magnet"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">PULL DAY</h4><p class="text-xs text-slate-500 font-bold">Back • Biceps • Traps</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                </div>
-                <div onclick="openWorkoutModal('legs')" class="workout-card flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-600 text-xl"><i class="fas fa-person-running"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">LEG + CORE</h4><p class="text-xs text-slate-500 font-bold">Squats • Lunges • Abs</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                </div>
-                <div onclick="openWorkoutModal('hybrid')" class="workout-card flex items-center justify-between cursor-pointer">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600 text-xl"><i class="fas fa-bolt"></i></div><div><h4 class="font-black text-slate-800 dark:text-white text-base">HYBRID STORM</h4><p class="text-xs text-slate-500 font-bold">HIIT • Cardio • Sweat</p></div></div><i class="fas fa-chevron-right text-slate-300 text-xs"></i>
-                </div>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+                <button onclick="openWorkoutModal('warmup')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group p-4 border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl"><i class="fas fa-fire text-orange-500 text-lg"></i><span class="text-xs font-bold text-slate-700 dark:text-white">Warm-Up</span></button>
+                <button onclick="openWorkoutModal('stretch')" class="workout-card flex flex-col items-center justify-center text-center gap-2 group p-4 border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl"><i class="fas fa-child-reaching text-blue-500 text-lg"></i><span class="text-xs font-bold text-slate-700 dark:text-white">Stretch</span></button>
             </div>
         </div>
 
-<!-- ================= TAB 5: OATH (COMPACT HINGLISH EDITION) ================= -->
-<div id="tab-oath" class="tab-content px-2 pb-24 pt-4">
-    
-    <!-- 1. Top Badge -->
-    <div class="flex justify-center mb-4">
-        <div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2">
-            <i class="fas fa-shield-halved text-xs"></i>
-            <span class="text-[10px] font-black uppercase tracking-[0.2em]">Official War Protocol</span>
+        <div id="tab-oath" class="tab-content px-2 pb-24 pt-4">
+            <div class="flex justify-center mb-4"><div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2"><i class="fas fa-shield-halved text-xs"></i><span class="text-[10px] font-black uppercase tracking-[0.2em]">Official War Protocol</span></div></div>
+            <div class="bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+                <div class="h-2 w-full bg-[repeating-linear-gradient(45deg,#e11d48,#e11d48_10px,#fff_10px,#fff_20px)] opacity-80"></div>
+                <div class="p-6 relative">
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-4 border-slate-200 dark:border-slate-800 rounded-full w-48 h-48 flex items-center justify-center opacity-20 pointer-events-none rotate-12"><span class="text-2xl font-black text-slate-300 dark:text-slate-700 uppercase tracking-widest">Top Secret</span></div>
+                    <div class="flex justify-between items-start mb-4"><div><h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none">THE PLEDGE</h2><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Ref: #P100-VR-FINAL</p></div><i class="fas fa-fingerprint text-3xl text-rose-500 opacity-80"></i></div>
+                    <div class="space-y-3">
+                        <p class="text-sm font-serif text-slate-700 dark:text-slate-300 leading-relaxed">"Main, <strong class="text-slate-900 dark:text-white border-b-2 border-rose-500">Vikas Rawat</strong>, aaj yeh wada karta hoon ki agle 100 din mere liye sirf ek goal hai: <span class="font-black text-rose-600">FAT DOMINATION</span>.</p>
+                        <ul class="text-xs font-medium text-slate-600 dark:text-slate-400 space-y-1.5 list-disc pl-4 marker:text-rose-500"><li><span class="text-slate-900 dark:text-white font-bold">No Excuses:</span> Dard hoga, par main rukunga nahi.</li><li><span class="text-slate-900 dark:text-white font-bold">Zero Cheating:</span> Agar mann karega, toh paani piyunga.</li><li><span class="text-slate-900 dark:text-white font-bold">Identity Shift:</span> 80 KG meri history hai, 66 KG mera future.</li></ul>
+                        <p class="text-sm font-serif text-slate-700 dark:text-slate-300 leading-relaxed mt-2">"I am not trying. I am transforming. <br><span class="font-black text-slate-900 dark:text-white italic">Jeet meri zid hai.</span>"</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-dashed border-slate-200 dark:border-slate-700 flex justify-between items-end"><div><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Signed By</p><div class="real-signature text-2xl text-rose-600 transform -rotate-3 origin-left">Vikas Rawat</div></div><div class="text-right"><p class="text-[8px] font-bold text-slate-400 uppercase mb-0.5">Date</p><p class="text-xs font-mono font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">02 FEB 2026</p></div></div>
+                    <div class="absolute bottom-4 right-16 transform rotate-[-15deg] border-2 border-emerald-500 text-emerald-500 px-2 py-1 rounded font-black text-[10px] uppercase tracking-widest opacity-80 mix-blend-multiply dark:mix-blend-normal">Approved</div>
+                </div>
+            </div>
+            <div class="mt-6"><button onclick="vibrate(50); showToast('OATH RENEWED! JAO PHOD DO 🔥')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 text-white font-black text-sm uppercase tracking-[0.2em] shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 active:scale-95 transition-transform hover:shadow-xl"><i class="fas fa-check-circle"></i> I Accept The War</button></div>
         </div>
-    </div>
 
-    <!-- 2. The Contract Card (Compact) -->
-    <div class="bg-white dark:bg-slate-900 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
-        
-        <!-- Caution Strip -->
-        <div class="h-2 w-full bg-[repeating-linear-gradient(45deg,#e11d48,#e11d48_10px,#fff_10px,#fff_20px)] opacity-80"></div>
-        
-        <div class="p-6 relative">
-            <!-- Background Stamp -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-4 border-slate-200 dark:border-slate-800 rounded-full w-48 h-48 flex items-center justify-center opacity-20 pointer-events-none rotate-12">
-                <span class="text-2xl font-black text-slate-300 dark:text-slate-700 uppercase tracking-widest">Top Secret</span>
-            </div>
-
-            <!-- Title -->
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h2 class="text-2xl font-heading font-black text-slate-900 dark:text-white leading-none">THE PLEDGE</h2>
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Ref: #P100-VR-FINAL</p>
-                </div>
-                <i class="fas fa-fingerprint text-3xl text-rose-500 opacity-80"></i>
-            </div>
-
-            <!-- Hinglish Content -->
-            <div class="space-y-3">
-                <p class="text-sm font-serif text-slate-700 dark:text-slate-300 leading-relaxed">
-                    "Main, <strong class="text-slate-900 dark:text-white border-b-2 border-rose-500">Vikas Rawat</strong>, aaj yeh wada karta hoon ki agle 100 din mere liye sirf ek goal hai: <span class="font-black text-rose-600">FAT DOMINATION</span>.
-                </p>
-                
-                <ul class="text-xs font-medium text-slate-600 dark:text-slate-400 space-y-1.5 list-disc pl-4 marker:text-rose-500">
-                    <li><span class="text-slate-900 dark:text-white font-bold">No Excuses:</span> Dard hoga, par main rukunga nahi.</li>
-                    <li><span class="text-slate-900 dark:text-white font-bold">Zero Cheating:</span> Agar mann karega, toh paani piyunga.</li>
-                    <li><span class="text-slate-900 dark:text-white font-bold">Identity Shift:</span> 80 KG meri history hai, 66 KG mera future.</li>
-                </ul>
-
-                <p class="text-sm font-serif text-slate-700 dark:text-slate-300 leading-relaxed mt-2">
-                    "I am not trying. I am transforming. <br>
-                    <span class="font-black text-slate-900 dark:text-white italic">Jeet meri zid hai.</span>"
-                </p>
-            </div>
-
-            <!-- Signature & Date Block -->
-            <div class="mt-6 pt-4 border-t border-dashed border-slate-200 dark:border-slate-700 flex justify-between items-end">
-                <div>
-                    <p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Signed By</p>
-                    <div class="real-signature text-2xl text-rose-600 transform -rotate-3 origin-left">Vikas Rawat</div>
-                </div>
-                <div class="text-right">
-                    <p class="text-[8px] font-bold text-slate-400 uppercase mb-0.5">Date</p>
-                    <p class="text-xs font-mono font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">02 FEB 2026</p>
-                </div>
-            </div>
-
-            <!-- Approved Stamp -->
-            <div class="absolute bottom-4 right-16 transform rotate-[-15deg] border-2 border-emerald-500 text-emerald-500 px-2 py-1 rounded font-black text-[10px] uppercase tracking-widest opacity-80 mix-blend-multiply dark:mix-blend-normal">
-                Approved
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. Action Button -->
-    <div class="mt-6">
-        <button onclick="vibrate(50); showToast('OATH RENEWED! JAO PHOD DO 🔥')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 text-white font-black text-sm uppercase tracking-[0.2em] shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2 active:scale-95 transition-transform hover:shadow-xl">
-            <i class="fas fa-check-circle"></i> I Accept The War
-        </button>
-    </div>
-
-</div>
     </main>
 
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-6 left-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-full shadow-2xl z-50 h-16 flex items-center justify-around px-2 max-w-2xl mx-auto">
+    <nav class="fixed bottom-6 left-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-full shadow-2xl z-[150] h-16 flex items-center justify-around px-2 max-w-2xl mx-auto">
         <button id="nav-dash" class="nav-item active flex flex-col items-center justify-center w-12 h-12" onclick="vibrate(); switchTab('dashboard', this)"><i class="fas fa-chart-pie text-lg mb-0.5"></i><span class="text-[9px] font-bold">Dash</span></button>
         <button id="nav-diet" class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="vibrate(); switchTab('diet', this)"><i class="fas fa-apple-alt text-lg mb-0.5"></i><span class="text-[9px] font-bold">Diet</span></button>
         <div class="relative -top-6"><button id="nav-fab" class="w-14 h-14 bg-rose-600 rounded-full text-white flex items-center justify-center shadow-lg fab-glow transform hover:scale-105 transition active:scale-95" onclick="vibrate(); switchTab('workout', null)"><i class="fas fa-dumbbell text-xl"></i></button></div>
@@ -702,38 +441,60 @@
         <button id="nav-body" class="nav-item flex flex-col items-center justify-center w-12 h-12 text-slate-400" onclick="vibrate(); switchTab('body', this)"><i class="fas fa-ruler-combined text-lg mb-0.5"></i><span class="text-[9px] font-bold">Body</span></button>
     </nav>
 
-    <!-- Modals -->
     <div id="weight-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4 modal-overlay"><div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl modal-card relative"><div class="text-center mb-6"><h3 class="text-2xl font-heading font-black text-slate-900 dark:text-white">Log Weight</h3><p class="text-xs text-slate-500">Record your daily progress</p></div><div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 text-center mb-6"><input type="number" id="weight-input" step="0.1" placeholder="00.0" class="w-full bg-transparent text-center text-5xl font-heading font-black text-slate-800 dark:text-white outline-none placeholder-slate-300"><p class="text-sm font-bold text-slate-400 mt-2">KG</p></div><div class="flex gap-3"><button onclick="vibrate(); closeWeightModal()" id="cancel-btn" class="flex-1 py-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-xs hover:bg-slate-200 transition">CANCEL</button><button onclick="vibrate(); saveWeight()" id="save-btn" class="flex-1 py-4 rounded-xl bg-rose-600 text-white font-bold text-xs shadow-lg shadow-rose-500/30 hover:bg-rose-700 transition flex items-center justify-center gap-2"><span>SAVE LOG</span> <i class="fas fa-arrow-right"></i></button></div></div></div>
     
     <div id="info-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden flex items-center justify-center p-4 modal-overlay"><div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl modal-card relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-10"></div><div class="relative z-10 text-center"><div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md" id="info-icon-container"><i id="info-icon" class="fas fa-info"></i></div><h3 class="text-2xl font-heading font-black text-slate-900 dark:text-white mb-1" id="info-title">Title</h3><p class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="info-subtitle">Subtitle</p><div class="mt-6 bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 text-left border border-slate-100 dark:border-slate-700"><ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300" id="info-list"></ul></div><button onclick="vibrate(); closeInfoModal()" class="mt-6 w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition">GOT IT</button></div></div></div>
 
     <div id="workout-modal" class="fixed inset-0 bg-slate-50 dark:bg-slate-900 z-[200] hidden flex flex-col transition-transform duration-300 translate-y-full"><div class="p-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-10"><button onclick="closeWorkoutModal()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200"><i class="fas fa-arrow-left"></i></button><div class="text-center"><h3 class="font-heading font-black text-lg text-slate-900 dark:text-white" id="modal-title">WORKOUT</h3><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" id="modal-subtitle">00 Mins • 000 Kcal</p></div><button class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300"><i class="fas fa-ellipsis-v"></i></button></div><div class="bg-indigo-50 dark:bg-indigo-900/20 px-5 py-3 flex items-center gap-3 border-b border-indigo-100 dark:border-indigo-900/30"><i class="fas fa-watch text-indigo-500 text-xl"></i><div><p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Amazfit Bip 6</p><p class="text-xs font-bold text-indigo-700 dark:text-indigo-300" id="watch-mode-text">Set mode to: Strength Training</p></div></div><div class="flex-1 overflow-y-auto p-5 no-scrollbar" id="modal-list"></div></div>
 
-    <!-- Script -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxDLAx23v5iQKsfoXdrRshcsfc1ApfyfkNtlnqAI__RS3y7bM_O7TSveCiATUJNyDAZ/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycby5Ejxh3K5j-uhciQbgzUKsviMXo1wcX8gAIzkoJR6PgBGkjgozbZZ3rX3fYn72cX8b/exec";
         const CHECKLIST_KEY = 'project100_reloaded_checklist';
         const START_DATE = new Date('2026-02-02T00:00:00');
-        const END_DATE = new Date('2026-05-12T23:59:59');
         let weightChart = null;
         let lastRecordedWeight = 80.0;
 
+        // --- SAFE HELPER FUNCTIONS (Prevents Crashes) ---
+        function safeSetText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        }
+        function safeSetValue(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+        }
+        function safeGetElem(id) {
+            return document.getElementById(id);
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
-            loadChecklist();
-            updateMissionStatus();
-            checkWeekendMode();
+            // Force Tab Init
+            switchTab('dashboard', document.getElementById('nav-dash'));
+            
+            try { loadChecklist(); } catch(e) { console.warn("Checklist error", e); }
+            try { updateMissionStatus(); } catch(e) { console.warn("Mission Status error", e); }
+            try { checkWeekendMode(); } catch(e) { console.warn("Weekend Mode error", e); }
+            try { updateHeroHeader(); } catch(e) { console.warn("Hero Header error", e); }
+            
             setInterval(updateMissionStatus, 60000); 
-            if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
-            fetchWeightHistory();
-            fetchBodyHistory();
-            updateHeroHeader();
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+
+            // Sync Data Safely
+            fetchWeightHistory().catch(e => console.log("Weight Sync Failed", e));
+            fetchBodyHistory().catch(e => console.log("Body Sync Failed", e));
+            fetchWaterLog().catch(e => console.log("Water Sync Failed", e));
         });
 
         function vibrate(ms = 50) { if (navigator.vibrate) navigator.vibrate(ms); }
 
         function checkWeekendMode() {
             const day = new Date().getDay();
-            const indicator = document.getElementById('day-indicator');
+            const indicator = safeGetElem('day-indicator');
+            if(!indicator) return;
+
             if(day === 0 || day === 6) {
                 indicator.className = "rounded-xl p-3 border flex items-center justify-between shadow-sm animate-fadeIn bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800 mb-5";
                 indicator.innerHTML = `<div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center"><i class="fas fa-leaf"></i></div><div><p class="text-[10px] font-bold text-slate-400 uppercase">Weekend Mode</p><p class="text-xs font-bold text-emerald-700 dark:text-emerald-400">Active Recovery 🌿</p></div></div><div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>`;
@@ -762,7 +523,7 @@
                     const weights = data.history.map(h => parseFloat(h.weight));
                     lastRecordedWeight = weights[weights.length - 1]; 
                     
-                    document.getElementById('current-weight-display').innerText = lastRecordedWeight;
+                    safeSetText('current-weight-display', lastRecordedWeight);
                     updateTheme(data.history[data.history.length - 1].mood);
                     renderChart(dates, weights);
 
@@ -774,17 +535,14 @@
                     if (percentage < 0) percentage = 0; if (percentage > 100) percentage = 100;
 
                     const bar = document.getElementById('main-progress');
-                    const centerText = document.getElementById('progress-text-main');
-
-                    if(bar) bar.style.width = "0%";
+                    if(bar) bar.style.width = percentage + "%";
+                    
                     setTimeout(() => {
-                        if(bar) bar.style.width = percentage + "%";
                         let mainMessage = "";
                         if (currentLost > 0) mainMessage = `${percentage.toFixed(0)}% DONE • ${currentLost.toFixed(1)} KG DOWN`;
                         else if (currentLost < 0) mainMessage = `WAR MODE • ${Math.abs(currentLost).toFixed(1)} KG GAINED`;
                         else mainMessage = "JOURNEY STARTS NOW";
-                        if (lastRecordedWeight <= goalWeight) mainMessage = "🏆 MISSION ACCOMPLISHED";
-                        if(centerText) centerText.innerText = mainMessage;
+                        safeSetText('progress-text-main', mainMessage);
                     }, 100);
 
                     const diffTime = Math.abs(new Date() - new Date('2026-02-02'));
@@ -803,123 +561,53 @@
                     }
                     const quoteEl = document.getElementById('hero-quote');
                     if(quoteEl) quoteEl.innerHTML = predictionMsg;
-                    const streakEl = document.getElementById('streak-counter');
-                    if(streakEl) streakEl.innerText = data.history.length;
+                    safeSetText('streak-counter', data.history.length);
 
                 } else { renderChart([], []); }
             } catch (error) { 
-                showToast("Sync Failed!"); console.error(error);
+                console.error(error); // Silent fail to keep UI working
             } finally { 
                 const btn = document.querySelector('button[onclick="openWeightModal()"]');
                 if(btn) btn.innerHTML = '<i class="fas fa-plus"></i> LOG TODAY'; 
             }
         }
 
-// --- MODERN CHART CONFIGURATION ---
-function renderChart(labels, data) {
-    const ctx = document.getElementById('weightChart').getContext('2d');
-    if (weightChart) weightChart.destroy();
+        function renderChart(labels, data) {
+            const ctxElem = document.getElementById('weightChart');
+            if(!ctxElem) return;
+            const ctx = ctxElem.getContext('2d');
+            if (weightChart) weightChart.destroy();
 
-    // Goal Line Data (Auto-calculated)
-    const idealData = labels.map((_, index) => {
-        const daysPassed = index + 1;
-        const ideal = 80.0 - (0.14 * daysPassed); 
-        return ideal.toFixed(2);
-    });
+            const idealData = labels.map((_, index) => {
+                const daysPassed = index + 1;
+                const ideal = 80.0 - (0.14 * daysPassed); 
+                return ideal.toFixed(2);
+            });
 
-    // 1. CLEAN PURPLE FILL (Matches Screenshot)
-    // No complex gradient, just a clean fade
-    let gradient = ctx.createLinearGradient(0, 0, 0, 300); 
-    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)'); // Solid Purple Top
-    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.05)'); // Light Bottom
-    
-    // Calculate Min/Max to force the "Wave" look
-    // Isse chart flat nahi dikhega, movement dikhegi
-    const minWeight = Math.min(...data) - 1;
-    const maxWeight = Math.max(...data) + 1;
+            let gradient = ctx.createLinearGradient(0, 0, 0, 300); 
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.05)');
+            
+            const minWeight = Math.min(...data) - 1;
+            const maxWeight = Math.max(...data) + 1;
 
-    weightChart = new Chart(ctx, { 
-        type: 'line', 
-        data: { 
-            labels, 
-            datasets: [
-                { 
-                    // --- TREND LINE (The Wavy One) ---
-                    label: 'Weight',
-                    data: data, 
-                    borderColor: '#6366f1', // Indigo Color
-                    backgroundColor: gradient, 
-                    borderWidth: 3, 
-                    
-                    // --- DOTS EVERYWHERE (Screenshot Style) ---
-                    pointRadius: 5, 
-                    pointBackgroundColor: '#6366f1', // Purple Center
-                    pointBorderColor: '#ffffff',     // White Border
-                    pointBorderWidth: 2,           
-                    pointHoverRadius: 7,
-                    
-                    fill: true, 
-                    tension: 0.4, // Makes the line CURVY (Wavy)
-                    order: 1
-                },
-                {
-                    // --- TARGET LINE (Dotted) ---
-                    label: 'Target Path',
-                    data: idealData,
-                    borderColor: '#94a3b8', // Grey Color
-                    borderWidth: 2,
-                    borderDash: [5, 5], // Dotted Effect
-                    pointRadius: 0,     // No dots on target line
-                    fill: false,
-                    tension: 0,
-                    order: 2
-                }
-            ] 
-        }, 
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            plugins: { 
-                legend: { display: false }, // Default legend OFF (Custom lagaya hai)
-                tooltip: { 
-                    backgroundColor: '#1e293b',
-                    titleColor: '#94a3b8',
-                    bodyFont: { size: 13, weight: 'bold', family: "'Plus Jakarta Sans', sans-serif" },
-                    padding: 10,
-                    cornerRadius: 8,
-                    displayColors: false,
-                    callbacks: {
-                        label: function(context) {
-                            return context.parsed.y + ' KG';
-                        }
-                    }
-                }
-            }, 
-            scales: { 
-                x: { 
-                    display: true, // Show Dates (Jan 30, Feb 1...)
-                    grid: { display: false },
-                    ticks: {
-                        color: '#94a3b8',
-                        font: { size: 10, weight: 'bold' },
-                        maxTicksLimit: 5
-                    }
+            weightChart = new Chart(ctx, { 
+                type: 'line', 
+                data: { 
+                    labels, 
+                    datasets: [
+                        { label: 'Weight', data: data, borderColor: '#6366f1', backgroundColor: gradient, borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#6366f1', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointHoverRadius: 7, fill: true, tension: 0.4, order: 1 },
+                        { label: 'Target Path', data: idealData, borderColor: '#94a3b8', borderWidth: 2, borderDash: [5, 5], pointRadius: 0, fill: false, tension: 0, order: 2 }
+                    ] 
                 }, 
-                y: { 
-                    display: false, // Hide Y Numbers (Clean Look)
-                    min: minWeight, // Dynamic Scaling for Waves
-                    max: maxWeight 
+                options: { 
+                    responsive: true, maintainAspectRatio: false, 
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleColor: '#94a3b8', bodyFont: { size: 13, weight: 'bold', family: "'Plus Jakarta Sans', sans-serif" }, padding: 10, cornerRadius: 8, displayColors: false, callbacks: { label: function(context) { return context.parsed.y + ' KG'; } } } }, 
+                    scales: { x: { display: true, grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10, weight: 'bold' }, maxTicksLimit: 5 } }, y: { display: false, min: minWeight, max: maxWeight } },
+                    layout: { padding: { left: 10, right: 10, bottom: 5, top: 10 } }
                 } 
-            },
-            layout: { 
-                padding: { left: 10, right: 10, bottom: 5, top: 10 } 
-            }
-        } 
-    });
-}
-
-
-
+            });
+        }
 
         async function saveWeight() {
             const w = parseFloat(document.getElementById('weight-input').value);
@@ -932,7 +620,8 @@ function renderChart(labels, data) {
             else if (diff > 0) { const gain = diff.toFixed(1); if (gain > 0.5) { mood = "CODE_RED"; remarks = "Critical Gain!"; } else { mood = "WAR"; remarks = "Slight Gain"; } }
             
             try {
-                document.getElementById('current-weight-display').innerText = w; updateTheme(mood); 
+                safeSetText('current-weight-display', w);
+                updateTheme(mood); 
                 const now = new Date(); const d = now.getDate(); const suffix = (d > 3 && d < 21) ? 'th' : ['th', 'st', 'nd', 'rd', 'th'][d % 10] || 'th';
                 const formattedDate = `${now.toLocaleDateString('en-US', { weekday: 'short' })}, ${d}${suffix} ${now.toLocaleDateString('en-US', { month: 'short' })} ${now.getFullYear().toString().slice(-2)}`;
                 const payload = { action: "log_weight", date: formattedDate, weight: w, diff: diff.toFixed(1), mood: mood, remarks: remarks };
@@ -943,7 +632,8 @@ function renderChart(labels, data) {
         }
 
         function updateTheme(mood) {
-            const hero = document.getElementById('hero-card'); const logo = document.getElementById('logo-box'); const dot = document.getElementById('status-dot'); const fab = document.getElementById('nav-fab'); const text = document.getElementById('header-highlight');
+            const hero = document.getElementById('hero-card'); const logo = document.getElementById('logo-box'); const text = document.getElementById('header-highlight');
+            if(!hero) return; // Safety check
             hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group transition-all duration-700"; document.body.classList.remove('border-4', 'border-red-600'); logo.innerHTML = '100'; 
             if (mood === 'VICTORY') { hero.classList.add('bg-gradient-to-br', 'from-emerald-500', 'to-teal-600', 'shadow-emerald-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-emerald-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#10b981'; } 
             else if (mood === 'NEUTRAL') { hero.classList.add('bg-gradient-to-br', 'from-indigo-600', 'to-blue-600', 'shadow-indigo-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-indigo-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#4f46e5'; } 
@@ -951,11 +641,59 @@ function renderChart(labels, data) {
             else { hero.classList.add('bg-gradient-to-br', 'from-rose-600', 'to-orange-600', 'shadow-rose-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-rose-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#e11d48'; }
         }
 
-        function showToast(msg) { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.classList.remove('opacity-0', 'translate-y-[-20px]'); setTimeout(() => t.classList.add('opacity-0', 'translate-y-[-20px]'), 3000); }
+        function showToast(msg) { 
+            const t = document.getElementById('toast'); 
+            const tm = document.getElementById('toast-msg');
+            if(!t || !tm) return;
+            tm.innerText = msg; t.classList.remove('opacity-0', 'translate-y-[-20px]'); setTimeout(() => t.classList.add('opacity-0', 'translate-y-[-20px]'), 3000); 
+        }
+
         function loadChecklist() { const d = JSON.parse(localStorage.getItem(CHECKLIST_KEY)); if (d && d.date === new Date().toLocaleDateString()) { ['chk-wake','chk-water','chk-cardio','chk-diet','chk-strength'].forEach(id => { const e = document.getElementById(id); if(e) e.checked = d[id] || false; }); } }
         function saveChecklist() { localStorage.setItem(CHECKLIST_KEY, JSON.stringify({ date: new Date().toLocaleDateString(), 'chk-wake': document.getElementById('chk-wake').checked, 'chk-water': document.getElementById('chk-water').checked, 'chk-cardio': document.getElementById('chk-cardio').checked, 'chk-diet': document.getElementById('chk-diet').checked, 'chk-strength': document.getElementById('chk-strength').checked })); }
-        function switchTab(id, btn) { document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active')); document.getElementById('tab-' + id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(e => { e.classList.remove('active'); e.style.color = ''; e.classList.add('text-slate-400'); }); if(btn) { btn.classList.add('active'); btn.classList.remove('text-slate-400'); } window.scrollTo({ top: 0, behavior: 'smooth' }); updateTheme(lastRecordedWeight < 80.0 ? 'VICTORY' : 'WAR'); }
-        function updateMissionStatus() { const now = new Date(); const diff = START_DATE - now; if(diff > 0) document.getElementById('days-counter').innerText = `Starts in ${Math.ceil(diff/(1000*60*60*24))} Days`; else document.getElementById('days-counter').innerText = `Day ${Math.ceil((now - START_DATE)/(1000*60*60*24))} / 100`; }
+        
+        function switchTab(id, btn) {
+            vibrate(30);
+            try {
+                const allTabs = document.querySelectorAll('.tab-content');
+                allTabs.forEach(e => {
+                    e.classList.remove('active');
+                    e.style.display = 'none'; // Force CSS hide
+                });
+
+                const target = document.getElementById('tab-' + id);
+                if(target) {
+                    target.classList.add('active');
+                    target.style.display = 'block'; // Force CSS show
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                document.querySelectorAll('.nav-item').forEach(e => {
+                    e.classList.remove('active');
+                    e.style.color = ''; 
+                    e.classList.add('text-slate-400');
+                });
+
+                if (btn) {
+                    btn.classList.add('active');
+                    btn.classList.remove('text-slate-400');
+                    if(btn.id !== 'nav-fab') {
+                        btn.style.color = '#e11d48';
+                    }
+                }
+            } catch (e) {
+                console.error("Tab Switch Error:", e);
+            }
+        }
+
+        function updateMissionStatus() { 
+            const now = new Date(); const diff = START_DATE - now; 
+            const counter = document.getElementById('days-counter');
+            if(!counter) return; 
+
+            if(diff > 0) counter.innerText = `Starts in ${Math.ceil(diff/(1000*60*60*24))} Days`; 
+            else counter.innerText = `Day ${Math.ceil((now - START_DATE)/(1000*60*60*24))} / 100`; 
+        }
+
         function toggleTheme() { const d = document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', d ? 'dark' : 'light'); }
         
         const workouts = {
@@ -971,234 +709,321 @@ function renderChart(labels, data) {
             vibrate();
             const w = workouts[id];
             const m = document.getElementById('workout-modal');
-            document.getElementById('modal-title').innerText = w.title.toUpperCase();
-            document.getElementById('modal-subtitle').innerText = `${w.time} • ${w.cal} KCAL`;
-            document.getElementById('watch-mode-text').innerText = `Set Watch to: ${w.mode}`;
+            safeSetText('modal-title', w.title.toUpperCase());
+            safeSetText('modal-subtitle', `${w.time} • ${w.cal} KCAL`);
+            safeSetText('watch-mode-text', `Set Watch to: ${w.mode}`);
             const list = document.getElementById('modal-list');
-            list.innerHTML = '';
-            w.list.forEach(ex => {
-                if(ex.type === 'rest') {
-                    list.innerHTML += `<div class="flex items-center justify-center py-2 opacity-70"><span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"><i class="fas fa-pause mr-1"></i> Rest ${ex.t}</span></div>`;
-                } else {
-                    list.innerHTML += `<div class="exercise-item justify-between group border-b border-slate-50 dark:border-slate-800/50 mb-2 pb-2"><div class="flex items-center gap-4"><div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center text-slate-400 font-bold text-lg text-${w.color}-500"><i class="fas fa-dumbbell"></i></div><div><h4 class="font-bold text-sm text-slate-700 dark:text-slate-200">${ex.n}</h4><p class="text-xs font-bold text-${w.color}-500 opacity-80">${ex.t}</p></div></div></div>`;
-                }
-            });
+            if(list) {
+                list.innerHTML = '';
+                w.list.forEach(ex => {
+                    if(ex.type === 'rest') {
+                        list.innerHTML += `<div class="flex items-center justify-center py-2 opacity-70"><span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"><i class="fas fa-pause mr-1"></i> Rest ${ex.t}</span></div>`;
+                    } else {
+                        list.innerHTML += `<div class="exercise-item justify-between group border-b border-slate-50 dark:border-slate-800/50 mb-2 pb-2"><div class="flex items-center gap-4"><div class="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center text-slate-400 font-bold text-lg text-${w.color}-500"><i class="fas fa-dumbbell"></i></div><div><h4 class="font-bold text-sm text-slate-700 dark:text-slate-200">${ex.n}</h4><p class="text-xs font-bold text-${w.color}-500 opacity-80">${ex.t}</p></div></div></div>`;
+                    }
+                });
+            }
             m.classList.remove('hidden'); setTimeout(() => m.classList.remove('translate-y-full'), 10);
         }
         function closeWorkoutModal() { const m = document.getElementById('workout-modal'); m.classList.add('translate-y-full'); setTimeout(() => m.classList.add('hidden'), 300); }
         function updateHeroHeader() {
             const day = new Date().getDay(); 
-            const map = { 1: 'push', 4: 'push', 2: 'pull', 5: 'pull', 3: 'hybrid', 6: 'legs', 0: 'stretch' };
+            const map = { 1: 'push', 4: 'push', 2: 'pull', 5: 'pull', 3: 'legs', 6: 'hybrid', 0: 'stretch' };
             const todayKey = map[day] || 'stretch';
             const w = workouts[todayKey];
-            document.getElementById('hero-workout-title').innerText = w.title.toUpperCase();
-            document.getElementById('hero-duration').innerText = w.time;
-            document.getElementById('hero-exercises').innerText = `${w.list.length} Exercises`;
-            document.getElementById('hero-calories').innerText = w.cal;
-            document.getElementById('workout-hero').onclick = () => openWorkoutModal(todayKey);
+            safeSetText('hero-workout-title', w.title.toUpperCase());
+            safeSetText('hero-duration', w.time);
+            safeSetText('hero-exercises', `${w.list.length} Exercises`);
+            safeSetText('hero-calories', w.cal);
+            const hero = document.getElementById('workout-hero');
+            if(hero) hero.onclick = () => openWorkoutModal(todayKey);
         }
 
         let waterCount = 0;
-        function addWater() { vibrate(50); waterCount += 0.25; showToast(`Hydration: ${waterCount}L Added 💧`); const fab = document.getElementById('water-fab'); fab.style.transform = "scale(1.2)"; setTimeout(() => fab.style.transform = "scale(1)", 200); const waterStat = document.querySelector('button[onclick="openStatModal(\'water\')"] h4'); if(waterStat) waterStat.innerText = `${waterCount.toFixed(1)} L`; }
+        function addWater() { vibrate(50); waterCount += 0.25; showToast(`Hydration: ${waterCount}L Added 💧`); const fab = document.getElementById('water-fab'); if(fab){ fab.style.transform = "scale(1.2)"; setTimeout(() => fab.style.transform = "scale(1)", 200); } }
 
         function openStatModal(type) { vibrate(30); const m = document.getElementById('info-modal'); const list = document.getElementById('info-list'); list.innerHTML = ''; const t = document.getElementById('info-title'); const s = document.getElementById('info-subtitle'); const i = document.getElementById('info-icon'); const ic = document.getElementById('info-icon-container'); let data = []; if(type==='calories'){ i.className="fas fa-fire"; ic.className="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="1650 Kcal"; s.innerText="Energy Budget"; data=["High Protein (120g)", "Low Carb", "No Sugar", "Accuracy is King ⚖️"]; } else if(type==='water'){ i.className="fas fa-tint"; ic.className="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="4.0 Liters"; s.innerText="Hydration"; data=["1L Morning", "1L Workout", "2L Day"]; } else if(type==='neat'){ i.className="fas fa-shoe-prints"; ic.className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="8,000 Steps"; s.innerText="Movement"; data=["Walk after meals", "Take stairs", "Pace on calls"]; } else if(type==='sleep'){ i.className="fas fa-moon"; ic.className="w-16 h-16 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-md"; t.innerText="10:30 PM"; s.innerText="Recovery"; data=["No Phone 10pm", "Dark Room", "7 Hrs Sleep"]; } data.forEach(d => list.innerHTML += `<li class="flex items-start gap-3"><i class="fas fa-check-circle text-slate-400 mt-1"></i><span>${d}</span></li>`); m.classList.remove('hidden'); setTimeout(() => m.classList.add('open'), 10); }
         function closeInfoModal() { const m = document.getElementById('info-modal'); m.classList.remove('open'); setTimeout(() => m.classList.add('hidden'), 300); }
         function openWeightModal() { vibrate(); const m = document.getElementById('weight-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.add('open'), 10); }
         function closeWeightModal() { const btn = document.getElementById('save-btn'); if (btn.disabled) return; const m = document.getElementById('weight-modal'); m.classList.remove('open'); setTimeout(() => m.classList.add('hidden'), 300); }
 
-        // --- BODY STATS LOGIC (UPDATED WITH COMPARISON) ---
-        const START_STATS = { chest: 42.0, waist: 36.0, arms: 14.5, thighs: 24.0 };
-        
+        // --- BODY STATS LOGIC ---
         function updateInputVal(id, change) {
             const input = document.getElementById(id);
+            if(!input) return;
             let val = parseFloat(input.value) || 0;
             val = Math.round((val + change) * 10) / 10;
             input.value = val;
         }
 
-        // --- UPDATED BODY TAB LOGIC (Fixing Sync Error) ---
+        function toggleBodyMode(mode) {
+            vibrate();
+            const inputView = document.getElementById('view-body-input');
+            const historyView = document.getElementById('view-body-history');
+            const btnInput = document.getElementById('btn-mode-input');
+            const btnHistory = document.getElementById('btn-mode-history');
 
-function toggleBodyMode(mode) {
-    vibrate();
-    const inputView = document.getElementById('view-body-input');
-    const historyView = document.getElementById('view-body-history');
-    const btnInput = document.getElementById('btn-mode-input');
-    const btnHistory = document.getElementById('btn-mode-history');
+            if (mode === 'input') {
+                inputView.classList.remove('hidden');
+                historyView.classList.add('hidden');
+                btnInput.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+                btnInput.classList.remove('text-slate-400');
+                btnHistory.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+                btnHistory.classList.add('text-slate-400');
+            } else {
+                inputView.classList.add('hidden');
+                historyView.classList.remove('hidden');
+                btnHistory.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+                btnHistory.classList.remove('text-slate-400');
+                btnInput.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
+                btnInput.classList.add('text-slate-400');
+                fetchBodyHistory(true); 
+            }
+        }
 
-    if (mode === 'input') {
-        inputView.classList.remove('hidden');
-        historyView.classList.add('hidden');
-        btnInput.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
-        btnInput.classList.remove('text-slate-400');
-        btnHistory.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
-        btnHistory.classList.add('text-slate-400');
-    } else {
-        inputView.classList.add('hidden');
-        historyView.classList.remove('hidden');
-        btnHistory.classList.add('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
-        btnHistory.classList.remove('text-slate-400');
-        btnInput.classList.remove('bg-white', 'dark:bg-slate-600', 'shadow-sm', 'text-slate-900', 'dark:text-white');
-        btnInput.classList.add('text-slate-400');
-        fetchBodyHistory(true); // Force refresh history list
-    }
-}
-
-async function fetchBodyHistory(renderListOnly = false) {
-    try {
-        if(!renderListOnly) document.getElementById('body-last-date').innerText = "Syncing...";
-        
-        // FIX: Using standardized POST body to ensure GAS handles it cleanly
-        const response = await fetch(API_URL, { 
-            method: "POST", 
-            body: JSON.stringify({ action: "get_body_history" }) 
-        });
-        
-        // Debugging: Check if response is okay
-        if (!response.ok) throw new Error("Network response was not ok");
-        
-        const data = await response.json();
-
-        if (data.status === 'success' && data.history.length > 0) {
-            const history = data.history;
-            const latest = history[history.length - 1]; // Latest
-            const start = history[0]; // Start
-
-            // 1. Update Inputs (Only if not just viewing history list)
-            if (!renderListOnly) {
-                document.getElementById('in-chest').value = latest.chest || 42.0;
-                document.getElementById('in-waist').value = latest.waist || 36.0;
-                document.getElementById('in-arms').value = latest.arms || 14.5;
-                document.getElementById('in-thighs').value = latest.thighs || 24.0;
+        async function fetchBodyHistory(renderListOnly = false) {
+            try {
+                if(!renderListOnly) safeSetText('body-last-date', "Syncing...");
                 
-                // Formatted Date
-                const d = new Date(latest.date);
-                document.getElementById('body-last-date').innerText = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-                
-                // Render Comparison Badges
-                renderModernComparison(start, latest);
+                const response = await fetch(API_URL, { 
+                    method: "POST", 
+                    body: JSON.stringify({ action: "get_body_history" }) 
+                });
+                const data = await response.json();
+
+                if (data.status === 'success' && data.history.length > 0) {
+                    const history = data.history;
+                    const latest = history[history.length - 1]; 
+                    const start = history[0]; 
+
+                    if (!renderListOnly) {
+                        safeSetValue('in-chest', latest.chest || 42.0);
+                        safeSetValue('in-waist', latest.waist || 36.0);
+                        safeSetValue('in-arms', latest.arms || 14.5);
+                        safeSetValue('in-thighs', latest.thighs || 24.0);
+                        
+                        const d = new Date(latest.date);
+                        safeSetText('body-last-date', d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }));
+                        renderModernComparison(start, latest);
+                    }
+                    renderHistoryList(history);
+                } else {
+                    safeSetText('body-last-date', "No Data");
+                    const list = document.getElementById('body-history-list');
+                    if(list) list.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">No logs found yet. Start measuring!</div>';
+                }
+            } catch (e) {
+                console.error("Body Sync Error:", e);
+                if(!renderListOnly) safeSetText('body-last-date', "Sync Error");
+            }
+        }
+
+        function renderModernComparison(start, current) {
+            safeSetText('disp-start-waist', start.waist);
+            safeSetText('disp-curr-waist', current.waist);
+            
+            const waistDiff = (current.waist - start.waist).toFixed(1);
+            const badge = document.getElementById('disp-badge-waist');
+            const status = document.getElementById('overall-status');
+
+            if(badge && status) {
+                if (waistDiff < 0) {
+                    badge.innerText = `${waistDiff}" Down`;
+                    badge.className = "inline-block bg-emerald-500/20 text-emerald-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-emerald-500/30";
+                    status.innerText = "Trending: FAT LOSS 📉";
+                    status.className = "text-emerald-400 font-bold";
+                } else if (waistDiff > 0) {
+                    badge.innerText = `+${waistDiff}" Up`;
+                    badge.className = "inline-block bg-rose-500/20 text-rose-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-rose-500/30";
+                    status.innerText = "Trending: GAIN ⚠️";
+                    status.className = "text-rose-400 font-bold";
+                } else {
+                    badge.innerText = "No Change";
+                    badge.className = "inline-block bg-slate-500/20 text-slate-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1";
+                    status.innerText = "Trending: STABLE";
+                    status.className = "text-slate-400 font-bold";
+                }
             }
 
-            // 2. Render History List (New Table View)
-            renderHistoryList(history);
-
-        } else {
-            document.getElementById('body-last-date').innerText = "No Data";
-            document.getElementById('body-history-list').innerHTML = '<div class="p-4 text-center text-xs text-slate-400">No logs found yet. Start measuring!</div>';
+            updateMiniCard('chest', start.chest, current.chest);
+            updateMiniCard('waist', start.waist, current.waist, true);
+            updateMiniCard('arms', start.arms, current.arms); 
+            updateMiniCard('thighs', start.thighs, current.thighs, true);
         }
-    } catch (e) {
-        console.error("Body Sync Error:", e);
-        document.getElementById('body-last-date').innerText = "Sync Error";
-        // Optional: Show a toast only if user clicked specific buttons, to avoid annoyance on load
-    }
-}
 
-function renderModernComparison(start, current) {
-    // 1. Update The Big Card (Waist Focus)
-    document.getElementById('disp-start-waist').innerText = start.waist;
-    document.getElementById('disp-curr-waist').innerText = current.waist;
-    
-    const waistDiff = (current.waist - start.waist).toFixed(1);
-    const badge = document.getElementById('disp-badge-waist');
-    const status = document.getElementById('overall-status');
+        function updateMiniCard(id, startVal, currVal, isFatLossMetric = false) {
+            safeSetText(`start-${id}`, startVal);
+            const el = document.getElementById(`diff-${id}`);
+            if(!el) return;
 
-    if (waistDiff < 0) {
-        badge.innerText = `${waistDiff}" Down`;
-        badge.className = "inline-block bg-emerald-500/20 text-emerald-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-emerald-500/30";
-        status.innerText = "Trending: FAT LOSS 📉";
-        status.className = "text-emerald-400 font-bold";
-    } else if (waistDiff > 0) {
-        badge.innerText = `+${waistDiff}" Up`;
-        badge.className = "inline-block bg-rose-500/20 text-rose-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1 border border-rose-500/30";
-        status.innerText = "Trending: GAIN ⚠️";
-        status.className = "text-rose-400 font-bold";
-    } else {
-        badge.innerText = "No Change";
-        badge.className = "inline-block bg-slate-500/20 text-slate-400 text-[9px] font-bold px-2 py-0.5 rounded-full mt-1";
-        status.innerText = "Trending: STABLE";
-        status.className = "text-slate-400 font-bold";
-    }
+            const diff = (currVal - startVal).toFixed(1);
+            
+            if (diff == 0) {
+                el.innerText = "0.0";
+                el.className = "text-[9px] font-black text-slate-300";
+                return;
+            }
 
-    // 2. Update Small Cards (Helper function)
-    updateMiniCard('chest', start.chest, current.chest);
-    updateMiniCard('waist', start.waist, current.waist, true); // True = Reverse color logic (less is good)
-    updateMiniCard('arms', start.arms, current.arms); // Arms usually gain is muscle (context dependent, keeping neutral for now)
-    updateMiniCard('thighs', start.thighs, current.thighs, true);
-}
-
-function updateMiniCard(id, startVal, currVal, isFatLossMetric = false) {
-    document.getElementById(`start-${id}`).innerText = startVal;
-    const el = document.getElementById(`diff-${id}`);
-    const diff = (currVal - startVal).toFixed(1);
-    
-    if (diff == 0) {
-        el.innerText = "0.0";
-        el.className = "text-[9px] font-black text-slate-300";
-        return;
-    }
-
-    const isNegative = diff < 0;
-    // For Waist/Thighs: Negative is GOOD (Green). For Chest/Arms: Positive is usually GOOD (Green) or Gain.
-    // Simplifying: Green for Loss if isFatLossMetric, else Blue for Gain.
-    
-    if (isFatLossMetric) {
-        if (isNegative) { // Lost inches (Good)
-            el.innerText = `${diff}"`;
-            el.className = "text-[9px] font-black text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 rounded";
-        } else { // Gained inches (Bad)
-            el.innerText = `+${diff}"`;
-            el.className = "text-[9px] font-black text-rose-500 bg-rose-50 dark:bg-rose-900/30 px-1.5 rounded";
+            const isNegative = diff < 0;
+            if (isFatLossMetric) {
+                if (isNegative) { 
+                    el.innerText = `${diff}"`;
+                    el.className = "text-[9px] font-black text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 rounded";
+                } else { 
+                    el.innerText = `+${diff}"`;
+                    el.className = "text-[9px] font-black text-rose-500 bg-rose-50 dark:bg-rose-900/30 px-1.5 rounded";
+                }
+            } else {
+                if (isNegative) { 
+                    el.innerText = `${diff}"`;
+                    el.className = "text-[9px] font-black text-slate-400";
+                } else {
+                    el.innerText = `+${diff}"`;
+                    el.className = "text-[9px] font-black text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded";
+                }
+            }
         }
-    } else {
-        if (isNegative) { 
-            el.innerText = `${diff}"`;
-            el.className = "text-[9px] font-black text-slate-400";
-        } else {
-            el.innerText = `+${diff}"`;
-            el.className = "text-[9px] font-black text-blue-500 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded";
+
+        function renderHistoryList(history) {
+            const container = document.getElementById('body-history-list');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const reversed = [...history].reverse();
+
+            reversed.forEach((log, index) => {
+                const d = new Date(log.date);
+                const dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                
+                let trendIcon = '<i class="fas fa-minus text-slate-300"></i>';
+                if (index < reversed.length - 1) {
+                    const prev = reversed[index + 1];
+                    if (log.waist < prev.waist) trendIcon = '<i class="fas fa-arrow-down text-emerald-500"></i>';
+                    else if (log.waist > prev.waist) trendIcon = '<i class="fas fa-arrow-up text-rose-500"></i>';
+                }
+
+                const html = `
+                <div class="flex items-center justify-between p-3 border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
+                    <div class="w-10"><p class="text-[10px] font-black text-slate-400 uppercase">${dateStr}</p></div>
+                    <div class="flex-1 px-4 grid grid-cols-4 gap-2 text-center">
+                        <div><p class="text-[8px] text-slate-400 uppercase">Chest</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.chest}</p></div>
+                        <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded"><p class="text-[8px] text-indigo-400 uppercase">Waist</p><p class="text-xs font-black text-indigo-600 dark:text-indigo-400">${log.waist}</p></div>
+                        <div><p class="text-[8px] text-slate-400 uppercase">Arms</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.arms}</p></div>
+                        <div><p class="text-[8px] text-slate-400 uppercase">Thighs</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.thighs}</p></div>
+                    </div>
+                    <div class="w-6 text-right text-xs">${trendIcon}</div>
+                </div>`;
+                container.innerHTML += html;
+            });
         }
-    }
-}
 
-function renderHistoryList(history) {
-    const container = document.getElementById('body-history-list');
-    container.innerHTML = '';
-    
-    // Reverse array to show newest first
-    const reversed = [...history].reverse();
+        function toggleSchedule(row) {
+            vibrate(20);
+            document.querySelectorAll('.workout-row.active').forEach(el => { if (el !== row) el.classList.remove('active'); });
+            row.classList.toggle('active');
+        }
 
-    reversed.forEach((log, index) => {
-        const d = new Date(log.date);
-        const dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+        // --- SMART HYDRATION ENGINE ---
+        let todaysWater = 0; 
+        const WATER_GOAL = 4000; 
+
+        async function fetchWaterLog() {
+            try {
+                const response = await fetch(`${API_URL}?action=get_water_history`, { method: "POST", body: JSON.stringify({ action: "get_water_history" }) });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    todaysWater = parseInt(data.total_today) || 0;
+                    updateWaterUI();
+                    renderHydroHistory(data.history); 
+                }
+            } catch (e) { console.error("Water Sync Error", e); }
+        }
+
+        function renderHydroHistory(history) {
+            const list = document.getElementById('hydro-history-list');
+            if(!list) return;
+            list.innerHTML = '';
+            if(history.length === 0) { list.innerHTML = '<div class="p-4 text-center text-[10px] text-white/60">No history found.</div>'; return; }
+            history.forEach(item => {
+                const dateObj = new Date(item.date);
+                const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+                let amtStr = item.amount < 1000 ? `${item.amount} ml` : `${(item.amount/1000).toFixed(1)} L`;
+                let pct = Math.min((item.amount / WATER_GOAL) * 100, 100);
+                let colorClass = pct >= 100 ? 'text-green-300' : 'text-white';
+                list.innerHTML += `<div class="history-row"><span class="w-24 font-bold opacity-80">${dateStr}</span><div class="flex-1 mx-3 flex items-center"><div class="w-full h-1.5 bg-black/20 rounded-full overflow-hidden"><div class="h-full bg-white/80" style="width: ${pct}%"></div></div></div><span class="font-black ${colorClass} w-12 text-right">${amtStr}</span></div>`;
+            });
+        }
+
+        function toggleHydroHistory() {
+            vibrate(20);
+            const drawer = document.getElementById('hydro-history-list');
+            const arrow = document.getElementById('history-arrow');
+            if(drawer) drawer.classList.toggle('open');
+            if(arrow && drawer) arrow.style.transform = drawer.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function updateWaterUI() {
+            const displayEl = document.getElementById('hydro-display');
+            const unitEl = document.getElementById('hydro-unit');
+            const remEl = document.getElementById('hydro-remaining');
+            if(!displayEl) return;
+            
+            if (todaysWater < 1000) { displayEl.innerText = todaysWater; unitEl.innerText = "ml"; } 
+            else { displayEl.innerText = (todaysWater / 1000).toFixed(1); unitEl.innerText = "L"; }
+
+            let percentage = Math.min(Math.round((todaysWater / WATER_GOAL) * 100), 100);
+            let remaining = Math.max(WATER_GOAL - todaysWater, 0);
+            
+            if (remaining > 1000) { remEl.innerText = `Remaining: ${(remaining/1000).toFixed(1)} L`; } 
+            else if (remaining > 0) { remEl.innerText = `Remaining: ${remaining} ml`; } 
+            else { remEl.innerText = "Daily Goal Complete! 🎉"; }
+
+            const bar = document.getElementById('hydro-bar');
+            if(bar) bar.style.width = percentage + "%";
+        }
+
+        async function logWater(amount) {
+            vibrate(50);
+            todaysWater += amount;
+            updateWaterUI();
+            try {
+                const payload = { action: 'log_water', amount: amount };
+                await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                fetchWaterLog(); 
+            } catch (e) {
+                todaysWater -= amount; updateWaterUI();
+            }
+        }
         
-        // Calculate diff from previous log (which is next in this reversed array)
-        let trendIcon = '<i class="fas fa-minus text-slate-300"></i>';
-        if (index < reversed.length - 1) {
-            const prev = reversed[index + 1];
-            if (log.waist < prev.waist) trendIcon = '<i class="fas fa-arrow-down text-emerald-500"></i>';
-            else if (log.waist > prev.waist) trendIcon = '<i class="fas fa-arrow-up text-rose-500"></i>';
+        async function saveBodyStats() {
+            vibrate();
+            const btn = document.getElementById('btn-save-body');
+            const originalText = btn.innerHTML;
+            
+            const chest = document.getElementById('in-chest').value;
+            const waist = document.getElementById('in-waist').value;
+            const arms = document.getElementById('in-arms').value;
+            const thighs = document.getElementById('in-thighs').value;
+
+            if(!chest || !waist || !arms || !thighs) { showToast("❌ All fields required!"); return; }
+
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SAVING...'; btn.disabled = true;
+
+            try {
+                const payload = { action: "log_body", date: new Date().toLocaleDateString(), chest: chest, waist: waist, arms: arms, thighs: thighs };
+                await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                showToast("✅ Body Stats Saved!");
+                toggleBodyMode('history'); fetchBodyHistory(); 
+            } catch (error) { showToast("⚠️ Save Failed!"); console.error(error); } finally { btn.innerHTML = originalText; btn.disabled = false; }
         }
 
-        const html = `
-        <div class="flex items-center justify-between p-3 border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-            <div class="w-10">
-                <p class="text-[10px] font-black text-slate-400 uppercase">${dateStr}</p>
-            </div>
-            <div class="flex-1 px-4 grid grid-cols-4 gap-2 text-center">
-                <div><p class="text-[8px] text-slate-400 uppercase">Chest</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.chest}</p></div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded"><p class="text-[8px] text-indigo-400 uppercase">Waist</p><p class="text-xs font-black text-indigo-600 dark:text-indigo-400">${log.waist}</p></div>
-                <div><p class="text-[8px] text-slate-400 uppercase">Arms</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.arms}</p></div>
-                <div><p class="text-[8px] text-slate-400 uppercase">Thighs</p><p class="text-xs font-bold text-slate-700 dark:text-slate-300">${log.thighs}</p></div>
-            </div>
-            <div class="w-6 text-right text-xs">
-                ${trendIcon}
-            </div>
-        </div>
-        `;
-        container.innerHTML += html;
-    });
-}
-
-
+        function startTodaysWorkout() {
+            vibrate();
+            const day = new Date().getDay(); 
+            const map = { 1: 'push', 4: 'push', 2: 'pull', 5: 'pull', 3: 'legs', 6: 'hybrid', 0: 'stretch' };
+            const key = map[day] || 'warmup';
+            openWorkoutModal(key);
+        }
     </script>
 </body>
 </html>
