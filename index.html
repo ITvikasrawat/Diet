@@ -207,9 +207,10 @@
     <header class="fixed top-0 w-full glass-panel z-40 px-5 py-4 shadow-sm">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <div class="flex items-center gap-3">
-                <div id="logo-box" class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg shadow-rose-500/30 animate-float">100</div>
+                <div id="logo-box" class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white shadow-lg shadow-rose-500/30">
+    <i class="fas fa-bullseye text-2xl"></i></div>
                 <div>
-                    <h1 class="font-heading font-extrabold text-lg leading-none tracking-tight text-slate-900 dark:text-white">PROJECT <span id="header-highlight" class="text-rose-600">RELOADED</span></h1>
+                    <h1 class="font-heading font-extrabold text-lg leading-none tracking-tight text-slate-900 dark:text-white">PROJECT <span id="header-highlight" class="text-rose-600 transition-colors duration-300">100 RELOADED</span></h1>
                     <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Fat Domination • v1.0</p>
                 </div>
             </div>
@@ -658,14 +659,75 @@
         }
 
         function updateTheme(mood) {
-            const hero = document.getElementById('hero-card'); const logo = document.getElementById('logo-box'); const text = document.getElementById('header-highlight');
-            if(!hero) return; // Safety check
-            hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group transition-all duration-700"; document.body.classList.remove('border-4', 'border-red-600'); logo.innerHTML = '100'; 
-            if (mood === 'VICTORY') { hero.classList.add('bg-gradient-to-br', 'from-emerald-500', 'to-teal-600', 'shadow-emerald-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-emerald-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#10b981'; } 
-            else if (mood === 'NEUTRAL') { hero.classList.add('bg-gradient-to-br', 'from-indigo-600', 'to-blue-600', 'shadow-indigo-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-indigo-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#4f46e5'; } 
-            else if (mood === 'CODE_RED') { hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group animate-pulse duration-700 bg-red-900 border-4 border-red-600"; logo.className = "w-11 h-11 rounded-xl bg-red-700 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-ping"; logo.innerHTML = '<i class="fas fa-skull"></i>'; text.innerText = "SYSTEM FAILURE"; text.className = "text-red-600 font-black tracking-widest"; document.body.classList.add('border-4', 'border-red-600'); if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#dc2626'; } 
-            else { hero.classList.add('bg-gradient-to-br', 'from-rose-600', 'to-orange-600', 'shadow-rose-500/30'); logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white font-heading font-black text-xl shadow-lg animate-float"; text.className = "text-rose-600"; if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#e11d48'; }
-        }
+    const hero = document.getElementById('hero-card');
+    const logo = document.getElementById('logo-box');
+    const text = document.getElementById('header-highlight'); // Yeh "RELOADED" text hai
+    
+    if(!hero) return; // Safety check
+
+    // 1. Reset to Target Icon 🎯 (Har baar text '100' nahi aayega)
+    logo.innerHTML = '<i class="fas fa-bullseye text-2xl"></i>'; 
+
+    // Reset Hero Classes (Base)
+    hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group transition-all duration-700";
+    document.body.classList.remove('border-4', 'border-red-600');
+
+    // 2. LOGIC START
+    if (mood === 'VICTORY') {
+        // --- GREEN THEME (Jeet Gaye) ---
+        hero.classList.add('bg-gradient-to-br', 'from-emerald-500', 'to-teal-600', 'shadow-emerald-500/30');
+        
+        // Logo Green & Stable (No animate-float)
+        logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white shadow-lg";
+        
+        // 🔥 RELOADED Text Green
+        text.className = "text-emerald-600"; 
+        
+        // Nav Icon Color
+        if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#10b981';
+    } 
+    else if (mood === 'NEUTRAL') {
+        // --- BLUE THEME (Maintain) ---
+        hero.classList.add('bg-gradient-to-br', 'from-indigo-600', 'to-blue-600', 'shadow-indigo-500/30');
+        
+        // Logo Blue & Stable
+        logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-white shadow-lg";
+        
+        // 🔥 RELOADED Text Blue
+        text.className = "text-indigo-600";
+        
+        // Nav Icon Color
+        if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#4f46e5';
+    } 
+    else if (mood === 'CODE_RED') {
+        // --- DANGER THEME (Mota Gain) ---
+        hero.className = "rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden group animate-pulse duration-700 bg-red-900 border-4 border-red-600";
+        
+        // Skull Icon & Ping Animation
+        logo.innerHTML = '<i class="fas fa-skull text-2xl"></i>';
+        logo.className = "w-11 h-11 rounded-xl bg-red-700 flex items-center justify-center text-white shadow-lg animate-ping";
+        
+        // 🔥 RELOADED Text Red & Alert
+        text.innerText = "SYSTEM FAILURE";
+        text.className = "text-red-600 font-black tracking-widest";
+        
+        document.body.classList.add('border-4', 'border-red-600');
+        if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#dc2626';
+    } 
+    else {
+        // --- WAR MODE / DEFAULT (Red/Orange) ---
+        hero.classList.add('bg-gradient-to-br', 'from-rose-600', 'to-orange-600', 'shadow-rose-500/30');
+        
+        // Logo Red/Orange & Stable (No animate-float)
+        logo.className = "w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-orange-600 flex items-center justify-center text-white shadow-lg";
+        
+        // 🔥 RELOADED Text Red
+        text.className = "text-rose-600";
+        
+        // Nav Icon Color
+        if(document.querySelector('.nav-item.active')) document.querySelector('.nav-item.active').style.color = '#e11d48';
+    }
+}
 
         function showToast(msg) { 
             const t = document.getElementById('toast'); 
