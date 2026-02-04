@@ -6,24 +6,27 @@
     <title>PROJECT 100 | FAT DOMINATION</title>
 		
 		<!-- PWA CONFIG START -->
-	<link rel="manifest" href="manifest.json">
+		<!-- 🔥 Note: '?v=2' lagaya hai taaki phone purana black color bhool jaye -->
+		<link rel="manifest" href="manifest.json?v=2">
 
-	<!-- 🔥 Force White Status Bar -->
-	<meta name="theme-color" content="#ffffff">
-	<meta name="apple-mobile-web-app-status-bar-style" content="default">
-	<meta name="apple-mobile-web-app-capable" content="yes">
+		<!-- Force White Status Bar -->
+		<meta name="theme-color" content="#ffffff">
+		<meta name="msapplication-navbutton-color" content="#ffffff">
+		<meta name="apple-mobile-web-app-status-bar-style" content="default">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 
-	<link rel="icon" type="image/png" href="icon-192.png">
-	<link rel="apple-touch-icon" href="icon-192.png">
+		<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3574/3574104.png">
+		<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3574/3574104.png">
 
-	<script>
-	  if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('sw.js')
-		  .then(() => console.log('Service Worker Registered 🚀'))
-		  .catch(err => console.error('SW Fail:', err));
-	  }
-	</script>
-	<!-- PWA CONFIG END -->
+		<script>
+		  if ('serviceWorker' in navigator) {
+			// SW file ka naam bhi update kar dete hain safe side ke liye
+			navigator.serviceWorker.register('sw.js?v=2')
+			  .then(() => console.log('Service Worker Registered 🚀'))
+			  .catch(err => console.error('SW Fail:', err));
+		  }
+		</script>
+		<!-- PWA CONFIG END -->
 	
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
