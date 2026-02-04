@@ -7,13 +7,19 @@
 		
 		<!-- PWA CONFIG START -->
 	<link rel="manifest" href="manifest.json">
+
+	<!-- 🔥 Force White Status Bar -->
 	<meta name="theme-color" content="#ffffff">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<link rel="icon" type="image/png" href="icon-192.png">
 	<link rel="apple-touch-icon" href="icon-192.png">
 
 	<script>
 	  if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('sw.js')
-		  .then(() => console.log('Service Worker Registered for Project 100 🚀'))
+		  .then(() => console.log('Service Worker Registered 🚀'))
 		  .catch(err => console.error('SW Fail:', err));
 	  }
 	</script>
