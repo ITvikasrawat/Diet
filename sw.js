@@ -1,7 +1,7 @@
 const CACHE_NAME = 'project-100-v1';
 const ASSETS = [
   './',
-  './index.html',
+  './project100.html',
   './manifest.json'
 ];
 
