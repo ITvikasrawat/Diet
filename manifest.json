@@ -1,7 +1,7 @@
 {
   "name": "Project 100",
   "short_name": "Project 100",
-  "start_url": "./index.html",
+  "start_url": "./project100.html",
   "id": "/project-100/",
   "display": "standalone",
   "background_color": "#ffffff",
